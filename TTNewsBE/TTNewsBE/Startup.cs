@@ -7,12 +7,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TTNewsBE.Models;
+using TTNewsBE.Services;
 
 namespace TTNewsBE
 {
@@ -30,7 +32,17 @@ namespace TTNewsBE
         {
 
             services.AddControllers();
-            services.AddDbContext<NewsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NewsDbConnectionString")));
+            services.Configure<NewsDatabaseSettings>(Configuration.GetSection(nameof(NewsDatabaseSettings)));
+            services.AddSingleton<INewsDatabaseSettings>(provider => provider.GetRequiredService<IOptions<NewsDatabaseSettings>>().Value);
+            services.AddScoped<NewsService>();
+            services.AddScoped<TopicService>();
+            services.AddScoped<SubtopicService>();
+            services.AddScoped<StatusapproveService>();
+            services.AddScoped<NewsuserService>();
+            services.AddScoped<RoleService>();
+
+
+            //services.AddDbContext<NewsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NewsDbConnectionString")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TTNewsBE", Version = "v1" });

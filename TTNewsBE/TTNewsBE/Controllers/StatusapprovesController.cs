@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TTNewsBE.Models;
+using TTNewsBE.Services;
 
 namespace TTNewsBE.Controllers
 {
@@ -13,95 +14,69 @@ namespace TTNewsBE.Controllers
     [ApiController]
     public class StatusapprovesController : ControllerBase
     {
-        private readonly NewsDbContext _context;
+        private readonly StatusapproveService _statusapproveService;
 
-        public StatusapprovesController(NewsDbContext context)
+        public StatusapprovesController(StatusapproveService service)
         {
-            _context = context;
+            _statusapproveService = service;
         }
 
         // GET: api/Statusapproves
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Statusapprove>>> GetStatusapproves()
+        public async Task<ActionResult<IEnumerable<Statusapprove>>> GetAll()
         {
-            return await _context.Statusapproves.ToListAsync();
+            var status = await _statusapproveService.GetAllAsync();
+            return Ok(status);
         }
 
         // GET: api/Statusapproves/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Statusapprove>> GetStatusapprove(int id)
+        public async Task<ActionResult<Statusapprove>> GetById(string id)
         {
-            var statusapprove = await _context.Statusapproves.FindAsync(id);
+            var statusapprove = await _statusapproveService.GetByIdAsync(id);
 
             if (statusapprove == null)
             {
                 return NotFound();
             }
 
-            return statusapprove;
+            return Ok(statusapprove);
         }
 
         // PUT: api/Statusapproves/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStatusapprove(int id, Statusapprove statusapprove)
+        public async Task<IActionResult> Update(string id, Statusapprove updateStatusapprove)
         {
-            if (id != statusapprove.Id_status)
+            var queriedStatus = await _statusapproveService.GetByIdAsync(id);
+            if (queriedStatus == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(statusapprove).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StatusapproveExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _statusapproveService.UpdateAsync(id, updateStatusapprove);
             return NoContent();
         }
 
         // POST: api/Statusapproves
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Statusapprove>> PostStatusapprove(Statusapprove statusapprove)
+        public async Task<ActionResult<Statusapprove>> Create(Statusapprove statusapprove)
         {
-            _context.Statusapproves.Add(statusapprove);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStatusapprove", new { id = statusapprove.Id_status }, statusapprove);
+            await _statusapproveService.CreateAsync(statusapprove);
+            return Ok(statusapprove);
         }
 
         // DELETE: api/Statusapproves/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStatusapprove(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var statusapprove = await _context.Statusapproves.FindAsync(id);
+            var statusapprove = await _statusapproveService.GetByIdAsync(id); 
             if (statusapprove == null)
             {
                 return NotFound();
             }
-
-            _context.Statusapproves.Remove(statusapprove);
-            await _context.SaveChangesAsync();
-
+            await _statusapproveService.DeleteAsync(id);
             return NoContent();
-        }
-
-        private bool StatusapproveExists(int id)
-        {
-            return _context.Statusapproves.Any(e => e.Id_status == id);
         }
     }
 }

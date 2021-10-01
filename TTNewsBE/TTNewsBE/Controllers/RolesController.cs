@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TTNewsBE.Models;
+using TTNewsBE.Services;
 
 namespace TTNewsBE.Controllers
 {
@@ -13,95 +14,68 @@ namespace TTNewsBE.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly NewsDbContext _context;
+        private readonly RoleService _roleService;
 
-        public RolesController(NewsDbContext context)
+        public RolesController(RoleService service)
         {
-            _context = context;
+            _roleService = service;
         }
 
         // GET: api/Roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
+        public async Task<ActionResult<IEnumerable<Role>>> GetAll()
         {
-            return await _context.Roles.ToListAsync();
+            var roles = await _roleService.GetAllAsync();
+            return Ok(roles);
         }
 
         // GET: api/Roles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Role>> GetRole(int id)
+        public async Task<ActionResult<Role>> GetById(string id)
         {
-            var role = await _context.Roles.FindAsync(id);
-
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
             }
 
-            return role;
+            return Ok(role);
         }
 
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRole(int id, Role role)
+        public async Task<IActionResult> PutRole(string id, Role updateRole)
         {
-            if (id != role.Id_role)
+            var queriedRole = await _roleService.GetByIdAsync(id);
+            if (queriedRole == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(role).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _roleService.UpdateAsync(id, updateRole);
             return NoContent();
         }
 
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Role>> PostRole(Role role)
+        public async Task<ActionResult<Role>> Create(Role role)
         {
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRole", new { id = role.Id_role }, role);
+            await _roleService.CreateAsync(role);
+            return Ok(role);
         }
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRole(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var role = await _context.Roles.FindAsync(id);
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
             }
-
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
-
+            await _roleService.DeleteAsync(id);
             return NoContent();
-        }
-
-        private bool RoleExists(int id)
-        {
-            return _context.Roles.Any(e => e.Id_role == id);
         }
     }
 }

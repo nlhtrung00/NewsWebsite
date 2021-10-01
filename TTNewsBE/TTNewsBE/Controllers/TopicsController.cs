@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TTNewsBE.Models;
+using TTNewsBE.Services;
 
 namespace TTNewsBE.Controllers
 {
@@ -13,97 +14,71 @@ namespace TTNewsBE.Controllers
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        private readonly NewsDbContext _context;
-
-        public TopicsController(NewsDbContext context)
+        private readonly TopicService _topicService;
+        private readonly SubtopicService _subtopicService;
+        public TopicsController(TopicService tService, SubtopicService sService)
         {
-            _context = context;
+            _topicService = tService;
+            _subtopicService = sService;
         }
 
         // GET: api/Topics
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Topic>>> GetTopics()
+        public async Task<ActionResult<IEnumerable<Topic>>> GetAll()
         {
-            return await _context.Topics.ToListAsync();
+            var topics = await _topicService.GetAllAsync();
+            return Ok(topics);
         }
 
         // GET: api/Topics/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Topic>> GetTopic(int id)
+        public async Task<ActionResult<Topic>> GetById(string id)
         {
-            var topic = await _context.Topics.FindAsync(id);
+            var topic = await _topicService.GetByIdAsync(id); 
 
             if (topic == null)
             {
                 return NotFound();
             }
 
-            return topic;
+            return Ok(topic);
         }
 
         // PUT: api/Topics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTopic(int id, Topic topic)
+        public async Task<IActionResult> Update(string id, Topic updateTopic)
         {
-            if (id != topic.Id_topic)
+            var queriedTopic = await _topicService.GetByIdAsync(id);
+            if (queriedTopic == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(topic).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TopicExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _topicService.UpdateAsync(id, updateTopic);
             return NoContent();
         }
 
         // POST: api/Topics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Topic>> PostTopic(Topic topic)
+        public async Task<ActionResult<Topic>> Create(Topic topic)
         {
-            _context.Topics.Add(topic);
-            await _context.SaveChangesAsync();
-
-            //return CreatedAtAction("GetTopic", new { id = topic.Id_topic }, topic);
-            return CreatedAtAction(nameof(GetTopic), new { id = topic.Id_topic }, topic);
-
+            await _topicService.CreateAsync(topic);
+            return Ok(topic);
         }
 
         // DELETE: api/Topics/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTopic(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var topic = await _context.Topics.FindAsync(id);
+            var topic = await _topicService.GetByIdAsync(id);
             if (topic == null)
             {
                 return NotFound();
             }
 
-            _context.Topics.Remove(topic);
-            await _context.SaveChangesAsync();
-
+            await _topicService.DeleteAsync(id);
             return NoContent();
-        }
-
-        private bool TopicExists(int id)
-        {
-            return _context.Topics.Any(e => e.Id_topic == id);
         }
     }
 }
