@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,9 +10,10 @@ namespace TTNewsBE.Models
 {
     public class Subtopic
     {
-        [Key]
-        public int Id_subtopic { get; set; }
-        public string name_subtopic { get; set; }
-        public int Id_topic { get; set; }
+        [BsonId]
+        [BsonIgnoreIfDefault]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        public string Subtopicname { get; set; }
     }
 }

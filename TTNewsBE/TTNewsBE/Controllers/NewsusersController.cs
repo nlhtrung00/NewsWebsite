@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TTNewsBE.Models;
+using TTNewsBE.Services;
 
 namespace TTNewsBE.Controllers
 {
@@ -13,109 +14,70 @@ namespace TTNewsBE.Controllers
     [ApiController]
     public class NewsusersController : ControllerBase
     {
-        private readonly NewsDbContext _context;
+        private readonly NewsuserService _newsuserService;
+        private readonly RoleService _roleService;
 
-        public NewsusersController(NewsDbContext context)
+        public NewsusersController(NewsuserService nService, RoleService rService)
         {
-            _context = context;
+            _newsuserService = nService;
+            _roleService = rService;
         }
 
         // GET: api/Newsusers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Newsuser>>> GetNewsusers()
+        public async Task<ActionResult<IEnumerable<Newsuser>>> GetAll()
         {
-            return await _context.Newsusers.ToListAsync();
+            var newsusers = await _newsuserService.GetAllAsync();
+            return Ok(newsusers);
         }
 
         // GET: api/Newsusers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Newsuser>> GetNewsuser(string id)
+        public async Task<ActionResult<Newsuser>> GetById(string id)
         {
-            var newsuser = await _context.Newsusers.FindAsync(id);
-
+            var newsuser = await _newsuserService.GetByIdAsync(id);
             if (newsuser == null)
             {
                 return NotFound();
             }
 
-            return newsuser;
+            return Ok(newsuser);
         }
 
         // PUT: api/Newsusers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNewsuser(string id, Newsuser newsuser)
+        public async Task<IActionResult> Update(string id, Newsuser updateNewsuser)
         {
-            if (id != newsuser.Userid)
+            var queriedNewsuser = await _newsuserService.GetByIdAsync(id);
+            if (queriedNewsuser == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(newsuser).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NewsuserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _newsuserService.UpdateAsync(id, updateNewsuser);
             return NoContent();
         }
 
         // POST: api/Newsusers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Newsuser>> PostNewsuser(Newsuser newsuser)
+        public async Task<ActionResult<Newsuser>> Create(Newsuser newsuser)
         {
-            _context.Newsusers.Add(newsuser);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (NewsuserExists(newsuser.Userid))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetNewsuser", new { id = newsuser.Userid }, newsuser);
+            await _newsuserService.CreateAsync(newsuser);
+            return Ok(newsuser);
         }
 
         // DELETE: api/Newsusers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNewsuser(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var newsuser = await _context.Newsusers.FindAsync(id);
+            var newsuser = await _newsuserService.GetByIdAsync(id);
             if (newsuser == null)
             {
                 return NotFound();
             }
-
-            _context.Newsusers.Remove(newsuser);
-            await _context.SaveChangesAsync();
-
+            await _newsuserService.DeleteAsync(id);
             return NoContent();
-        }
-
-        private bool NewsuserExists(string id)
-        {
-            return _context.Newsusers.Any(e => e.Userid == id);
         }
     }
 }

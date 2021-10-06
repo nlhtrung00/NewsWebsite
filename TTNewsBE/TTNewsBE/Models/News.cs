@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,15 +10,21 @@ namespace TTNewsBE.Models
 {
     public class News
     {
-        [Key]
-        public int Id { get; set; }
+        [BsonId]
+        [BsonIgnoreIfDefault]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Descriptions { get; set; }
         public DateTime Time_update_news { get; set; }
         public string Image { get; set; }
-        public int Id_topic { get; set; }
-        public int Id_subtopic { get; set; }
-        public string Id_author { get; set; }
-        public int Id_status { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Topic { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Subtopic { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public string Author { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Statusapprove { get; set; }
     }
 }

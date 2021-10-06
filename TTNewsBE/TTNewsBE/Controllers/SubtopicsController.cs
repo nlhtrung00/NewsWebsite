@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TTNewsBE.Models;
+using TTNewsBE.Services;
 
 namespace TTNewsBE.Controllers
 {
@@ -13,61 +14,47 @@ namespace TTNewsBE.Controllers
     [ApiController]
     public class SubtopicsController : ControllerBase
     {
-        private readonly NewsDbContext _context;
+        private readonly SubtopicService _subtopicService;
 
-        public SubtopicsController(NewsDbContext context)
+        public SubtopicsController(SubtopicService service)
         {
-            _context = context;
+            _subtopicService = service;
         }
 
         // GET: api/Subtopics
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Subtopic>>> GetSubtopics()
+        public async Task<ActionResult<IEnumerable<Subtopic>>> GetAll()
         {
-            return await _context.Subtopics.ToListAsync();
+            var subtopics = await _subtopicService.GetAllAsync();
+            return Ok(subtopics);
         }
 
         // GET: api/Subtopics/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Subtopic>> GetSubtopic(int id)
+        public async Task<ActionResult<Subtopic>> GetById(string id)
         {
-            var subtopic = await _context.Subtopics.FindAsync(id);
+            var subtopic = await _subtopicService.GetByIdAsync(id);
 
             if (subtopic == null)
             {
                 return NotFound();
             }
 
-            return subtopic;
+            return Ok(subtopic);
         }
 
         // PUT: api/Subtopics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubtopic(int id, Subtopic subtopic)
+        public async Task<IActionResult> Update(string id, Subtopic updateSubtopic)
         {
-            if (id != subtopic.Id_subtopic)
+            var queriedSubtopic = await _subtopicService.GetByIdAsync(id);
+            if (queriedSubtopic == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(subtopic).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubtopicExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _subtopicService.UpdateAsync(id, updateSubtopic);
 
             return NoContent();
         }
@@ -75,33 +62,23 @@ namespace TTNewsBE.Controllers
         // POST: api/Subtopics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Subtopic>> PostSubtopic(Subtopic subtopic)
+        public async Task<ActionResult<Subtopic>> Create(Subtopic subtopic)
         {
-            _context.Subtopics.Add(subtopic);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSubtopic", new { id = subtopic.Id_subtopic }, subtopic);
+            await _subtopicService.CreateAsync(subtopic);
+            return Ok(subtopic);
         }
 
         // DELETE: api/Subtopics/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSubtopic(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var subtopic = await _context.Subtopics.FindAsync(id);
+            var subtopic = await _subtopicService.GetByIdAsync(id);
             if (subtopic == null)
             {
                 return NotFound();
             }
-
-            _context.Subtopics.Remove(subtopic);
-            await _context.SaveChangesAsync();
-
+            await _subtopicService.DeleteAsync(id);
             return NoContent();
-        }
-
-        private bool SubtopicExists(int id)
-        {
-            return _context.Subtopics.Any(e => e.Id_subtopic == id);
         }
     }
 }
