@@ -25,6 +25,10 @@ namespace TTNewsBE.Services
         {
             return await _news.Find<News>(n => n.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<List<News>> GetByTopicAsync(string idTopic) {
+            return await _news.Find<News>(n => n.Topic == idTopic).ToListAsync();
+        }
         public async Task<News> CreateAsync(News news)
         {
             await _news.InsertOneAsync(news);

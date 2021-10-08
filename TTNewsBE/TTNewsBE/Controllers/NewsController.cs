@@ -39,7 +39,7 @@ namespace TTNewsBE.Controllers
         }
 
         // GET: api/News/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<News>> GetById(string id)
         {
             var news = await _newsService.GetByIdAsync(id);
@@ -51,6 +51,13 @@ namespace TTNewsBE.Controllers
 
             return Ok(news);
         }
+        [HttpGet("GetByTopic/{id}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetByTopic(string id)
+        {
+            var news = await _newsService.GetByTopicAsync(id);
+            return Ok(news);
+        }
+
 
         // PUT: api/News/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
