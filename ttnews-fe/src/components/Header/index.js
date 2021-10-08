@@ -1,7 +1,7 @@
 import React from "react";
 import { Wrapper, NavBar, User, News } from "./Header.styles";
 //image
-import UserIcon from '../../image/icon_user_on.png';
+import UserIcon from '../../image/non_user_icon.png';
 export const Header =()=>{
     return(
         <Wrapper>

@@ -22,6 +22,9 @@ export const GlobalStyles = createGlobalStyle `
         padding: 0;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
     }
+    p{
+        margin: 2px
+    }
     h1{
         font-size: 2rem;
         font-weight: 600;
@@ -33,6 +36,7 @@ export const GlobalStyles = createGlobalStyle `
     h3{
         font-size: 1.1rem;
         font-weight: 600;
+        margin: 2px
     }
     p{
         font-size: 1rem;
