@@ -1,10 +1,9 @@
 import React from "react";
 //components
-import { Header } from '../../Header';
 import { Container,Content } from "./Home.styles";
 import Newest from "../NewestNews";
-import { useHomeFetch } from "../../../fetch/NewsFetch";
-import { News } from "../News";
+import { useHomeFetch } from "../../../fetch/HomeFetch";
+import { News } from "../Newsdemo";
 const Home = () => {
     const {state, loading, error} = useHomeFetch();
     console.log(state);
@@ -12,7 +11,6 @@ const Home = () => {
     else
     return (
         <>
-        <Header /> 
         <Container>
             <Content>
                 <Newest header='Tin mới nhất'>
@@ -26,6 +24,8 @@ const Home = () => {
                             author ={news.author}
                             url = {news.url}
                             content ={news.content}
+                            image = {news.urlToImage}
+                            clickable
                             />
 
                            

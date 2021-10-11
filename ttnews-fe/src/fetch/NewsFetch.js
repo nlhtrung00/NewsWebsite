@@ -1,35 +1,30 @@
-import React from "react";
-//API 
+import react from "react";
+import { useState, useEffect } from "react";
 import apiSettings from "../API";
-import { useEffect, useState } from "react";
-const initialState ={
-    status: 'ok', 
-    totalResults: 0, 
-    articles: []
-}
-export const useHomeFetch=()=>{
-    const [state, setState] = useState(initialState);
-    const [loading, setLoading] = useState(false);
+
+export const useNewsFetch=(NewsId) =>{
+    const [state, setState] = useState({});
+    const [loading, setLoading]= useState(true);
     const [error, setError] = useState(false);
-    const fetchNews = async()=>{
+
+    useEffect( ()=>{
+        const fetchData = async()=>{
         try{
-            setError(false);
             setLoading(true);
-            const News = await apiSettings.fetchTopNews();
-            console.log(News);
-            setState(() => ({
+            setError(false);
+            const News = await apiSettings.fetchNewsById(NewsId);
+            console.log(News)
+            setState({
                 ...News,
-                articles: [...News.articles]
-            }));
-        }
+
+            })
+            }
         catch(error){
             setError(true);
+            }
         }
-        setLoading(false);
-    }
-    useEffect(()=>{
-        setState(initialState);
-        fetchNews();
-    },[])
-    return {state, loading, error} ;
+        
+    },[NewsId]);
+    return {state, loading, error};
+
 }
