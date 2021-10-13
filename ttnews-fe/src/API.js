@@ -9,6 +9,10 @@ const apiSettings = {
     fetchTopNews : async() =>{
         const endpoint = TOP_HEADLINES_URL;
         return await(await fetch(endpoint)).json();
+    },
+    fetchNewsById : async NewsId=>{
+        const endpoint= `${API_URL}top-headlines?country=us&${API_KEY}`;
+        return await(await fetch(endpoint)).json();
     }
 };
 export default apiSettings;
