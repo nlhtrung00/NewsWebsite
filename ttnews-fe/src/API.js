@@ -11,9 +11,8 @@ const apiSettings = {
         return await(await fetch(endpoint)).json();
     },
     fetchNewsById : async NewsId=>{
-        // const endpoint= `${API_URL}top-headlines?/q=${NewsId}&apiKey=${API_KEY}`;
-        // console.log(endpoint);
-        // return await(await fetch(endpoint)).json();
+        const endpoint= `${API_URL}top-headlines?country=us&${API_KEY}`;
+        return await(await fetch(endpoint)).json();
     }
 };
 export default apiSettings;

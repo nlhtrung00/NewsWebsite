@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 export const Content = styled.div`
     max-width: 1080px;
     background-color:white ;  
-    height: 110vh;
+    height: 80vh;
     margin: 0 auto;
     position: relative;
 
@@ -34,6 +34,7 @@ export const Content = styled.div`
         display: flex;
         width: 90%;
         padding: 15px 0 15px;
+        flex-wrap: wrap;
     }
     .row-item-input + .row-item-input{
         margin-top: 20px;
@@ -62,6 +63,10 @@ export const Content = styled.div`
     }
     .col-2{
         max-width: 70%;
+    }
+    textarea{
+        width: 70%;
+        height: 150px;
     }
     .btn{
         width: 150px;
@@ -93,4 +98,6 @@ export const Content = styled.div`
         margin: 20px 0 20px;
         padding: 20px 0 20px;
     }
+
+
     `

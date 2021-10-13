@@ -6,7 +6,7 @@ export const News =({title, description, author, url,image, clickable})=>(
     <Wrapper>
         <Image src={image}/>
         <Content>
-            {clickable ?<Link to={`/${title}`}>
+            {clickable ?<Link to={`/${author}`}>
             <h2>{title}</h2>
             </Link>
             :

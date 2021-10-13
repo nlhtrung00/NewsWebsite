@@ -4,6 +4,7 @@ import { Wrapper, NavBar, User, News } from "./Header.styles";
 import UserIcon from '../../image/non_user_icon.png';
 import { Link } from "react-router-dom";
 export const Header =()=>{
+
     return(
         <Wrapper>
             <Link to='/'>
@@ -22,7 +23,9 @@ export const Header =()=>{
                     <li>Đời sống</li>
                 </ul>
             </NavBar>
+            <Link to='/profile'>
             <User src={UserIcon}/>
+            </Link>
                 
            
 

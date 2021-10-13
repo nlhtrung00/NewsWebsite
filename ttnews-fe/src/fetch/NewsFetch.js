@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 import apiSettings from "../API";
 
 export const useNewsFetch=(NewsId) =>{
-    const [state, setState] = useState({});
+    const [state, setState] = useState([]);
     const [loading, setLoading]= useState(true);
     const [error, setError] = useState(false);
-
-    useEffect( ()=>{
-        const fetchData = async()=>{
+    console.log(NewsId);
+    const fetchData = async()=>{
         try{
             setLoading(true);
             setError(false);
@@ -23,8 +22,10 @@ export const useNewsFetch=(NewsId) =>{
             setError(true);
             }
         }
+    useEffect( ()=>{
+        fetchData();
         
-    },[NewsId]);
+    },[]);
     return {state, loading, error};
 
 }
