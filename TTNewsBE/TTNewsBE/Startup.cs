@@ -20,7 +20,6 @@ namespace TTNewsBE
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,16 +40,6 @@ namespace TTNewsBE
             services.AddScoped<StatusapproveService>();
             services.AddScoped<NewsuserService>();
             services.AddScoped<RoleService>();
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:3000")
-                                                              .AllowAnyHeader()
-                                                        .AllowAnyMethod();
-                                  });
-            });
 
 
             //services.AddDbContext<NewsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NewsDbConnectionString")));
@@ -80,9 +69,6 @@ namespace TTNewsBE
             {
                 endpoints.MapControllers();
             });
-
-            app.UseCors(MyAllowSpecificOrigins);
-
         }
     }
 }
