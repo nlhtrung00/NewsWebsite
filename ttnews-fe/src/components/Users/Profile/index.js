@@ -24,17 +24,17 @@ const Profile =() =>{
                         <Link to="/profile/Themchude">
                         
                             <img src={addTopicImg} id="img--add__topic"/>
-                            
+                            <h4 className="title">Thêm chủ đề bài viết</h4>
                          </Link>
-                         <h4 className="title">Thêm chủ đề bài viết</h4>
+                         
                     </div>
                     <div className="img--add">
                         <Link to="/profile/Thembaiviet">
                         
                             <img src={writeNewsImg} id="img--add__news"/>
-                            
+                            <h4 className="title">Viết bài</h4>
                          </Link>
-                         <h4 className="title">Viết bài</h4>
+                         
                     </div>
                 </div>
                 

@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 export const Content = styled.div`
     max-width: 1080px;
     background-color:white ;  
-    height: 110vh;
+    min-height: 110vh;
     margin: 0 auto;
     position: relative;
 
@@ -92,5 +92,11 @@ export const Content = styled.div`
     .confirm-form{
         margin: 20px 0 20px;
         padding: 20px 0 20px;
+    }
+    textarea{
+        height: 150px;
+        width: 550px;
+        font-size: 17px;
+        padding: 8px;
     }
     `

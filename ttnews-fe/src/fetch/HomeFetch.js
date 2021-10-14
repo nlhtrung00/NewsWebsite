@@ -3,9 +3,8 @@ import React from "react";
 import apiSettings from "../API";
 import { useEffect, useState } from "react";
 const initialState ={
-    status: 'ok', 
-    totalResults: 0, 
-    articles: []
+   articles:[],
+   status:"ok"
 }
 export const useHomeFetch=()=>{
     const [state, setState] = useState(initialState);
@@ -18,8 +17,9 @@ export const useHomeFetch=()=>{
             const News = await apiSettings.fetchTopNews();
             console.log(News);
             setState(() => ({
-                ...News,
-                articles: [...News.articles]
+                //...News
+                articles: News,
+                //articles: [...News.articles]
             }));
         }
         catch(error){

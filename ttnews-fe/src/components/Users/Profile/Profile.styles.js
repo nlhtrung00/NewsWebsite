@@ -82,8 +82,8 @@ export const Content = styled.div`
        
         
     }
-    #img--add__topic:hover ,
-    #img--add__news:hover {
+    .img--add:hover 
+    #img--add__topic, .img--add:hover #img--add__news{
         opacity: 1;
         transition: ease-in-out 0.4s;
     }
@@ -91,6 +91,9 @@ export const Content = styled.div`
         //border: 3px solid #12BD51;
         transition: ease-in-out 0.1s;
         box-shadow: 3px 2px 5px 2px rgba(117,118,118,0.7);
+    }
+    a{
+        text-decoration: none;
     }
     
 `
