@@ -2,7 +2,7 @@ import React from "react";
 import { Wrapper, Content, Image } from "./News.styles";
 import testImg from "../../../image/testimg_news.jpg";
 import { Link } from "react-router-dom";
-export const News =({title, description, author, url,image, clickable})=>(
+export const News =({title, description, author, topic,image, clickable,timeCreate})=>(
     <Wrapper>
         <Image src={image}/>
         <Content>
@@ -12,10 +12,11 @@ export const News =({title, description, author, url,image, clickable})=>(
             :
             <h2>{title}</h2>
              }   
-            
+            <p>Time: {timeCreate}</p>
             <i>Author:{author}</i>
-            <p>{description}</p>
-            <a href={url}>Xem thêm</a>
+            <p>Topic: {topic}</p>
+            <p>Description news: {description}</p>
+            
         </Content>
         
     </Wrapper>
