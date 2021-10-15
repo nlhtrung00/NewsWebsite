@@ -12,12 +12,12 @@ namespace TTNewsBE.Models
     {
         [BsonId]
         [BsonIgnoreIfDefault]
-        [BsonRepresentation(BsonType.String)]
-        public string Userid { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        public string Username { get; set; }
         public string Userpassword { get; set; }
         public string Fullname { get; set; }
         public DateTime Dateofbirth { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Role { get; set; }
+        public Role Role { get; set; }
     }
 }

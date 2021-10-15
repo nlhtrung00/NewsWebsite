@@ -16,7 +16,5 @@ namespace TTNewsBE.Models
         public string Id { get; set; }
         public string Topicname { get; set; }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public List<string> Subtopics { get; set; }
     }
 }

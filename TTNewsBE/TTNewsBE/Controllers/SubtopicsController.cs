@@ -15,10 +15,12 @@ namespace TTNewsBE.Controllers
     public class SubtopicsController : ControllerBase
     {
         private readonly SubtopicService _subtopicService;
+        private readonly TopicService _topicService;
 
-        public SubtopicsController(SubtopicService service)
+        public SubtopicsController(SubtopicService sService, TopicService tService)
         {
-            _subtopicService = service;
+            _subtopicService = sService;
+            _topicService = tService;
         }
 
         // GET: api/Subtopics

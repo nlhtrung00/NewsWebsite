@@ -22,7 +22,7 @@ namespace TTNewsBE.Services
         }
         public async Task<Newsuser> GetByIdAsync(string id)
         {
-            return await _newsuser.Find<Newsuser>(n => n.Userid == id).FirstOrDefaultAsync();
+            return await _newsuser.Find<Newsuser>(n => n.Id == id).FirstOrDefaultAsync();
         }
         public async Task<Newsuser> CreateAsync(Newsuser newsuser)
         {
@@ -31,11 +31,11 @@ namespace TTNewsBE.Services
         }
         public async Task UpdateAsync(string id, Newsuser newsuser)
         {
-            await _newsuser.ReplaceOneAsync(n => n.Userid == id, newsuser);
+            await _newsuser.ReplaceOneAsync(n => n.Id == id, newsuser);
         }
         public async Task DeleteAsync(string id)
         {
-            await _newsuser.DeleteOneAsync(c => c.Userid == id);
+            await _newsuser.DeleteOneAsync(c => c.Id == id);
         }
     }
 }
