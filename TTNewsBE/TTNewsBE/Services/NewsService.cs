@@ -27,7 +27,7 @@ namespace TTNewsBE.Services
         }
 
         public async Task<List<News>> GetByTopicAsync(string idTopic) {
-            return await _news.Find<News>(n => n.Topic == idTopic).ToListAsync();
+            return await _news.Find<News>(n => n.Topic.Id == idTopic).ToListAsync();
         }
         public async Task<News> CreateAsync(News news)
         {

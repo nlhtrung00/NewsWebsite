@@ -14,7 +14,8 @@ namespace TTNewsBE.Models
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        //[Required]
         public string Subtopicname { get; set; }
+        public Topic Topic { get; set; }
+        public string Status { get; set; }
     }
 }

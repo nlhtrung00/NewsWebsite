@@ -18,16 +18,15 @@ namespace TTNewsBE.Controllers
         private readonly TopicService _topicService;
         private readonly SubtopicService _subtopicService;
         private readonly NewsuserService _newsuserService;
-        private readonly StatusapproveService _statusapproveService;
 
 
-        public NewsController(NewsService newsService, TopicService topicService, SubtopicService subtopicService, NewsuserService newsuserService, StatusapproveService statusapproveService)
+
+        public NewsController(NewsService newsService, TopicService topicService, SubtopicService subtopicService, NewsuserService newsuserService)
         {
             _newsService = newsService;
             _topicService = topicService;
             _subtopicService = subtopicService;
             _newsuserService = newsuserService;
-            _statusapproveService = statusapproveService;
         }
 
         // GET: api/News

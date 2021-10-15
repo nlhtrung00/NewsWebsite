@@ -15,11 +15,9 @@ namespace TTNewsBE.Controllers
     public class TopicsController : ControllerBase
     {
         private readonly TopicService _topicService;
-        private readonly SubtopicService _subtopicService;
-        public TopicsController(TopicService tService, SubtopicService sService)
+        public TopicsController(TopicService tService)
         {
             _topicService = tService;
-            _subtopicService = sService;
         }
 
         // GET: api/Topics
@@ -35,7 +33,7 @@ namespace TTNewsBE.Controllers
         public async Task<ActionResult<Topic>> GetById(string id)
         {
             var topic = await _topicService.GetByIdAsync(id); 
-
+            
             if (topic == null)
             {
                 return NotFound();

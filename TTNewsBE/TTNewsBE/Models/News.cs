@@ -16,15 +16,12 @@ namespace TTNewsBE.Models
         public string Id { get; set; }
         public string Title { get; set; }
         public string Descriptions { get; set; }
+        public string Content { get; set; }
         public DateTime Time_update_news { get; set; }
         public string Image { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Topic { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Subtopic { get; set; }
-        [BsonRepresentation(BsonType.String)]
-        public string Author { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Statusapprove { get; set; }
+        public Topic Topic { get; set; }
+        public Subtopic Subtopic { get; set; }
+        public Newsuser Author { get; set; }
+        public string Status { get; set; }
     }
 }

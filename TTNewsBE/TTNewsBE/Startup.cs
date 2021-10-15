@@ -21,7 +21,6 @@ namespace TTNewsBE
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,23 +31,12 @@ namespace TTNewsBE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:3000")
-                                                              .AllowAnyHeader()
-                                                        .AllowAnyMethod();
-                                  });
-            });
             services.AddControllers();
             services.Configure<NewsDatabaseSettings>(Configuration.GetSection(nameof(NewsDatabaseSettings)));
             services.AddSingleton<INewsDatabaseSettings>(provider => provider.GetRequiredService<IOptions<NewsDatabaseSettings>>().Value);
             services.AddScoped<NewsService>();
             services.AddScoped<TopicService>();
             services.AddScoped<SubtopicService>();
-            services.AddScoped<StatusapproveService>();
             services.AddScoped<NewsuserService>();
             services.AddScoped<RoleService>();
             
@@ -78,8 +66,7 @@ namespace TTNewsBE
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseCors(MyAllowSpecificOrigins);
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
