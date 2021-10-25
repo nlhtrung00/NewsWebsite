@@ -23,11 +23,11 @@ const Home = () => {
                             <News
                             key = {news.id}
                             title = {news.title}
-                            description ={news.description}
+                            description ={news.descriptions}
                             author ={news.author}
-                            url = {news.url}
-                            content ={news.content}
+                            topic = {news.topic}
                             image = {TempImg}
+                            timeCreate = {news.time_update_news}
                             clickable
                             />
 
