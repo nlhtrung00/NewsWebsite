@@ -24,6 +24,10 @@ namespace TTNewsBE.Services
         {
             return await _newsuser.Find<Newsuser>(n => n.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<Newsuser> LoginAsync(string username, string password)
+        {
+            return await _newsuser.Find<Newsuser>(n => n.Username == username && n.Userpassword == password).FirstOrDefaultAsync();
+        }
         public async Task<Newsuser> CreateAsync(Newsuser newsuser)
         {
             await _newsuser.InsertOneAsync(newsuser);

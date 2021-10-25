@@ -15,12 +15,10 @@ namespace TTNewsBE.Controllers
     public class NewsusersController : ControllerBase
     {
         private readonly NewsuserService _newsuserService;
-        private readonly RoleService _roleService;
 
-        public NewsusersController(NewsuserService nService, RoleService rService)
+        public NewsusersController(NewsuserService nService)
         {
             _newsuserService = nService;
-            _roleService = rService;
         }
 
         // GET: api/Newsusers
