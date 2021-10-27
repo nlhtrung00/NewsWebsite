@@ -313,3 +313,4 @@ D:\Project\NienLuan\NewsProject\NewsWebsite\TTNewsBE\TTNewsBE\obj\Debug\net5.0\T
 D:\Project\NienLuan\NewsProject\NewsWebsite\TTNewsBE\TTNewsBE\obj\Debug\net5.0\ref\TTNewsBE.dll
 D:\Project\NienLuan\NewsProject\NewsWebsite\TTNewsBE\TTNewsBE\obj\Debug\net5.0\TTNewsBE.pdb
 D:\Project\NienLuan\NewsProject\NewsWebsite\TTNewsBE\TTNewsBE\obj\Debug\net5.0\TTNewsBE.genruntimeconfig.cache
+D:\Project\NienLuan\NewsProject\NewsWebsite\TTNewsBE\TTNewsBE\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

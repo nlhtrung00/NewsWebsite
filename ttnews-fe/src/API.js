@@ -1,4 +1,4 @@
-import { API_KEY, API_URL, POPULAR_URL, TOP_HEADLINES_URL } from "./config";
+import { TOP_HEADLINES_URL } from "./config";
 
 //test fake api
 
@@ -15,6 +15,10 @@ const apiSettings = {
     },
     fetchNewsById : async NewsId=>{
         const endpoint= `https://localhost:44387/api/News`;
+        return await(await fetch(endpoint)).json();
+    },
+    fetchUserById : async Userid=>{
+        const endpoint=`https://localhost:44387/api/Newsusers/${Userid}`;
         return await(await fetch(endpoint)).json();
     }
 };

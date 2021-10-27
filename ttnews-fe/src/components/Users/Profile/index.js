@@ -4,19 +4,40 @@ import avatar from '../../../image/cat.jpg';
 import addTopicImg from '../../../image/topic.jpg';
 import writeNewsImg from '../../../image/postnews.jpg'
 import {Link, Routes,Route} from "react-router-dom";
-
-
-
+import { createBrowserHistory } from 'history';
+import { Header } from "../../Header";
+import { useState, useEffect } from "react/cjs/react.development";
+import { useUserFetch } from "../../../fetch/UserFetch";
+import { Redirect } from "react-router";
+import { Login } from "../../Login/Login";
 const Profile =() =>{
+    
+    let iduser;
+    iduser = localStorage.getItem('iduser');
+    let history = createBrowserHistory()
+    const {state, loading,error} = useUserFetch(iduser);
+    if(iduser==null){
+        history.replace('/login');
+       return <Login/>
+    }
+    console.log(state.User);
+    let userfullname='NA', userdateofbirth='NA';
+    if(state.User != null){
+        userfullname = state.User.fullname;
+        userdateofbirth = state.User.dateofbirth;
+    }
+    
     return(
+        <>
+        <Header user={iduser} /> 
         <Wrapper>
             <Content>
                 <div className="row info--profile">
                     <div className="avatar"><img src={avatar} /></div>
                     
                     <div className="info">
-                        <h2>Nguyễn Hoài Tân</h2>
-                        <p>Date of birth: 10/10/2000</p>
+                        <h2>{userfullname}</h2>
+                        <p>{userdateofbirth}</p>
                     </div>
                 </div>
                 <div className="row-flex container-img_function">
@@ -42,6 +63,7 @@ const Profile =() =>{
 
             </Content>
         </Wrapper>
+        </>
     )
 }
 export default Profile;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using TTNewsBE.Services;
 
 namespace TTNewsBE.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class NewsusersController : ControllerBase
@@ -77,5 +79,6 @@ namespace TTNewsBE.Controllers
             await _newsuserService.DeleteAsync(id);
             return NoContent();
         }
+        
     }
 }

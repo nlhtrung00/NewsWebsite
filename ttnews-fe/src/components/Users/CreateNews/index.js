@@ -44,15 +44,6 @@ const CreateNews=()=>{
     const handleSubmit=async(e)=>{
         setIsPending(true);
         e.preventDefault();
-        // const title = formnews.title;
-        // const descriptions = formnews.descriptions;
-        // const image = formnews.image;
-        // const topic = formnews.topic;
-        // const subtopic = formnews.subtopic;
-        // const content = formnews.content;
-        // const author = formnews.author;
-        // const time_update_news =  formnews.time_update_news;
-        // const data = {title,descriptions,image,topic,subtopic,content,author,time_update_news};
         formnews.time_update_news = today;
         const data = formnews;
         console.log(JSON.stringify(data));

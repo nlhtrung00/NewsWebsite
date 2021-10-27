@@ -20,4 +20,5 @@ namespace TTNewsBE.Models
         public DateTime Dateofbirth { get; set; }
         public string Role { get; set; }
     }
+    
 }

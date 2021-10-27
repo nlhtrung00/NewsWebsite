@@ -7,11 +7,21 @@ export const Wrapper = styled.div`
     align-items: center;
     padding: 0 20px 0 20px;
     
+    .user-option{
+        display: flex;
+        align-items: center;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+        margin-right: 5px;
+    }
 `
 export const NavBar = styled.div`
     ul{
         list-style-type: none;
-        margin: 0;
+        margin: 0 auto;
+        padding: 0;
         
     }
     li{
@@ -26,6 +36,7 @@ export const NavBar = styled.div`
     li:hover{
         background-color: #48b8a9;
     }
+    
  
     
 `
