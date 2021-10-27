@@ -50,10 +50,18 @@ namespace TTNewsBE.Controllers
 
             return Ok(news);
         }
+
         [HttpGet("GetByTopic/{id}")]
         public async Task<ActionResult<IEnumerable<News>>> GetByTopic(string id)
         {
             var news = await _newsService.GetByTopicAsync(id);
+            return Ok(news);
+        }
+
+        [HttpGet("GetByStatus/{status}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetByStatus(string status)
+        {
+            var news = await _newsService.GetByStatusAsync(status);
             return Ok(news);
         }
 

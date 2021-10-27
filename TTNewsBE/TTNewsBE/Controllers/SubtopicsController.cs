@@ -32,10 +32,22 @@ namespace TTNewsBE.Controllers
         }
 
         // GET: api/Subtopics/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Subtopic>> GetById(string id)
         {
             var subtopic = await _subtopicService.GetByIdAsync(id);
+
+            if (subtopic == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(subtopic);
+        }
+        [HttpGet("GetByStatus/{status}")]
+        public async Task<ActionResult<Subtopic>> GetByStatus(string status)
+        {
+            var subtopic = await _subtopicService.GetByStatuscAsync(status);
 
             if (subtopic == null)
             {
