@@ -6,7 +6,7 @@ const ApproveNews=()=>{
             <Wrapper>
                 <Content>
                     <h2>ApproveNews</h2>
-                    <img className="img" src={TempApproveImg}/>
+                    <img className="img" src={TempApproveImg} alt="tempimg"/>
                     <hr/>
                     <div className="footer-approve row">
                         <button className="no"><i class="fas fa-times icon"></i>Decline</button>

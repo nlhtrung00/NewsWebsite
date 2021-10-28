@@ -1,23 +1,29 @@
 import React from "react";
 import { Wrapper, Content, Image } from "./News.styles";
-import testImg from "../../../image/testimg_news.jpg";
 import { Link } from "react-router-dom";
-export const News =({title, description, author, topic,image, clickable,timeCreate})=>(
-    <Wrapper>
-        <Image src={image}/>
-        <Content>
-            {clickable ?<Link to={`/${author}`}>
-            <h2>{title}</h2>
-            </Link>
-            :
-            <h2>{title}</h2>
-             }   
-            <p>Time: {timeCreate}</p>
-            <i>Author:{author}</i>
-            <p>Topic: {topic}</p>
-            <p>Description news: {description}</p>
-            
-        </Content>
+
+export const News =({news,clickable})=>{
+    const topic = news.topic;
+    const author = news.author;
+    
+    return(
+        <Wrapper>
         
-    </Wrapper>
-)
+            <Content>
+                {clickable ?<Link to={'/'}>
+                <h2>{news.title}</h2>
+                </Link>
+                :
+                <h2>{news.title}</h2>
+                }   
+                <p>Time: {news.time_update_news}</p>
+                {author!=null&&<p>Tác giá:{author.fullname}</p>}
+                {topic!=null&&<p>Chủ đề{topic.topicname}</p>}
+                <p>Description news: {news.descriptions}</p>
+                
+            </Content>
+        
+        </Wrapper>
+    )
+    
+}

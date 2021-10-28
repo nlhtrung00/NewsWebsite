@@ -20,6 +20,14 @@ const apiSettings = {
     fetchUserById : async Userid=>{
         const endpoint=`https://localhost:44387/api/Newsusers/${Userid}`;
         return await(await fetch(endpoint)).json();
+    },
+    fetchTopics : async()=>{
+        const endpoint = 'https://localhost:44387/api/Topics';
+        return await ( await fetch(endpoint)).json();
+    },
+    fetchSubTopicsByTopic : async(idtopic)=>{
+        const endpoint =`https://localhost:44387/api/Subtopics/Topic/${idtopic}`;
+        return await (await fetch(endpoint)).json();
     }
 };
 export default apiSettings;

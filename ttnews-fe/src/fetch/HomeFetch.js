@@ -4,7 +4,6 @@ import apiSettings from "../API";
 import { useEffect, useState } from "react";
 const initialState ={
    articles:[],
-   status:"ok"
 }
 export const useHomeFetch=()=>{
     const [state, setState] = useState(initialState);
@@ -16,10 +15,10 @@ export const useHomeFetch=()=>{
             setLoading(true);
             const News = await apiSettings.fetchTopNews();
             console.log(News);
-            setState(() => ({
-                //...News
-                articles: News,
-                //articles: [...News.articles]
+            
+            setState(prev => ({
+                articles: [...News.articles]
+                
             }));
         }
         catch(error){

@@ -3,7 +3,7 @@ import { Wrapper, NavBar, User, News } from "./Header.styles";
 //image
 import UserIcon from '../../image/non_user_icon.png';
 import { Link } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
+
 
 
 export const Header =(props)=>{
@@ -14,7 +14,7 @@ export const Header =(props)=>{
         window.location.reload();
         button = (<Link to="/login"><button>Login</button></Link>);
     }
-    console.log(props.user);
+    //console.log(props.user);
     button = (<Link to="/login"><button>Login</button></Link>);
     if(props.user==null)
      button = (<Link to="/login"><button>Login</button></Link>)

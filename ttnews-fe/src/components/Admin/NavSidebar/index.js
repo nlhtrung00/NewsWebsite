@@ -3,13 +3,8 @@ import { Wrapper } from "./NavSidebar.styles"
 import logoAdmin from "../../../image/adminlogo.png"
 export const NavSidebar=({setOption})=>{
     const [state,setState] = useState('');
-    const initial = useRef(true);
+    
     useEffect(()=>{
-        // if(initial.current)
-        // {
-        //     initial.current = false;
-        //     return;
-        // }
         setOption(state)
 
     },[setOption,state])

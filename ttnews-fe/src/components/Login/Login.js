@@ -1,9 +1,8 @@
-import react, {useState} from "react";
+import {useState} from "react";
 import { Wrapper } from "./Login.styles";
-import { createBrowserHistory } from 'history';
+//import { createBrowserHistory } from 'history';
 import { Redirect } from "react-router-dom";
 import Home from '../Homepage/Home'
-import { useEffect } from "react/cjs/react.development";
 import { Header } from "../Header";
 
 export const Login=()=>{
@@ -12,12 +11,6 @@ export const Login=()=>{
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
-    const [user, setUser] = useState();
-
-
-
-    // let history = createBrowserHistory();
-    // //console.log(history);
     const [LoggedIn, setLoggedIn] = useState(false);
 
     const handleLogin=async(e)=>{
