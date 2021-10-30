@@ -12,9 +12,7 @@ export const HomeAdmin=()=>{
             <NavSidebar setOption={setOption}/>
             <ContentMain
                 option = {option}
-            
-            />
-            
+            />    
         </Container>
            
         </>

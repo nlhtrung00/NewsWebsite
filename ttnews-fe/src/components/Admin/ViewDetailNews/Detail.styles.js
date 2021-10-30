@@ -1,34 +1,32 @@
 import styled from "styled-components";
-export const Container =styled.div`
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-row-gap: 30px;
-    justify-content: space-evenly;
+export const Container = styled.div`
+    width: 100%;
+    height:1000px;
+    background-color: #e7e7e7;
+    padding:10px;
+    display: flex;
+    overflow: hidden;
+    padding-top: 50px;
     
 `
 export const Wrapper=styled.div`
-    width: 220px;
-    min-height: 300px;
-    background-color: #ffffff;
-    padding: 5px 0 5px;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-    margin-right: 20px;
-    
-`
-
+    width: 1000px;
+    height: 100%;
+    background-color: white;
+    margin: 0 auto;
+    border-radius: 5px;
+`;
 export const Content=styled.div`
-    .title-subtopic{    
-        font-size: 20px;
-        text-align:center;
+
+
+    .footer-approve{
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
-    .topic-type{
-        text-align:center;
-    }
-    h4{
-        margin: 0;
-    }
-    .img{
-        max-width: 100%;
+    button{
+        margin: 20px;
     }
     .row{
         display: flex;
@@ -42,17 +40,21 @@ export const Content=styled.div`
         background-color: #359335;
         border: none;
         padding: 5px 10px 5px;
-        font-size: 17px;
+        font-size: 25px;
         cursor: pointer;
         color: white;
+        border-radius: 20px;
+        width: 140px;
     }
     .no{
         background-color: #f12b2b;
         border: none;
         padding: 5px 10px 5px;
-        font-size: 17px;
+        font-size: 25px;
         cursor: pointer;
         color:white;
+        border-radius: 20px;
+        width: 140px;
     }
     .yes:hover{
         background-color: #08b708;
@@ -60,4 +62,4 @@ export const Content=styled.div`
     .no:hover{
         background-color: #ff0606;
     }
-`
+`;

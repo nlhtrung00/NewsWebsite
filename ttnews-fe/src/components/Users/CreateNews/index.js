@@ -81,13 +81,13 @@ const CreateNews=()=>{
         
         formnews.time_update_news = today;
         const title = formnews.title;
-        const description = formnews.descriptions;
+        const descriptions = formnews.descriptions;
         const content = formnews.content;
         const time_update = today;
 
         const data = {
             title,
-            description,
+            descriptions,
             content,
             time_update,
             topic,

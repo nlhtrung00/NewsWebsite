@@ -9,6 +9,7 @@ import CreateNews from './components/Users/CreateNews';
 import CreateTopics from './components/Users/CreateTopics';
 import { HomeAdmin } from './components/Admin/Home';
 import { Login } from './components/Login/Login';
+import { DetailNews } from './components/Admin/ViewDetailNews';
 const App =() => {
  
 
@@ -23,7 +24,8 @@ const App =() => {
         <Route path='/profile' exact component={Profile} />
         <Route path="/profile/Thembaiviet" component={CreateNews}/>
         <Route path="/profile/Themchude" component={CreateTopics} />
-        <Route path='/admin' component={HomeAdmin} />
+        <Route exact path='/admin' component={HomeAdmin} />
+        <Route path='/admin/news/viewdetail/:Newsid' component={DetailNews} />
       </Switch> 
       <GlobalStyles />
     </Router>

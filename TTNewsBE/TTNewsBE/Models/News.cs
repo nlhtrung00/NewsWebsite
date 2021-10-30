@@ -22,6 +22,6 @@ namespace TTNewsBE.Models
         public Topic Topic { get; set; }
         public Subtopic Subtopic { get; set; }
         public Newsuser Author { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } = "disapprove";
     }
 }
