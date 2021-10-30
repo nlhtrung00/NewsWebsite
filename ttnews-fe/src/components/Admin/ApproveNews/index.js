@@ -42,10 +42,10 @@ const ApproveNews=({statusApprove})=>{
                 const descriptions = itemnews.descriptions;
                 const content = itemnews.content;
                 const status = "approved";
-                const topic ={
+                const topic = itemnews.topic!=null ?{
                     id:itemnews.topic.id,
                     topicname:itemnews.topic.topicname
-                };
+                } : null;
                 const subtopic = itemnews.subtopic;
                 const author = itemnews.author;
                 const dataPost ={id,title, descriptions, content, topic,subtopic,author, status};
@@ -80,10 +80,10 @@ const ApproveNews=({statusApprove})=>{
                 const descriptions = itemnews.descriptions;
                 const content = itemnews.content;
                 const status = "declined";
-                const topic ={
+                const topic = itemnews.topic!=null ?{
                     id:itemnews.topic.id,
                     topicname:itemnews.topic.topicname
-                };
+                } : null;
                 const subtopic = itemnews.subtopic;
                 const author = itemnews.author;
                 const dataPost ={id,title, descriptions, content, topic,subtopic,author, status};
@@ -106,8 +106,12 @@ const ApproveNews=({statusApprove})=>{
            })        
         }
     }  
-
-
+    if(state.news==null){
+        return (
+            <h2>Empty </h2>
+        )
+    }
+    else if(state.news!=null)
     return(
         <>
         <Container>
@@ -118,15 +122,15 @@ const ApproveNews=({statusApprove})=>{
                     <div className="header-approve">
                         <div className="title-news">
                             <h3>Title: {itemnews.title}</h3>
-                            <p>Topic: {itemnews.topic.topicname}</p>
-                            <p>SubTopic: {itemnews.subtopic.subtopicname}</p>
+                            <p>Topic: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
+                            <p>SubTopic: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
                             <Link to={`/admin/news/viewdetail/${itemnews.id}`}>
                                 <button>Xem chi tiết...</button>
                             </Link>
                             
                         </div>                    
-                        <p>Writen by: {itemnews.author.fullname}</p>
-                        <p>Id author: {itemnews.author.id}</p>
+                        <p>Writen by: {itemnews.author!=null ? itemnews.author.fullname : "N/A"}</p>
+                        <p>Id author: {itemnews.author!=null ? itemnews.author.id : "N/A"}</p>
                     </div>
                  
                     <div className="footer-approve row">

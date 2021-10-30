@@ -3,6 +3,7 @@ import { Container,Wrapper,Content } from "./Detail.styles";
 import { useState,useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import dotenv from  'dotenv';
 
 const initialState ={
     news:[],
@@ -16,7 +17,9 @@ export const DetailNews =()=>{
     const [topic,setTopic] = useState({});
     const [subtopic,setSubtopic] = useState({});
     const {Newsid} = useParams();
-    
+    const url = process.env.REACT_APP_URL_IMAGE_NEWS;
+    console.log(url);
+
     const fetchNews = async()=>{
         try{
             setError(false);          
@@ -112,7 +115,14 @@ export const DetailNews =()=>{
                         <i>ID author: {author.id}</i>
                     </div>
                     <div className="topic">
-                        <h4>{topic.topicname}<span> <i class="fas fa-chevron-right icon"></i></span> <span>{subtopic.subtopicname}</span></h4>
+                        <h4>{topic.topicname}<span> <i classNam="fas fa-chevron-right icon"></i></span> <span>{subtopic.subtopicname}</span></h4>
+                    </div>
+                    <div className="description-news">
+                        <p>{state.news.descriptions}</p>
+                    </div>
+                    <div className="img-news">
+                        
+                       <img src={require("D://Project//NienLuan//NewsProject//NewsWebsite//ttnews-fe//src//image//tempImg.jpg").default} /> 
                     </div>
                     <div>
                         <p dangerouslySetInnerHTML={{__html:state.news.content}}></p>

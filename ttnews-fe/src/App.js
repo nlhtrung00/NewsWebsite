@@ -10,9 +10,9 @@ import CreateTopics from './components/Users/CreateTopics';
 import { HomeAdmin } from './components/Admin/Home';
 import { Login } from './components/Login/Login';
 import { DetailNews } from './components/Admin/ViewDetailNews';
+
 const App =() => {
  
-
   return(
   <>
     
