@@ -1,4 +1,5 @@
- 
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,10 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TTNewsBE.Models;
 using TTNewsBE.Services;
@@ -33,12 +36,30 @@ namespace TTNewsBE
         {
             services.AddControllers();
             services.Configure<NewsDatabaseSettings>(Configuration.GetSection(nameof(NewsDatabaseSettings)));
+            
             services.AddSingleton<INewsDatabaseSettings>(provider => provider.GetRequiredService<IOptions<NewsDatabaseSettings>>().Value);
             services.AddScoped<NewsService>();
             services.AddScoped<TopicService>();
             services.AddScoped<SubtopicService>();
             services.AddScoped<NewsuserService>();
-            
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("JwtKey").ToString())),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
 
             //services.AddDbContext<NewsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NewsDbConnectionString")));
@@ -63,7 +84,7 @@ namespace TTNewsBE
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>

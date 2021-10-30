@@ -1,36 +1,36 @@
-import react,{useState, useEffect} from "react";
-
-
+import {useState} from "react";
+import {useTopicFetch} from '../../../fetch/TopicFetch'
+import { Header } from "../../Header";
 import { Wrapper,Content } from "./CreateTopic.styles";
-
+import { Redirect } from "react-router-dom";
+const initialState ={
+    
+ }
 const CreateTopics=()=>{
+    const {state, error} = useTopicFetch();
+    const [subTopicname, setSubtopicname] = useState('');
+    const [topic,setTopic] = useState(initialState);
+    const [redirect, setRedirect] = useState(false);
+   
+    if(error) return <div>Something wrong happen</div>;
+  
     
-    const [formvalues, setFormValues] = useState({
-        topic:'',
-        subtopicname:'',
-        describe:''
-    });
-    
-    
-    const handleChange=(e)=>{
-        const {name, value} = e.currentTarget;
-        setFormValues(prevState=>({
-            ...prevState,
-            [name] : value
-        })
-        )
-        
+    const handleChangeTopic=async(e)=>{
+        const topicid = e.target.value; 
+        console.log(topicid);
+        const topicFetch = await (await fetch(`https://localhost:44387/api/Topics/${topicid}`)).json();
+        console.log(topicFetch);
+        setTopic(()=>({
+            ...topicFetch
+        }))
+
     }
-    
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        const describe = formvalues.describe;
-        const subtopicname = formvalues.subtopicname;
-        const topic = formvalues.topic;
-
-        const dataPost ={subtopicname,topic};
         
-        const response = await fetch('https://localhost:44387/api/Subtopics',{
+        const dataPost ={subTopicname,topic};
+        console.log(JSON.stringify(dataPost));
+        await fetch('https://localhost:44387/api/Subtopics',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -39,16 +39,24 @@ const CreateTopics=()=>{
             },
             body:JSON.stringify(dataPost)
         }
-        ).then(()=>{
-            console.log('topic added');
-        })
+        ).then((res)=>{
+            console.log(res.json());
+            setRedirect(true);
+            alert('Thêm thành công')
+
+        }).catch(err => console.log(err))
     
         
         
         
     }
-
+    if(redirect){
+        return <Redirect to="/profile" />
+    }
     return(
+        <>
+            
+            <Header/>
             <Wrapper>
                 <Content>
                     <h2 className="header-title">Tạo chủ đề bản tin</h2>
@@ -58,24 +66,30 @@ const CreateTopics=()=>{
                             <input name="subtopicname" id="subtopic" 
                             placeholder="Nhập tên" 
                             className="col-2"
-                            onChange={handleChange}
+                            onChange={(e)=>setSubtopicname(e.target.value)}
                             />
                         </div>
         
                         <div className="row-item-input">
                             <label htmlFor="topic"className="col-1" >Thuộc nhóm chủ đề</label>
-                            <select name="topic" className="col-2" onChange={handleChange} value={formvalues.topic} >
-                                <option value="">Chọn chủ đề...</option>
-                                <option value="chủ đề 1">Chủ đề 1</option>
-                                <option value="chủ đề 2">Chủ đề 2</option>
-                                <option value="chủ đề 3">Chủ đề 3</option>
+                            <select name="topic" className="col-2" onChange={handleChangeTopic} >
+                               
+                                {state.topics.map(topic => {
+                                    
+                                    return(
+                                        
+                                        <option value={topic.id} key={topic.id}>
+                                        {topic.topicname}
+                                        </option>
+                                    )
+                                   
+                                  
+                                })}
                             </select>
+                            
+                            
                         </div>
-        
-                        <div className="row-item-input">
-                            <label htmlFor="describe"className="col-1">Mô tả chủ đề</label>
-                            <textarea name="describe" className="col-2" onChange={handleChange}></textarea>
-                        </div>
+                        
                         <div className="row confirm-form">
                             
                             <button className="btn btn-cancel">Trở về</button> 
@@ -85,6 +99,9 @@ const CreateTopics=()=>{
                     </form>
                 </Content>
             </Wrapper>
+        </>
     )
 }
+
+
 export default CreateTopics;

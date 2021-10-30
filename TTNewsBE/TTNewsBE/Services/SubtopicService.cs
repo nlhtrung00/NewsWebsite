@@ -28,6 +28,10 @@ namespace TTNewsBE.Services
         {
             return await _subtopic.Find<Subtopic>(s => s.Status == status).ToListAsync();
         }
+        public async Task<List<Subtopic>> GetByTopic(string id)
+        {
+            return await _subtopic.Find<Subtopic>(s => s.Topic.Id == id).ToListAsync();
+        }
         public async Task<Subtopic> CreateAsync(Subtopic subtopic)
         {
             await _subtopic.InsertOneAsync(subtopic);

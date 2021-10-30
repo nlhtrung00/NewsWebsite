@@ -56,6 +56,19 @@ namespace TTNewsBE.Controllers
 
             return Ok(subtopic);
         }
+        [HttpGet("Topic/{id}")]
+        public async Task<ActionResult<Subtopic>> GetByTopic(string id)
+        {
+            var subtopic = await _subtopicService.GetByTopic(id);
+
+            if (subtopic == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(subtopic);
+        }
+
 
         // PUT: api/Subtopics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

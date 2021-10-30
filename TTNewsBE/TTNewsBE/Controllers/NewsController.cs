@@ -38,8 +38,9 @@ namespace TTNewsBE.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<News>>> GetAll()
         {
-            var news = await _newsService.GetAllAsync();
-            return Ok(news);
+            var articles = await _newsService.GetAllAsync();
+            
+            return Ok(new { articles });
         }
 
         // GET: api/News/5

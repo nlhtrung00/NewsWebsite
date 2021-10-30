@@ -1,29 +1,48 @@
-import react from "react";
+
 import { Wrapper, Content } from "./Profile.styles";
 import avatar from '../../../image/cat.jpg';
 import addTopicImg from '../../../image/topic.jpg';
 import writeNewsImg from '../../../image/postnews.jpg'
-import {Link, Routes,Route} from "react-router-dom";
-
-
-
+import {Link} from "react-router-dom";
+import { createBrowserHistory } from 'history';
+import { Header } from "../../Header";
+import { useUserFetch } from "../../../fetch/UserFetch";
+import { Login } from "../../Login/Login";
 const Profile =() =>{
+    
+    let iduser;
+    iduser = localStorage.getItem('iduser');
+    let history = createBrowserHistory()
+    const {user} = useUserFetch(iduser);
+    if(iduser==null){
+        history.replace('/login');
+       return <Login/>
+    }
+    console.log(user.User);
+    let userfullname='NA', userdateofbirth='NA';
+    if(user.User != null){
+        userfullname = user.User.fullname;
+        userdateofbirth = user.User.dateofbirth;
+    }
+    
     return(
+        <>
+        <Header user={iduser} /> 
         <Wrapper>
             <Content>
                 <div className="row info--profile">
-                    <div className="avatar"><img src={avatar} /></div>
+                    <div className="avatar"><img src={avatar} alt="avt"/></div>
                     
                     <div className="info">
-                        <h2>Nguyễn Hoài Tân</h2>
-                        <p>Date of birth: 10/10/2000</p>
+                        <h2>{userfullname}</h2>
+                        <p>{userdateofbirth}</p>
                     </div>
                 </div>
                 <div className="row-flex container-img_function">
                     <div className="img--add">
                         <Link to="/profile/Themchude">
                         
-                            <img src={addTopicImg} id="img--add__topic"/>
+                            <img src={addTopicImg} id="img--add__topic" alt="alt"/>
                             <h4 className="title">Thêm chủ đề bài viết</h4>
                          </Link>
                          
@@ -31,7 +50,7 @@ const Profile =() =>{
                     <div className="img--add">
                         <Link to="/profile/Thembaiviet">
                         
-                            <img src={writeNewsImg} id="img--add__news"/>
+                            <img src={writeNewsImg} id="img--add__news" alt="alt"/>
                             <h4 className="title">Viết bài</h4>
                          </Link>
                          
@@ -42,6 +61,7 @@ const Profile =() =>{
 
             </Content>
         </Wrapper>
+        </>
     )
 }
 export default Profile;
