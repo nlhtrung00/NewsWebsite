@@ -18,6 +18,6 @@ namespace TTNewsBE.Models
         public string Userpassword { get; set; }
         public string Fullname { get; set; }
         public DateTime Dateofbirth { get; set; }
-        public string Role { get; set; }
+        public string Role { get; set; } = "user";
     }
 }

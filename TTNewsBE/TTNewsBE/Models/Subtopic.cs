@@ -16,6 +16,6 @@ namespace TTNewsBE.Models
         public string Id { get; set; }
         public string Subtopicname { get; set; }
         public Topic Topic { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } = "disapprove";
     }
 }
