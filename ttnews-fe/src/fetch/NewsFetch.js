@@ -12,9 +12,9 @@ export const useNewsFetch=(NewsId) =>{
             setLoading(true);
             setError(false);
             const News = await apiSettings.fetchNewsById(NewsId);
-            console.log(News)
+            //console.log(News)
             setState({
-                ...News,
+                News:News,
 
             })
             }

@@ -15,6 +15,7 @@ export const Wrapper=styled.div`
     box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
     border-radius: 20px;
     overflow: hidden;
+    position: relative;
 `
 
 export const Content=styled.div`
@@ -33,10 +34,21 @@ export const Content=styled.div`
     }
     .title-news{
         height: 180px;
-        background-color: #ffe0bda1;
+        background-color: #f4f4f4;
         padding-top: 20px;
     }
-
+    .btn-detail{
+        padding: 5px;
+        font-size: 16px;
+        background-color: #6ac4d0;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        left:25%;
+        transform: translate(10%,-50%);
+    }
     .img{
         max-width: 100%;
     }

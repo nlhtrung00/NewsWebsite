@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import {useTopicFetch} from '../../../fetch/TopicFetch'
 import { useUserFetch } from "../../../fetch/UserFetch";
 import { Header } from "../../Header";
+import { Redirect } from "react-router-dom";
 const CreateNews=()=>{
     
 
@@ -15,18 +16,23 @@ const CreateNews=()=>{
     const [topic,setTopic] = useState();
     const [author, setAuthor] = useState(); 
     const [uploadFile, setUploadFile] = useState();
+    const [redirect, setRedirect] = useState(false);
     const [formnews, setFormNews] = useState({
         title:'',
         descriptions:'',
         content:'',
         time_update_news: ""
     })  
+
+    
     const {user} = useUserFetch(localStorage.getItem('iduser'));   
     const editor = useRef(null);
     var date = new Date();
     var today = date.getFullYear() +"-"+(date.getMonth()+1)+"-"+date.getDate();
+    if(redirect){
+        return <Redirect to="/profile" />
+    }
     
-
     
     const config ={
         readonly: false
@@ -95,17 +101,15 @@ const CreateNews=()=>{
             body:dataArray
         }).then((res)=>{
             console.log(res.json());
+            setRedirect(true);
+            alert('Thêm thành công')
         }).catch(err=>{
             console.log(err);
         })
         setIsPending(false);
-        
-        
-    
-        
-        
-        
+   
     }
+    
 
     return(
     <>

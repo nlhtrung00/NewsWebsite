@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { DetailNews } from "../ViewDetailNews";
 
 const initialState ={
-    news:[],
+    articles:[],
  }
 const ApproveNews=({statusApprove})=>{
     const[state,setState] = useState(initialState);
@@ -18,7 +18,7 @@ const ApproveNews=({statusApprove})=>{
             const news = await apiSettings.fetchNewsByStatus(statusApprove);
             console.log(news);
             setState(() => ({
-                news,
+                articles: [...news.articles]
             }));
         }
         catch(error){
@@ -34,8 +34,8 @@ const ApproveNews=({statusApprove})=>{
 
     const Approve =async(e)=>{
         console.log(e.target.value);
-        if(state.news!=null){
-           state.news.map(async(itemnews)=>{
+        if(state.articles!=null){
+           state.articles.map(async(itemnews)=>{
             if(itemnews.id==e.target.value){
                 const id = itemnews.id;
                 const title = itemnews.title;
@@ -46,9 +46,11 @@ const ApproveNews=({statusApprove})=>{
                     id:itemnews.topic.id,
                     topicname:itemnews.topic.topicname
                 } : null;
+                const time_update_news = itemnews.time_update_news;
+                const imageName = itemnews.imageName;
                 const subtopic = itemnews.subtopic;
                 const author = itemnews.author;
-                const dataPost ={id,title, descriptions, content, topic,subtopic,author, status};
+                const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
                 var datajson = JSON.stringify(dataPost);
                 console.log(datajson);
                 await fetch(`https://localhost:44387/api/News/${id}`,{
@@ -72,8 +74,8 @@ const ApproveNews=({statusApprove})=>{
     
     const Decline =async(e)=>{
         console.log(e.target.value);
-        if(state.news!=null){
-           state.news.map(async(itemnews)=>{
+        if(state.articles!=null){
+           state.articles.map(async(itemnews)=>{
             if(itemnews.id==e.target.value){
                 const id = itemnews.id;
                 const title = itemnews.title;
@@ -84,9 +86,11 @@ const ApproveNews=({statusApprove})=>{
                     id:itemnews.topic.id,
                     topicname:itemnews.topic.topicname
                 } : null;
+                const time_update_news = itemnews.time_update_news;
+                const imageName = itemnews.imageName;
                 const subtopic = itemnews.subtopic;
                 const author = itemnews.author;
-                const dataPost ={id,title, descriptions, content, topic,subtopic,author, status};
+                const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
                 var datajson = JSON.stringify(dataPost);
                 console.log(datajson);
                 await fetch(`https://localhost:44387/api/News/${id}`,{
@@ -106,16 +110,16 @@ const ApproveNews=({statusApprove})=>{
            })        
         }
     }  
-    if(state.news==null){
+    if(state.articles==null){
         return (
             <h2>Empty </h2>
         )
     }
-    else if(state.news!=null)
+    else if(state.articles!=null)
     return(
         <>
         <Container>
-        {state.news!=null&&state.news.map(itemnews =>{
+        {state.articles!=null&&state.articles.map(itemnews =>{
             return(
                 <Wrapper key={itemnews.id}>
                 <Content>
@@ -125,12 +129,12 @@ const ApproveNews=({statusApprove})=>{
                             <p>Topic: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
                             <p>SubTopic: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
                             <Link to={`/admin/news/viewdetail/${itemnews.id}`}>
-                                <button>Xem chi tiết...</button>
+                                <button className="btn-detail">Xem chi tiết</button>
                             </Link>
                             
                         </div>                    
-                        <p>Writen by: {itemnews.author!=null ? itemnews.author.fullname : "N/A"}</p>
-                        <p>Id author: {itemnews.author!=null ? itemnews.author.id : "N/A"}</p>
+                        <p>Updated time: {itemnews.time_update_news!=null ? itemnews.time_update_news : "N/A"}</p>
+                       
                     </div>
                  
                     <div className="footer-approve row">

@@ -1,15 +1,14 @@
 
 import { useParams } from "react-router";
 
-import { NewsInfo } from "./NewsInfo";
+import { ReadingNews } from "./ReadingNews";
 import { useNewsFetch } from "../../fetch/NewsFetch";
 export const News=()=>{
-    const {NewsId} = useParams();
-    
+    const {NewsId} = useParams();   
     console.log(NewsId);
     return(
         <>
-        <NewsInfo />
+        <ReadingNews Newsid={NewsId} />
         </>
     )
 }

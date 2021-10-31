@@ -16,4 +16,17 @@ export const Image = styled.img`
     
 `;
 
-export const Content = styled.div``;
+export const Content = styled.div`
+
+    .readmore{
+        font-size: 17px;
+        font-weight: 500;
+        color: red;
+        margin-left:5px;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+    }
+`;

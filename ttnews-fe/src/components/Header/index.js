@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Wrapper, NavBar, User, News } from "./Header.styles";
 //image
 import UserIcon from '../../image/non_user_icon.png';
 import { Link } from "react-router-dom";
-
+import { useTopicFetch } from "../../fetch/TopicFetch";
 
 
 export const Header =(props)=>{
     
+    const {state, error} = useTopicFetch();
+    console.log(state);
+    if(error){
+        return(
+            <>
+                something wrong with Topic fetch
+            </>
+        )
+    }
     let button;
     const handleLogout=()=>{
         localStorage.clear();
@@ -17,16 +26,17 @@ export const Header =(props)=>{
     //console.log(props.user);
     button = (<Link to="/login"><button>Login</button></Link>);
     if(props.user==null)
-     button = (<Link to="/login"><button>Login</button></Link>)
+        button = (<Link to="/login"><button>Login</button></Link>)
     else{
-     button = (<>
-     <Link to="/"><button onClick={handleLogout}>Logout</button></Link><div>
-         <Link to='/profile'>
-             <User src={UserIcon} />
-         </Link>
-     </div></>
-     )    
+        button = (<>
+        <Link to="/"><button onClick={handleLogout}>Logout</button></Link><div>
+            <Link to='/profile'>
+                <User src={UserIcon} />
+            </Link>
+        </div></>
+        )    
     }
+    if(state!=null)
     return(
         <>
         
@@ -38,13 +48,18 @@ export const Header =(props)=>{
             </Link>
             <NavBar>
                 <ul>
-                    <li>Xã hội</li>
+                    {state.topics.map(topic=>{
+                        return(
+                            <li>{topic.topicname}</li>
+                        )
+                    })}
+                    {/* <li>Xã hội</li>
                     <li>Sức khỏe</li>
                     <li>Giải trí</li>
                     <li>Công nghệ</li>
                     <li>Du lịch</li>
                     <li>Ẩm thực</li>
-                    <li>Đời sống</li>
+                    <li>Đời sống</li> */}
                 </ul>
             </NavBar>
             <div className="user-option">

@@ -17,8 +17,6 @@ export const DetailNews =()=>{
     const [topic,setTopic] = useState({});
     const [subtopic,setSubtopic] = useState({});
     const {Newsid} = useParams();
-    const url = process.env.REACT_APP_URL_IMAGE_NEWS;
-    console.log(url);
 
     const fetchNews = async()=>{
         try{
@@ -61,30 +59,75 @@ export const DetailNews =()=>{
                 const descriptions = itemnews.descriptions;
                 const content = itemnews.content;
                 const status = "approved";
-                const topic = itemnews.topic
+                const topic = itemnews.topic!=null ?{
+                    id:itemnews.topic.id,
+                    topicname:itemnews.topic.topicname
+                } : null;
+                const time_update_news = itemnews.time_update_news;
+                const imageName = itemnews.imageName;
                 const subtopic = itemnews.subtopic;
                 const author = itemnews.author;
-                const dataPost ={id,title, descriptions, content, topic,subtopic,author, status};
+                const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
                 var datajson = JSON.stringify(dataPost);
                 console.log(datajson);
-                // await fetch(`https://localhost:44387/api/News/${id}`,{
-                //     method:'PUT',
-                //     headers:{
-                //         'Content-Type':'application/json',
-                //         'accept': '*/*'  
-                //     },
-                //     body:datajson
-                //     }
-                //     ).then(
-                //         setApprove(true)
-                //     )
+                await fetch(`https://localhost:44387/api/News/${id}`,{
+                    method:'PUT',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'accept': '*/*'  
+                    },
+                    body:datajson
+                    }
+                    ).then(
+                        setRedirect(true)
+                    )
                     
-                //     .catch(err => console.log(err))
+                    .catch(err => console.log(err))
             }
                   
         }
     }  
-
+    const Decline=async(e)=>{
+        if(state.news!=null){
+            state.news.map(async(itemnews)=>{
+             if(itemnews.id==e.target.value){
+                 const id = itemnews.id;
+                 const title = itemnews.title;
+                 const descriptions = itemnews.descriptions;
+                 const content = itemnews.content;
+                 const status = "declined";
+                 const topic = itemnews.topic!=null ?{
+                     id:itemnews.topic.id,
+                     topicname:itemnews.topic.topicname
+                 } : null;
+                 const time_update_news = itemnews.time_update_news;
+                 const imageName = itemnews.imageName;
+                 const subtopic = itemnews.subtopic;
+                 const author = itemnews.author;
+                 const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
+                 var datajson = JSON.stringify(dataPost);
+                 console.log(datajson);
+                 await fetch(`https://localhost:44387/api/News/${id}`,{
+                     method:'PUT',
+                     headers:{
+                         'Content-Type':'application/json',
+                         'accept': '*/*'  
+                     },
+                     body:datajson
+                     }
+                     ).then(
+                         setRedirect(true)
+                     )
+                     
+                     .catch(err => console.log(err))
+             }
+            })        
+         }
+     
+    }
+    if(redirect){
+        return <Redirect  to="/admin"/>
+    }
 
 
     if(error){
@@ -107,26 +150,29 @@ export const DetailNews =()=>{
         <Container> 
             <Wrapper>
                 <Content>
+                    <div className="topic">
+                        <h4 className="topicname">Chủ đề: {topic.topicname}<span> <i className="fas fa-chevron-right icon"></i></span> <span>{subtopic.subtopicname}</span></h4>
+                    </div>
                     <div className="title-news">
-                        <h1>{state.news.title}</h1>    
+                        <p>{state.news.title}</p>    
                     </div>
                     <div className="info-author">
                         <p className="name-author">Written by: {author.fullname}</p>
                         <i>ID author: {author.id}</i>
                     </div>
-                    <div className="topic">
-                        <h4>{topic.topicname}<span> <i classNam="fas fa-chevron-right icon"></i></span> <span>{subtopic.subtopicname}</span></h4>
-                    </div>
+                    
                     <div className="description-news">
                         <p>{state.news.descriptions}</p>
                     </div>
                     <div className="img-news">
                         
-                       <img src={require("D://Project//NienLuan//NewsProject//NewsWebsite//ttnews-fe//src//image//tempImg.jpg").default} /> 
+                       <img src={state.news.imageName}/> 
                     </div>
-                    <div>
+                    <div className="content">
                         <p dangerouslySetInnerHTML={{__html:state.news.content}}></p>
+                        
                     </div>
+                    
                     <div className="footer-approve">
                         <button className="no"><i className="fas fa-times icon"></i>Decline</button>
                         <button className="yes"value={state.news.id} onClick={Approve}><i className="fas fa-check icon"></i>Approve</button>    

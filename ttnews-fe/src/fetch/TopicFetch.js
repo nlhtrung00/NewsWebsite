@@ -15,7 +15,7 @@ export const useTopicFetch=()=>{
             setError(false);
             setLoading(true);
             const topics = await apiSettings.fetchTopics();
-            console.log(topics);
+           // console.log(topics);
             setState(() => ({
                 topics: topics,
             }));
