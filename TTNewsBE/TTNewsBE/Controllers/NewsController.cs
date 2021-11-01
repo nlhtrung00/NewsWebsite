@@ -92,30 +92,33 @@ namespace TTNewsBE.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromForm] News news)
         {
-            if (news.Image.Length > 0)
+            if (news.Image != null)
             {
-                try
+
+
+                if (news.Image.Length > 0)
                 {
-                    if(!Directory.Exists(_webHostEnvironment.WebRootPath + "\\Images\\"))
+                    try
                     {
-                        Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\Images\\");
+                        if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\Images\\"))
+                        {
+                            Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\Images\\");
+                        }
+                        using (FileStream fileStream = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\Images\\" + news.Image.FileName))
+                        {
+                            news.Image.CopyTo(fileStream);
+                            fileStream.Flush();
+                        }
+                        news.ImageName = news.Image.FileName;
+                        news.Image = null;
                     }
-                    using (FileStream fileStream = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\Images\\" + news.Image.FileName))
+                    catch (Exception ex)
                     {
-                        news.Image.CopyTo(fileStream);
-                        fileStream.Flush();
+                        return BadRequest(ex);
                     }
-                    news.ImageName = news.Image.FileName;
-                    news.Image = null;
-                    await _newsService.CreateAsync(news);
-                }catch (Exception ex)
-                {
-                    return BadRequest(ex);
                 }
-            }else
-            {
-                return BadRequest();
             }
+            await _newsService.CreateAsync(news);
             return Ok(news);
         }
 

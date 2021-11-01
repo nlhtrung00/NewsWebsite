@@ -19,6 +19,7 @@ namespace TTNewsBE.Models
         public string Descriptions { get; set; }
         public string Content { get; set; }
         public DateTime Time_update_news { get; set; }
+        [BsonIgnore]
         public IFormFile Image { get; set; }
         public string ImageName { get; set; }
         public Topic Topic { get; set; }
