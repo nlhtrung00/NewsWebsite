@@ -37,5 +37,6 @@ const apiSettings = {
         const endpoint = `https://localhost:44387/api/News/GetByStatus/${status}`;
         return await ( await fetch(endpoint)).json();
     }
+    
 };
 export default apiSettings;

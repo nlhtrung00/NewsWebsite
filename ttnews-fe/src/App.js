@@ -10,6 +10,8 @@ import CreateTopics from './components/Users/CreateTopics';
 import { HomeAdmin } from './components/Admin/Home';
 import { Login } from './components/Login/Login';
 import { DetailNews } from './components/Admin/ViewDetailNews';
+import { Topicpage } from './components/Topicpage';
+import {Subtopicpage} from './components/Subtopicpage';
 
 const App =() => {
  
@@ -26,6 +28,8 @@ const App =() => {
         <Route path="/profile/Themchude" component={CreateTopics} />
         <Route exact path='/admin' component={HomeAdmin} />
         <Route path='/admin/news/viewdetail/:Newsid' component={DetailNews} />
+        <Route path='/topic/:Topicid' component={Topicpage} />
+        <Route path='/subtopic/:subtopicid' component={Subtopicpage} />
       </Switch> 
       <GlobalStyles />
     </Router>

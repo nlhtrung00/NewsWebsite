@@ -7,7 +7,7 @@ export const News =({news,clickable})=>{
     const topic = news.topic;
     const author = news.author;
     const subtopic = news.subtopic;
-    console.log(news);
+    
     return(
         <Wrapper>
             <Image src={news.imageName} alt="temp"/>
