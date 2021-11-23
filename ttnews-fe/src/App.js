@@ -11,6 +11,9 @@ import { HomeAdmin } from './components/Admin/Home';
 import { Login } from './components/Login/Login';
 import { DetailNews } from './components/Admin/ViewDetailNews';
 import { DetailDeclineNews } from './components/Admin/ViewDetailDeclineNews';
+import { Topicpage } from './components/Topicpage';
+import {Subtopicpage} from './components/Subtopicpage';
+
 const App =() => {
  
   return(
@@ -28,6 +31,8 @@ const App =() => {
         <Route path='/admin/news/viewdetail/:Newsid' component={DetailNews} />
         <Route path='/admin/news/viewdetaildecline/:Newsid' component={DetailDeclineNews} />
 
+        <Route path='/topic/:Topicid' component={Topicpage} />
+        <Route path='/subtopic/:subtopicid' component={Subtopicpage} />
       </Switch> 
       <GlobalStyles />
     </Router>

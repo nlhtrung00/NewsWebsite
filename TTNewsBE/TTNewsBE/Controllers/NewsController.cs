@@ -136,7 +136,7 @@ namespace TTNewsBE.Controllers
 
 
                             var uploadResult = await cloudinary.UploadAsync(imageUploadParams);
-                            string result = uploadResult.SecureUri.AbsoluteUri;
+                            string result = uploadResult.SecureUrl.AbsoluteUri;
                             news.ImageName = result;
                             await _newsService.CreateAsync(news);
 

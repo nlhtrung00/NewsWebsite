@@ -1,15 +1,40 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { Wrapper, NavBar, User, News } from "./Header.styles";
 //image
 import UserIcon from '../../image/non_user_icon.png';
 import { Link } from "react-router-dom";
 import { useTopicFetch } from "../../fetch/TopicFetch";
+import apiSettings from "../../API";
 
 
+const initialState ={
+    list:[],
+ }
 export const Header =(props)=>{
     
     const {state, error} = useTopicFetch();
-    console.log(state);
+    const [subtopics, setSubtopics] = useState(initialState);
+    const [errorFetch, setError] = useState(false);
+    const fetchsubTopics = async()=>{
+        try{       
+            setError(false);   
+            const subtopics = await apiSettings.fetchSubtopicByStatus('approved');
+            setSubtopics(() => ({
+                list:subtopics,
+            }));
+        }
+        catch(error){
+            setError(true);
+        }
+        
+    }
+
+    useEffect(()=>{
+        setSubtopics(initialState);
+        fetchsubTopics();
+    },[])
+
+
     if(error){
         return(
             <>
@@ -47,13 +72,32 @@ export const Header =(props)=>{
             </News>
             </Link>
             <NavBar>
-                <ul>
+                <ul className="topic-list">
                     {state.topics.map(topic=>{
                         return(
-                            <li key={topic.id}>{topic.topicname}</li>
+                            <Link to={`/topic/${topic.id}`}>
+                            <li key={topic.id} className="topic-item">{topic.topicname}
+                                <ul className="subtopic-list">
+                                    {subtopics.list!=null&&subtopics.list.map(subtopic=>{
+                                        
+                                        if(subtopic.topic.id===topic.id)
+                                        return(
+                                            
+                                            <li className="subtopic-item" key={subtopic.id}>
+                                                <Link to={`/subtopic/${subtopic.id}`}>
+                                                {subtopic.subtopicname}
+                                                </Link>
+                                            </li>
+                                         
+                                        )
+                                    })}           
+                                </ul>
+                            
+                            </li>
+                            </Link>
                         )
                     })}
-                   
+            
                 </ul>
             </NavBar>
             <div className="user-option">

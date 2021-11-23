@@ -20,21 +20,52 @@ export const Wrapper = styled.div`
 export const NavBar = styled.div`
     ul{
         list-style-type: none;
+        padding: 0;
+    }
+    .topic-list{
+        list-style-type: none;
         margin: 0 auto;
         padding: 0;
+        position: relative;
         
     }
-    li{
+    .topic-item{
         min-width: 130px;
         text-align: center;
         float: left;
         padding: 20px;
         font-size: var(--fontMed);
         cursor: pointer;
+        position: relative;
         
     }
-    li:hover{
+    .topic-item:hover{
         background-color: #48b8a9;
+    }
+    .subtopic-item:hover{
+        background-color: #444444;
+        color: white;
+    }
+    .subtopic-item:hover a{
+        color: white;
+    }
+    
+    .subtopic-list{
+        position: absolute;
+        background-color: #f0f0f0;
+        top: 100%;
+        min-width: 100px;
+        right: 0;
+        display: none;
+
+    }
+    .topic-item:hover >.subtopic-list{
+        display: block;
+    }
+    .subtopic-item{
+        padding: 8px 10px 8px;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        
     }
     
  
