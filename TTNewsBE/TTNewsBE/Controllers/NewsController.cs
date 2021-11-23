@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TTNewsBE.Models;
 using TTNewsBE.Services;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace TTNewsBE.Controllers
 {
@@ -60,15 +62,19 @@ namespace TTNewsBE.Controllers
         [HttpGet("GetByTopic/{id}")]
         public async Task<ActionResult<IEnumerable<News>>> GetByTopic(string id)
         {
-            var news = await _newsService.GetByTopicAsync(id);
-            return Ok(news);
+            var articles = await _newsService.GetByTopicAsync(id);
+            if (articles == null)
+            {
+                return NotFound();
+            }
+            return Ok(new { articles });
         }
 
         [HttpGet("GetByStatus/{status}")]
         public async Task<ActionResult<IEnumerable<News>>> GetByStatus(string status)
         {
-            var news = await _newsService.GetByStatusAsync(status);
-            return Ok(news);
+            var articles = await _newsService.GetByStatusAsync(status);
+            return Ok(new { articles });
         }
 
 
@@ -92,10 +98,8 @@ namespace TTNewsBE.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromForm] News news)
         {
-            if (news.Image != null)
+            if(news.Image!=null)
             {
-
-
                 if (news.Image.Length > 0)
                 {
                     try
@@ -104,12 +108,40 @@ namespace TTNewsBE.Controllers
                         {
                             Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\Images\\");
                         }
+                        
                         using (FileStream fileStream = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\Images\\" + news.Image.FileName))
                         {
                             news.Image.CopyTo(fileStream);
+                        
                             fileStream.Flush();
+                            
                         }
-                        news.ImageName = news.Image.FileName;
+                        
+                        using (Stream s = news.Image.OpenReadStream())
+                        {
+                            var cloudinary = new CloudinaryDotNet.Cloudinary(new Account
+                            {
+                                ApiKey = Credientials.ApiKey,
+                                ApiSecret = Credientials.ApiSecret,
+                                Cloud = Credientials.Cloudname
+
+                            });
+                            cloudinary.Api.Secure = true;
+
+                            var imageUploadParams = new ImageUploadParams()
+                            {
+
+                                File = new FileDescription(news.Image.FileName, s),
+                            };
+
+
+                            var uploadResult = await cloudinary.UploadAsync(imageUploadParams);
+                            string result = uploadResult.SecureUri.AbsoluteUri;
+                            news.ImageName = result;
+                            await _newsService.CreateAsync(news);
+
+                        };
+                        
                         news.Image = null;
                     }
                     catch (Exception ex)
@@ -118,7 +150,10 @@ namespace TTNewsBE.Controllers
                     }
                 }
             }
-            await _newsService.CreateAsync(news);
+            else
+            {
+                await _newsService.CreateAsync(news);
+            }
             return Ok(news);
         }
 

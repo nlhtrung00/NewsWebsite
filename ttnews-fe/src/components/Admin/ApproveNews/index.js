@@ -1,20 +1,152 @@
-import { Wrapper,Content } from "./ApproveNews.styles";
-import TempApproveImg from '../../../image/temp_approve.jpg';
-const ApproveNews=()=>{
+import { Wrapper,Content,Container } from "./ApproveNews.styles";
+//import TempApproveImg from '../../../image/temp_approve.jpg';
+import apiSettings from "../../../API";
+import { useState,useEffect } from "react/cjs/react.development";
+import { Link } from "react-router-dom";
+
+const initialState ={
+    articles:[],
+ }
+const ApproveNews=({statusApprove})=>{
+    const[state,setState] = useState(initialState);
+    const[approve,setApprove] = useState(false);
+    const [error,setError] = useState(false);
+    const fetchNews = async()=>{
+        try{
+            setError(false);          
+            const news = await apiSettings.fetchNewsByStatus(statusApprove);
+            console.log(news);
+            setState(() => ({
+                articles: [...news.articles]
+            }));
+        }
+        catch(error){
+            setError(true);
+        }
+        setApprove(false);
+    }
+    useEffect(()=>{
+        setState(initialState);
+        fetchNews();
+    },[approve])
+
+
+    const Approve =async(e)=>{
+        console.log(e.target.value);
+        if(state.articles!=null){
+           state.articles.map(async(itemnews)=>{
+            if(itemnews.id===e.target.value){
+                const id = itemnews.id;
+                const title = itemnews.title;
+                const descriptions = itemnews.descriptions;
+                const content = itemnews.content;
+                const status = "approved";
+                const topic = itemnews.topic!=null ?{
+                    id:itemnews.topic.id,
+                    topicname:itemnews.topic.topicname
+                } : null;
+                const time_update_news = itemnews.time_update_news;
+                const imageName = itemnews.imageName;
+                const subtopic = itemnews.subtopic;
+                const author = itemnews.author;
+                const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
+                var datajson = JSON.stringify(dataPost);
+                console.log(datajson);
+                await fetch(`https://localhost:44387/api/News/${id}`,{
+                    method:'PUT',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'accept': '*/*'  
+                    },
+                    body:datajson
+                    }
+                    ).then(
+                        setApprove(true)
+                    )
+                    
+                    .catch(err => console.log(err))
+            }
+           })        
+        }
+    } 
+    
+    
+    const Decline =async(e)=>{
+        console.log(e.target.value);
+        if(state.articles!=null){
+           state.articles.map(async(itemnews)=>{
+            if(itemnews.id===e.target.value){
+                const id = itemnews.id;
+                const title = itemnews.title;
+                const descriptions = itemnews.descriptions;
+                const content = itemnews.content;
+                const status = "declined";
+                const topic = itemnews.topic!=null ?{
+                    id:itemnews.topic.id,
+                    topicname:itemnews.topic.topicname
+                } : null;
+                const time_update_news = itemnews.time_update_news;
+                const imageName = itemnews.imageName;
+                const subtopic = itemnews.subtopic;
+                const author = itemnews.author;
+                const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
+                var datajson = JSON.stringify(dataPost);
+                console.log(datajson);
+                await fetch(`https://localhost:44387/api/News/${id}`,{
+                    method:'PUT',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'accept': '*/*'  
+                    },
+                    body:datajson
+                    }
+                    ).then(
+                        setApprove(true)
+                    )
+                    
+                    .catch(err => console.log(err))
+            }
+           })        
+        }
+    }  
+    if(state.articles==null){
+        return (
+            <h2>Empty </h2>
+        )
+    }
+    else if(state.articles!=null)
     return(
         <>
-            <Wrapper>
+        <Container>
+        {state.articles!=null&&state.articles.map(itemnews =>{
+            return(
+                <Wrapper key={itemnews.id}>
                 <Content>
-                    <h2>ApproveNews</h2>
-                    <img className="img" src={TempApproveImg} alt="tempimg"/>
-                    <hr/>
+                    <div className="header-approve">
+                        <div className="title-news">
+                            <h3>Tiêu đề: {itemnews.title}</h3>
+                            <p>Nhóm chủ đề: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
+                            <p>Chủ đề: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
+                            <Link to={`/admin/news/viewdetail/${itemnews.id}`}>
+                                <button className="btn-detail">Xem chi tiết</button>
+                            </Link>
+                            
+                        </div>                    
+                        <p>Sửa đổi lần cuối: {itemnews.time_update_news!=null ? itemnews.time_update_news : "N/A"}</p>
+                       
+                    </div>
+                 
                     <div className="footer-approve row">
-                        <button className="no"><i class="fas fa-times icon"></i>Decline</button>
-                        <button className="yes"><i class="fas fa-check icon"></i>Approve</button>    
+                        <button className="no"value={itemnews.id} onClick={Decline}><i className="fas fa-times icon"></i>Hủy</button>
+                        <button className="yes"value={itemnews.id} onClick={Approve}><i className="fas fa-check icon"></i>Duyệt</button>    
                     </div>
                     
                 </Content>
-            </Wrapper>
+                </Wrapper>
+                )
+            
+        })}
+        </Container>
         </>
     )
 };

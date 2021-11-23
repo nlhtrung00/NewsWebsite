@@ -6,12 +6,12 @@ import { useHomeFetch } from "../../../fetch/HomeFetch";
 import { News } from "../Newsdemo";
 import { Header } from "../../Header";
 //image temp 
-import TempImg from "../../../image/tempImg.jpg"
-import { useState } from "react/cjs/react.development";
+// import TempImg from "../../../image/tempImg.jpg"
+// import { useState } from "react/cjs/react.development";
 
 
 const Home = () => {
-    const {state, loading, error} = useHomeFetch();
+    const {state, error} = useHomeFetch();
     let iduser;
     iduser = localStorage.getItem('iduser');
     //console.log('home'+user);

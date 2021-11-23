@@ -53,7 +53,6 @@ export const Content=styled.div`
         font-size: 17px;
         cursor: pointer;
         color:white;
-        width: 83px;
     }
     .yes:hover{
         background-color: #08b708;

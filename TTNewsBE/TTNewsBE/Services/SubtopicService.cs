@@ -41,6 +41,7 @@ namespace TTNewsBE.Services
         {
             await _subtopic.ReplaceOneAsync(s => s.Id == id, subtopic);
         }
+        
         public async Task DeleteAsync(string id)
         {
             await _subtopic.DeleteOneAsync(s => s.Id == id);

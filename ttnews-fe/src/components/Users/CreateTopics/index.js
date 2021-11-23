@@ -50,6 +50,9 @@ const CreateTopics=()=>{
         
         
     }
+    const handleExit=()=>(
+        setRedirect(true)
+    );
     if(redirect){
         return <Redirect to="/profile" />
     }
@@ -73,11 +76,10 @@ const CreateTopics=()=>{
                         <div className="row-item-input">
                             <label htmlFor="topic"className="col-1" >Thuộc nhóm chủ đề</label>
                             <select name="topic" className="col-2" onChange={handleChangeTopic} >
-                               
+                            <option value="">Chọn chủ đề...</option>
                                 {state.topics.map(topic => {
                                     
                                     return(
-                                        
                                         <option value={topic.id} key={topic.id}>
                                         {topic.topicname}
                                         </option>
@@ -92,7 +94,7 @@ const CreateTopics=()=>{
                         
                         <div className="row confirm-form">
                             
-                            <button className="btn btn-cancel">Trở về</button> 
+                            <button className="btn btn-cancel" onClick={handleExit}>Trở về</button> 
                             <button className="btn btn-register" onClick={handleSubmit}>Đăng ký chủ đề</button>  
                         </div>
                         

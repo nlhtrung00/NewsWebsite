@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper=styled.div`
-    height: 100%;
+    height: 90vh;
     width: 400px;
     background-color: #fddb9f96;
     border-radius: 20px;
@@ -37,4 +37,5 @@ export const Wrapper=styled.div`
         border-bottom: 2px solid black;
         
     }
+    
 `

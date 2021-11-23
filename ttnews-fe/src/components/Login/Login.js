@@ -32,11 +32,11 @@ export const Login=()=>{
             console.log(err);
         });
     }
-    if(role=='user' && LoggedIn){
+    if(role==='user' && LoggedIn){
         return <Redirect to= {< Home/>} />
         
     }
-    else if(role=='admin' && LoggedIn){
+    else if(role==='admin' && LoggedIn){
         return <Redirect to ='/admin'/>
     } 
     

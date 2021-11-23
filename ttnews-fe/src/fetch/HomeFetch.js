@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 //API 
 import apiSettings from "../API";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ export const useHomeFetch=()=>{
         try{
             setError(false);
             setLoading(true);
-            const News = await apiSettings.fetchTopNews();
+            const News = await apiSettings.fetchNewsByStatus('approved');
             console.log(News);
             
             setState(prev => ({

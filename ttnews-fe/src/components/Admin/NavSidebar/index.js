@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Wrapper } from "./NavSidebar.styles"
 import logoAdmin from "../../../image/adminlogo.png"
 export const NavSidebar=({setOption})=>{
@@ -13,7 +13,7 @@ export const NavSidebar=({setOption})=>{
         <Wrapper>
             <div className="row">
                 <div className="logo-wrapper">
-                    <img src={logoAdmin} className="logo"/>
+                    <img src={logoAdmin} className="logo" alt="logo"/>
                 </div>
                 <h1>Administrator</h1>
             </div>

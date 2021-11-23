@@ -1,10 +1,11 @@
-import {useState,useRef, useEffect} from "react";
+import {useState,useRef} from "react";
 import JoditEditor from "jodit-react";
 import { Wrapper,Content } from "./CreateNews.styles";
 import {Link} from 'react-router-dom';
 import {useTopicFetch} from '../../../fetch/TopicFetch'
 import { useUserFetch } from "../../../fetch/UserFetch";
 import { Header } from "../../Header";
+import { Redirect } from "react-router-dom";
 const CreateNews=()=>{
     
 
@@ -13,35 +14,35 @@ const CreateNews=()=>{
     const [subTopics, setSubtopics] = useState();
     const [subtopic, setSuctopic] =useState();
     const [topic,setTopic] = useState();
-    const [content, setContent] = useState("");
-    const [author, setAuthor] = useState();
-    const {user} = useUserFetch(localStorage.getItem('iduser'));
+    const [author, setAuthor] = useState(); 
+    const [uploadFile, setUploadFile] = useState();
+    const [redirect, setRedirect] = useState(false);
     const [formnews, setFormNews] = useState({
         title:'',
         descriptions:'',
-        image:'',
         content:'',
         time_update_news: ""
-    })
+    })  
 
     
+    const {user} = useUserFetch(localStorage.getItem('iduser'));   
     const editor = useRef(null);
     var date = new Date();
     var today = date.getFullYear() +"-"+(date.getMonth()+1)+"-"+date.getDate();
+    if(redirect){
+        return <Redirect to="/profile" />
+    }
     
-
-    useEffect(()=>{
-        setContent()
-    },[]);
+    
     const config ={
         readonly: false
     }
     const handleBlur=()=>{
-        setContent(editor.current.value);
         setFormNews(prev=>({
             ...prev,
             content:editor.current.value
         }))
+        
     }
     const onHandleChange=(e)=>{
         const {name, value} = e.currentTarget
@@ -59,7 +60,11 @@ const CreateNews=()=>{
             ...topicFetch
         }));
         const subtopicFetch = await (await fetch(`https://localhost:44387/api/Subtopics/Topic/${topicid}`)).json();
-        setSubtopics(subtopicFetch);
+        let subtopic = [];
+        for(const element of subtopicFetch){
+            if (element.status === 'approved') subtopic.push(element);
+        }
+        setSubtopics(subtopic);
         setAuthor(user.User);
     }
     const handleChangeSubtopic=async(e)=>{
@@ -70,52 +75,45 @@ const CreateNews=()=>{
         }));
     }
 
-    
-    
-                                    
-    
-
     const handleSubmit=async(e)=>{
         e.preventDefault();
         setIsPending(true);   
-        
-        formnews.time_update_news = today;
-        const title = formnews.title;
-        const description = formnews.descriptions;
-        const content = formnews.content;
-        const time_update = today;
-
-        const data = {
-            title,
-            description,
-            content,
-            time_update,
-            topic,
-            subtopic,
-            author
-        };
-        console.log(JSON.stringify(data))
+        let dataArray = new FormData();
+        dataArray.append('title',formnews.title);
+        dataArray.append('descriptions',formnews.descriptions);
+        dataArray.append('content',formnews.content);
+        dataArray.append('time_update_news',today);
+        dataArray.append('topic.id',topic.id);
+        dataArray.append('topic.topicname',topic.topicname);
+        dataArray.append('subtopic.id',subtopic.id);
+        dataArray.append('subtopic.subtopicname',subtopic.subtopicname);
+        dataArray.append('subtopic.topic.id',subtopic.topic.id);
+        dataArray.append('subtopic.topic.name',subtopic.topic.topicname);
+        dataArray.append('subtopic.status',subtopic.status);
+        dataArray.append('author.id',author.id);
+        dataArray.append('author.fullname',author.fullname);
+        dataArray.append('author.dateofbirth',author.dateofbirth);
+        dataArray.append('author.role',author.role);
+        dataArray.append('image',uploadFile);
+       
+        // console.log(dataArray.get('image'));
         const response = await fetch('https://localhost:44387/api/News',{
             method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'Accept': 'application/json'
-                
-            },
-            body:JSON.stringify(data)
+            // headers:{
+            //     'Content-Type': 'multipart/form-data',              
+            // },
+            body:dataArray
         }).then((res)=>{
-            console.log(res.json());
+            // console.log(res.json());
+            setRedirect(true);
+            alert('Thêm thành công')
         }).catch(err=>{
-            console.log(err);
+            // console.log(err);
         })
         setIsPending(false);
-        
-        
-    
-        
-        
-        
+   
     }
+    
 
     return(
     <>
@@ -166,7 +164,7 @@ const CreateNews=()=>{
                     </div>
                     <div className="row-item-input">
                         <label htmlFor="image"className="col-1">Ảnh bài viết</label>
-                        <input type="file" name="image" id="imgnews"className="col-2"/>
+                        <input type="file" name="image" id="imgnews"className="col-2" onChange={(e)=>setUploadFile(e.target.files[0])}/>
                     </div>
                     <div className="row-item-input">
                         <label htmlFor="content"className="col-1">Nội dung bài viết</label>
