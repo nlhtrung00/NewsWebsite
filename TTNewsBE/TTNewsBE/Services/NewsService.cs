@@ -19,7 +19,8 @@ namespace TTNewsBE.Services
         }
         public async Task<List<News>> GetAllAsync()
         {
-            return await _news.Find(n => true).ToListAsync();
+            
+            return await _news.Find(n => true).SortByDescending(n => n.Time_update_news).ToListAsync();
         }
         public async Task<News> GetByIdAsync(string id)
         {
