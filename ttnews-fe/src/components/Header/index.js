@@ -49,7 +49,7 @@ export const Header =(props)=>{
         button = (<Link to="/login"><button>Login</button></Link>);
     }
     //console.log(props.user);
-    button = (<Link to="/login"><button>Login</button></Link>);
+    // button = (<Link to="/login"><button>Login</button></Link>);
     if(props.user==null)
         button = (<Link to="/login"><button>Login</button></Link>)
     else{
@@ -75,8 +75,12 @@ export const Header =(props)=>{
                 <ul className="topic-list">
                     {state.topics.map(topic=>{
                         return(
-                            <Link to={`/topic/${topic.id}`}>
-                            <li key={topic.id} className="topic-item">{topic.topicname}
+                            
+                            <li  className="topic-item" key={topic.id}>
+                                <Link to={`/topic/${topic.id}`} key={topic.id}>
+                                    {topic.topicname}
+                                </Link>
+                                
                                 <ul className="subtopic-list">
                                     {subtopics.list!=null&&subtopics.list.map(subtopic=>{
                                         
@@ -92,9 +96,9 @@ export const Header =(props)=>{
                                         )
                                     })}           
                                 </ul>
-                            
+                                
                             </li>
-                            </Link>
+                            
                         )
                     })}
             

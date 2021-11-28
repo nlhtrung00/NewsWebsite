@@ -1,9 +1,9 @@
 import React from "react";
 //components
 import { Container,Content } from "./Home.styles";
-import Newest from "../NewestNews";
 import { useHomeFetch } from "../../../fetch/HomeFetch";
-import { News } from "../Newsdemo";
+import GroupNews from "../../GroupNews";
+import { NewsThumb } from "../../NewsThumb";
 import { Header } from "../../Header";
 //image temp 
 // import TempImg from "../../../image/tempImg.jpg"
@@ -25,23 +25,17 @@ const Home = () => {
         <Header user={iduser} /> 
         <Container>
             <Content>
-                <Newest header='Tin mới nhất'>
+                <GroupNews header='Tin mới nhất'>
                     { 
                         state.articles.map(news =>(
-                            <News
+                            <NewsThumb
                             key = {news.id}
-                            // title = {news.title}
-                            // description ={news.descriptions}
                             news = {news}
-                            // author ={news.author}
-                            // topic = {news.topic}
-                            // image = {TempImg}
-                            // timeCreate = {news.time_update_news}
                             clickable
                             />   
                     ))}
                     
-                </Newest>
+                </GroupNews>
             </Content>    
         </Container>
         </>

@@ -1,12 +1,12 @@
 import React from "react";
 import { Wrapper, Content } from "./Newest.styles";
 
-const Newest=({header,children})=>(
+const GroupNews=({header,children})=>(
     <Wrapper>
-        <h2>{header}</h2>
+        <h1>{header}</h1>
         <Content>
             {children}
         </Content>
     </Wrapper>
 );
-export default Newest
+export default GroupNews

@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
     display: flex;  
-    margin: 20px 0 20px 0;
+    margin: 30px auto 30px ;
     background-color: #f2f5f0;
-    
-    
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow:1px 1px 1px 1px rgba(0,0,0,0.2);
+    width: 95%;
 `;
 
 export const Image = styled.img`
@@ -17,6 +19,13 @@ export const Image = styled.img`
 `;
 
 export const Content = styled.div`
+    p{
+        font-size: 18px;
+    }
+    .title{
+        font-size: 22px;
+        font-weight: 600;
+    }
 
     .readmore{
         font-size: 17px;

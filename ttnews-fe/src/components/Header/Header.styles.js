@@ -57,6 +57,7 @@ export const NavBar = styled.div`
         min-width: 100px;
         right: 0;
         display: none;
+        z-index:10;
 
     }
     .topic-item:hover >.subtopic-list{
