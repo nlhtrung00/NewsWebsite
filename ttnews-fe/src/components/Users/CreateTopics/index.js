@@ -42,7 +42,7 @@ const CreateTopics=()=>{
         ).then((res)=>{
             console.log(res.json());
             setRedirect(true);
-            alert('Thêm thành công')
+            alert('Đăng ký chủ đề thành công!')
 
         }).catch(err => console.log(err))
     

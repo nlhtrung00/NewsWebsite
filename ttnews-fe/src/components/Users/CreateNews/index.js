@@ -106,7 +106,7 @@ const CreateNews=()=>{
         }).then((res)=>{
             // console.log(res.json());
             setRedirect(true);
-            alert('Thêm thành công')
+            alert('Tạo tin thành công!')
         }).catch(err=>{
             // console.log(err);
         })
