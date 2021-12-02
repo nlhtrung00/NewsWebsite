@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Wrapper=styled.div`
     width: 100%;
     height: 700px;
-    background-color: #3c99b2;
+    background-color: white;
     border-radius: 20px;
     margin-left: 20px;
     box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.3);
@@ -13,7 +13,7 @@ export const Wrapper=styled.div`
 export const NavTop=styled.div`
     width: 100%;
     height: 50px;
-    background-color: #f9f9f9;
+    background-color: #fda779;
     border-radius: 19px 19px 0 0;
     position: relative;
 
@@ -33,4 +33,9 @@ export const Content=styled.div`
     overflow: scroll;
     padding: 20px;
     
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 `

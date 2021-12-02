@@ -18,13 +18,12 @@ const Profile =() =>{
         history.replace('/login');
        return <Login/>
     }
-    console.log(user.User);
-    let userfullname='NA', userdateofbirth='NA';
-    if(user.User != null){
-        userfullname = user.User.fullname;
-        userdateofbirth = user.User.dateofbirth;
+    let userfullname = "NA", userdateofbirth ="NA";
+    if(user!=null){
+        userfullname = user.fullname;
+        userdateofbirth = user.dateofbirth;
     }
-    
+    console.log(user);
     return(
         <>
         <Header user={iduser} /> 
@@ -34,8 +33,8 @@ const Profile =() =>{
                     <div className="avatar"><img src={avatar} alt="avt"/></div>
                     
                     <div className="info">
-                        <h2>{userfullname}</h2>
-                        <p>{userdateofbirth}</p>
+                        <h2>{userfullname!=null && userfullname}</h2>
+                        <p>{userdateofbirth!=null && userdateofbirth}</p>
                     </div>
                 </div>
                 <div className="row-flex container-img_function">

@@ -1,8 +1,8 @@
-import { Wrapper,Content,Container } from "./DeclinedNews.styles";
+import { EmptyContainer,Wrapper,Content,Container } from "./DeclinedNews.styles";
 import apiSettings from "../../../API";
 import { useState,useEffect } from "react/cjs/react.development";
 import { Link } from "react-router-dom";
-
+import NoneofWork from "../../../image/background/Checklist.jpg";
 const initialState ={
     articles:[],
  }
@@ -10,14 +10,19 @@ const DeclinedNews=({statusApprove})=>{
     const[state,setState] = useState(initialState);
     const[approve,setApprove] = useState(false);
     const [error,setError] = useState(false);
+    const [empty, setEmpty] = useState(false);
     const fetchNews = async()=>{
         try{
             setError(false);          
             const news = await apiSettings.fetchNewsByStatus(statusApprove);
-            console.log(news);
+            
             setState(() => ({
                 articles: [...news.articles]
             }));
+            console.log(news.articles.length==0)
+            if(news.articles.length==0){
+                setEmpty(true);
+            }
         }
         catch(error){
             setError(true);
@@ -30,9 +35,15 @@ const DeclinedNews=({statusApprove})=>{
     },[approve])
 
 
-    if(state.articles==null){
+    if(empty){
         return (
-            <h2>Empty </h2>
+            <>
+                
+                <EmptyContainer>
+                    <h2>Danh sách tin đã xóa trống</h2>
+                    <img src={NoneofWork} alt="nothing need to approve" />
+                </EmptyContainer>
+            </>
         )
     }
     else if(state.articles!=null)
@@ -44,16 +55,16 @@ const DeclinedNews=({statusApprove})=>{
                 <Wrapper key={itemnews.id}>
                 <Content>
                     <div className="header-approve">
-                        <div className="title-news">
-                            <h3>Tiêu đề: {itemnews.title}</h3>
+                        
+                            <h3 className="title-news cut-text">Tiêu đề: {itemnews.title}</h3>
                             <p>Nhóm chủ đề: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
                             <p>Chủ đề: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
                             <Link to={`/admin/news/viewdetaildecline/${itemnews.id}`}>
                                 <button className="btn-detail">Xem chi tiết</button>
                             </Link>
                             
-                        </div>                    
-                        <p>Sửa đổi lần cuối: {itemnews.time_update_news!=null ? itemnews.time_update_news : "N/A"}</p>
+                                            
+                       
                        
                     </div>
                 </Content>

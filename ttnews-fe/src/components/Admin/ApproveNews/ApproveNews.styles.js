@@ -1,5 +1,19 @@
 import styled from "styled-components";
-
+export const EmptyContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    position: relative;
+    h2{
+        position: absolute;
+        left: 10px;
+        z-index:1;
+    }
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`
 export const Container =styled.div`
     display: grid;
     grid-template-columns: 225px 225px 225px 225px;
@@ -11,7 +25,7 @@ export const Container =styled.div`
 export const Wrapper=styled.div`
     width: 220px;
     min-height: 300px;
-    background-color: #fff;
+    background-color: #6da2de;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
     border-radius: 20px;
     overflow: hidden;
@@ -34,20 +48,19 @@ export const Content=styled.div`
     }
     .title-news{
         height: 180px;
-        background-color: #f4f4f4;
+        background-color: #ffb291;
         padding-top: 20px;
     }
     .btn-detail{
         padding: 5px;
         font-size: 16px;
-        background-color: #6ac4d0;
+        background-color: #ffffff;
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        position: absolute;
-        top: 50%;
-        left:25%;
-        transform: translate(10%,-50%);
+        position: relative;
+        bottom: 15px;
+        
     }
     .img{
         max-width: 100%;

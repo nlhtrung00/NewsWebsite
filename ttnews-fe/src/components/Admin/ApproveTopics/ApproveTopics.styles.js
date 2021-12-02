@@ -1,4 +1,19 @@
 import styled from "styled-components";
+export const EmptyContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    position: relative;
+    h2{
+        position: absolute;
+        left: 10px;
+        z-index:1;
+    }
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`
 export const Container =styled.div`
     display: grid;
     grid-template-columns: auto auto auto auto;

@@ -17,8 +17,16 @@ const apiSettings = {
         const endpoint= `https://localhost:44387/api/News/GetById/${NewsId}`;
         return await(await fetch(endpoint)).json();
     },
+    fetchAllUsers : async ()=>{
+        const endpoint=`https://localhost:44387/api/Newsusers`;
+        return await(await fetch(endpoint)).json();
+    },
     fetchUserById : async Userid=>{
         const endpoint=`https://localhost:44387/api/Newsusers/${Userid}`;
+        return await(await fetch(endpoint)).json();
+    },
+    fetchUserByRole : async role=>{
+        const endpoint=`https://localhost:44387/api/Newsusers/role/${role}`;
         return await(await fetch(endpoint)).json();
     },
     fetchTopics : async()=>{

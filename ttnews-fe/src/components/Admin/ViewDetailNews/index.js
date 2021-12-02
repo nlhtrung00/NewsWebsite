@@ -89,7 +89,7 @@ export const DetailNews =()=>{
     }  
     const Decline=async(e)=>{
         if(state.news!=null){
-            state.news.map(async(itemnews)=>{
+            const itemnews = state.news;
              if(itemnews.id===e.target.value){
                  const id = itemnews.id;
                  const title = itemnews.title;
@@ -121,7 +121,7 @@ export const DetailNews =()=>{
                      
                      .catch(err => console.log(err))
              }
-            })        
+             
          }
      
     }

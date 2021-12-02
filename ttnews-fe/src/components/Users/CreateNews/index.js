@@ -9,10 +9,10 @@ import { Redirect } from "react-router-dom";
 const CreateNews=()=>{
     
 
-    const [ispeding, setIsPending] = useState(false)
+    // const [ispeding, setIsPending] = useState(false)
     const {state} = useTopicFetch();
     const [subTopics, setSubtopics] = useState();
-    const [subtopic, setSuctopic] =useState();
+    const [subtopic, setSubtopic] =useState();
     const [topic,setTopic] = useState();
     const [author, setAuthor] = useState(); 
     const [uploadFile, setUploadFile] = useState();
@@ -25,7 +25,8 @@ const CreateNews=()=>{
     })  
 
     
-    const {user} = useUserFetch(localStorage.getItem('iduser'));   
+    const {user} = useUserFetch(localStorage.getItem('iduser'));  
+    
     const editor = useRef(null);
     var date = new Date();
     var today = date.getFullYear() +"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -65,19 +66,19 @@ const CreateNews=()=>{
             if (element.status === 'approved') subtopic.push(element);
         }
         setSubtopics(subtopic);
-        setAuthor(user.User);
+        setAuthor(user);
     }
     const handleChangeSubtopic=async(e)=>{
         const subtopicid = e.target.value; 
         const subtopicFetch = await (await fetch(`https://localhost:44387/api/Subtopics/GetById/${subtopicid}`)).json();
-        setSuctopic(()=>({
+        setSubtopic(()=>({
             ...subtopicFetch
         }));
     }
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        setIsPending(true);   
+        //setIsPending(true);   
         let dataArray = new FormData();
         dataArray.append('title',formnews.title);
         dataArray.append('descriptions',formnews.descriptions);
@@ -95,108 +96,109 @@ const CreateNews=()=>{
         dataArray.append('author.dateofbirth',author.dateofbirth);
         dataArray.append('author.role',author.role);
         dataArray.append('image',uploadFile);
-       
-        // console.log(dataArray.get('image'));
+
         const response = await fetch('https://localhost:44387/api/News',{
             method:'POST',
-            // headers:{
-            //     'Content-Type': 'multipart/form-data',              
-            // },
             body:dataArray
         }).then((res)=>{
-            // console.log(res.json());
+            console.log(res.json());
             setRedirect(true);
-            alert('Thêm thành công')
+            alert('Thêm thành công');
         }).catch(err=>{
-            // console.log(err);
+            console.log(err);
         })
-        setIsPending(false);
+        //setIsPending(false);
    
     }
     
-
-    return(
-    <>
-        <Header/>
-        <Wrapper>
-            <Content>
-                <h2 className="header-title">Tạo bài viết</h2>
-                <form className="form-create-news row-display-column">
-                    <div className="row-item-input">
-                        <label htmlFor="title" className="col-1">Tiêu đề bài viết</label>
-                        <input name="title" id="titlenews" onChange={onHandleChange}   placeholder="Nhập tiêu đề" className="col-2"/>
-                    </div>
-
-                    <div className="row-item-input">
-                        <label htmlFor="topic"className="col-1">Thuộc nhóm chủ đề</label>
-                        <select name="topic" className="col-2" onChange={handleChangeTopic} >
-                                    <option value="">Chọn chủ đề...</option>
-                                    {state.topics.map(topic => {
-                                        
-                                        return(
+    if(user == null){
+        return <Redirect to="/" />
+    }
+    else{
+        return(
+            <>
+                <Header/>
+                <Wrapper>
+                    <Content>
+                        <h2 className="header-title">Tạo bài viết</h2>
+                        <form className="form-create-news row-display-column">
+                            <div className="row-item-input">
+                                <label htmlFor="title" className="col-1">Tiêu đề bài viết</label>
+                                <input name="title" id="titlenews" onChange={onHandleChange}   placeholder="Nhập tiêu đề" className="col-2"/>
+                            </div>
+        
+                            <div className="row-item-input">
+                                <label htmlFor="topic"className="col-1">Thuộc nhóm chủ đề</label>
+                                <select name="topic" className="col-2" onChange={handleChangeTopic} >
+                                            <option value="">Chọn chủ đề...</option>
+                                            {state.topics.map(topic => {
+                                                
+                                                return(
+                                                    
+                                                    <option value={topic.id} key={topic.id}>
+                                                    {topic.topicname}
+                                                    </option>
+                                                )
                                             
-                                            <option value={topic.id} key={topic.id}>
-                                            {topic.topicname}
-                                            </option>
-                                        )
-                                    
-                                    
-                                    })}
-                            </select>
-                    </div>
-
-                    <div className="row-item-input">
-                        <label htmlFor="subtopic"className="col-1">Chủ đề chính</label>
-                        <select name="subtopic"className="col-2" onChange={handleChangeSubtopic}>
-                            <option value="">Chọn chủ đề...</option>
-                                {subTopics!=null && subTopics.map(subtopic => {
-                                    return (
-                                        <option value={subtopic.id} key={subtopic.id}>
-                                            {subtopic.subtopicname}
-                                        </option>
-                                    )
-                                })}
-                        </select>
-                    </div>
-                    <div className="row-item-input">
-                        <label htmlFor="descriptions"className="col-1">Mô tả</label>
-                        <textarea name="descriptions" onChange={onHandleChange}></textarea>
-                    </div>
-                    <div className="row-item-input">
-                        <label htmlFor="image"className="col-1">Ảnh bài viết</label>
-                        <input type="file" name="image" id="imgnews"className="col-2" onChange={(e)=>setUploadFile(e.target.files[0])}/>
-                    </div>
-                    <div className="row-item-input">
-                        <label htmlFor="content"className="col-1">Nội dung bài viết</label>
-                        <div className="col-2">
-                            <JoditEditor
-                                ref={editor}
-                                name="content"
-                                config={config}
-                                onBlur={handleBlur}
-                                onChange={newContent => {}}
-                            />
-                        </div>
-                    </div>
-                    <div className="row confirm-form">  
-                        <Link to="/profile"><button className="btn btn-cancel">Trở về</button></Link>        
-                        
-                        
-                        {!ispeding && <button className="btn btn-register" onClick={handleSubmit}>Tạo tin</button>}     
-                        {ispeding && <button className="btn btn-register" disabled>Đang tạo...</button>}
-                        
-                        
-                    </div>
-
-                    
-
-                    
-                    
-                </form>
-            </Content>
-        </Wrapper>
-    </>
-    )
+                                            
+                                            })}
+                                    </select>
+                            </div>
+        
+                            <div className="row-item-input">
+                                <label htmlFor="subtopic"className="col-1">Chủ đề chính</label>
+                                <select name="subtopic"className="col-2" onChange={handleChangeSubtopic}>
+                                    <option value="">Chọn chủ đề...</option>
+                                        {subTopics!=null && subTopics.map(subtopic => {
+                                            return (
+                                                <option value={subtopic.id} key={subtopic.id}>
+                                                    {subtopic.subtopicname}
+                                                </option>
+                                            )
+                                        })}
+                                </select>
+                            </div>
+                            <div className="row-item-input">
+                                <label htmlFor="descriptions"className="col-1">Mô tả</label>
+                                <textarea name="descriptions" onChange={onHandleChange}></textarea>
+                            </div>
+                            <div className="row-item-input">
+                                <label htmlFor="image"className="col-1">Ảnh bài viết</label>
+                                <input type="file" name="image" id="imgnews"className="col-2" onChange={(e)=>setUploadFile(e.target.files[0])}/>
+                            </div>
+                            <div className="row-item-input">
+                                <label htmlFor="content"className="col-1">Nội dung bài viết</label>
+                                <div className="col-2">
+                                    <JoditEditor
+                                        ref={editor}
+                                        name="content"
+                                        config={config}
+                                        onBlur={handleBlur}
+                                        onChange={newContent => {}}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row confirm-form">  
+                                <Link to="/profile"><button className="btn btn-cancel">Trở về</button></Link>        
+                                
+                                
+                                {<button className="btn btn-register" onClick={handleSubmit}>Tạo tin</button>}     
+                                {<button className="btn btn-register" disabled>Đang tạo...</button>}
+                                
+                                
+                            </div>
+        
+                            
+        
+                            
+                            
+                        </form>
+                    </Content>
+                </Wrapper>
+            </>
+            )
+    }
+    
 }
 
 export default CreateNews;
