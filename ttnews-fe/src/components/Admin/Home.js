@@ -6,12 +6,14 @@ import { Redirect } from "react-router-dom";
 import { useUserFetch } from "../../fetch/UserFetch";
 
 export const HomeAdmin=()=>{
-    const [option, setOption] = useState('');   
+    const [option, setOption] = useState();   
     const idadmin = localStorage.getItem('iduser');
     const role = localStorage.getItem('role');
     const {user,error} = useUserFetch(idadmin);
-    
-    if(role !=="boss"&&role!=="admin" || idadmin==null){
+    console.log(role);
+    console.log(idadmin);
+    if(role =="user" || idadmin==null){
+        
         return(
             <Redirect to='/' />
         )
@@ -43,11 +45,7 @@ export const HomeAdmin=()=>{
             )
     }
     
-    
-    // else if(user!=null && user.role==="admin"){
-    //     
-    // }
-   
+ 
    
     
 }

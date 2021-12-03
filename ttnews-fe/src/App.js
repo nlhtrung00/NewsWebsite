@@ -31,8 +31,8 @@ const App =() => {
         <Route path='/admin/news/viewdetail/:Newsid' component={DetailNews} />
         <Route path='/admin/news/viewdetaildecline/:Newsid' component={DetailDeclineNews} />
 
-        <Route path='/topic/:Topicid' component={Topicpage} key={window.location.pathname} />
-        <Route path='/subtopic/:Subtopicid' component={Subtopicpage} key={window.location.pathname}/>
+        <Route path='/topic/:Topicid/page/:page/pageSize/:pageSize' component={Topicpage} key={window.location.pathname} />
+        <Route path='/subtopic/:Subtopicid/page/:page/pageSize/:pageSize' component={Subtopicpage} key={window.location.pathname}/>
       </Switch> 
       <GlobalStyles />
     </Router>

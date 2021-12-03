@@ -9,8 +9,8 @@ const apiSettings = {
         const endpoint = TOP_HEADLINES_URL;
         return await ( await fetch(endpoint)).json();
     },
-    fetchTopNews : async() =>{
-        const endpoint = "https://localhost:44387/api/News";
+    fetchNewstNews : async() =>{
+        const endpoint = "https://localhost:44387/api/News/Newest";
         return await(await fetch(endpoint)).json();
     },
     fetchNewsById : async NewsId=>{
@@ -54,6 +54,14 @@ const apiSettings = {
         const endpoint = `https://localhost:44387/api/News/GetByStatus/${status}`;
         return await ( await fetch(endpoint)).json();
     },
+    fetchNewsPaginationApprovedByTopic :async(topicid,page, pageSize)=>{
+        const endpoint = `https://localhost:44387/api/News/GetByTopic/${topicid}/Status/approved/page/${page}/pageSize/${pageSize}`;
+        return await ( await fetch(endpoint)).json();
+    },
+    fetchNewsPaginationApprovedBySubtopic :async(Subtopicid,page,pageSize)=>{
+        const endpoint = `https://localhost:44387/api/News/GetBySubTopic/${Subtopicid}/Status/approved/page/${page}/pageSize/${pageSize}`;
+        return await ( await fetch(endpoint)).json();
+    },
     fetchNewsApprovedByTopic :async(topicid)=>{
         const endpoint = `https://localhost:44387/api/News/GetByTopic/${topicid}/Status/approved`;
         return await ( await fetch(endpoint)).json();
@@ -61,7 +69,21 @@ const apiSettings = {
     fetchNewsApprovedBySubtopic :async(Subtopicid)=>{
         const endpoint = `https://localhost:44387/api/News/GetBySubTopic/${Subtopicid}/Status/approved`;
         return await ( await fetch(endpoint)).json();
+    },
+    // views
+    fetchViewByIdNews : async(Newsid) => {
+        const endpoint = `https://localhost:44387/api/Views/News/${Newsid}`;
+        return await (await fetch(endpoint)).json();
+    },
+    fetchViewByIdViews : async(Viewsid) => {
+        const endpoint = `https://localhost:44387/api/Views/${Viewsid}`;
+        return await (await fetch(endpoint)).json();
+    },
+    fetchHottest : async() =>{
+        const endpoint = `https://localhost:44387/api/Views/Hottest`;
+        return await (await fetch(endpoint)).json();
     }
+
     
 };
 export default apiSettings;

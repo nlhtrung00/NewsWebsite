@@ -17,9 +17,7 @@ const Home = () => {
     const {state, error} = useHomeFetch(search);
     let iduser;
     iduser = localStorage.getItem('iduser');
-    //console.log('home'+user);
-    // console.log(localStorage);
-    // console.log(state.articles);
+    
     
     if(error) return <div>Something wrong happened</div>
     else
@@ -36,11 +34,23 @@ const Home = () => {
                         />
                         <img src={searchIcon} alt='search-icon' className="search"/>
                     </div>
-                    { 
-                        state.articles.map(news =>(
+                
+                    {   state.Newest.articles!=null &&
+                        state.Newest.articles.map(news =>(
                             <NewsThumb
                             key = {news.id}
-                            news = {news}
+                            newsid = {news.id}
+                            clickable
+                            />   
+                    ))}
+                    
+                </GroupNews>
+                <GroupNews header='Tin được xem nhiều'>
+                    {   state.Hottest.views!=null && 
+                        state.Hottest.views.map(view =>(
+                            <NewsThumb
+                            key = {view.idNews}
+                            newsid = {view.idNews}
                             clickable
                             />   
                     ))}

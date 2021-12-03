@@ -77,7 +77,7 @@ export const Header =(props)=>{
                         return(
                             
                             <li  className="topic-item" key={topic.id}>
-                                <Link to={`/topic/${topic.id}`} key={topic.id}>
+                                <Link to={`/topic/${topic.id}/page/1/pageSize/3`} key={topic.id}>
                                     {topic.topicname}
                                 </Link>
                                 
@@ -88,7 +88,7 @@ export const Header =(props)=>{
                                         return(
                                             
                                             <li className="subtopic-item" key={subtopic.id}>
-                                                <Link to={`/subtopic/${subtopic.id}`}>
+                                                <Link to={`/subtopic/${subtopic.id}/page/1/pageSize/3`}>
                                                 {subtopic.subtopicname}
                                                 </Link>
                                             </li>
