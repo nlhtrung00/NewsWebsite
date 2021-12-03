@@ -33,7 +33,7 @@ namespace TTNewsBE.Services
         }
         public async Task<List<News>> GetNewestNewsAsync()
         {
-            return await _news.Find<News>(n => true).SortByDescending(n => n.Time_update_news).Limit(8).ToListAsync(); 
+            return await _news.Find<News>(n => true && n.Status =="approved").SortByDescending(n => n.Time_update_news).Limit(8).ToListAsync(); 
         }
 
         public async Task<List<News>> GetByTopicWithPaginationAsync(string idTopic,string status, int page, int pageSize) {
