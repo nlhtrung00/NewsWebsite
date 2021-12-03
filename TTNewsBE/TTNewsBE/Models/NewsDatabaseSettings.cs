@@ -12,6 +12,7 @@ namespace TTNewsBE.Models
         private string subtopicsCollectionName;
         private string statusapprovesCollectionName;
         private string newsusersCollectionName;
+        private string viewsCollectionName;
         private string rolesCollectionName;
         private string connectionString;
         private string databaseName;
@@ -21,6 +22,7 @@ namespace TTNewsBE.Models
         public string SubtopicsCollectionName { get => subtopicsCollectionName; set => subtopicsCollectionName = value; }
         public string StatusapprovesCollectionName { get => statusapprovesCollectionName; set => statusapprovesCollectionName = value; }
         public string NewsusersCollectionName { get => newsusersCollectionName; set => newsusersCollectionName = value; }
+        public string ViewsCollectionName { get => viewsCollectionName; set => viewsCollectionName = value; }
         public string RolesCollectionName { get => rolesCollectionName; set => rolesCollectionName = value; }
         public string ConnectionString { get => connectionString; set => connectionString = value; }
         public string DatabaseName { get => databaseName; set => databaseName = value; }
@@ -36,6 +38,7 @@ namespace TTNewsBE.Models
         string RolesCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
+        string ViewsCollectionName { get; }
     }
     
 }

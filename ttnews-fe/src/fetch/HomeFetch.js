@@ -3,7 +3,8 @@
 import apiSettings from "../API";
 import { useEffect, useState } from "react";
 const initialState ={
-   articles:[],
+   Newest:[],
+   Hottest:[]
 }
 export const useHomeFetch=()=>{
     const [state, setState] = useState(initialState);
@@ -13,13 +14,14 @@ export const useHomeFetch=()=>{
         try{
             setError(false);
             setLoading(true);
-            const News = await apiSettings.fetchNewsByStatus('approved');
-            console.log(News);
-            
-            setState(prev => ({
-                articles: [...News.articles]
-                
-            }));
+            const New = await apiSettings.fetchNewstNews();
+            console.log(New);
+            const Hot = await apiSettings.fetchHottest();
+            console.log(Hot);
+            setState({
+                Newest: New,
+                Hottest: Hot
+            });
         }
         catch(error){
             setError(true);

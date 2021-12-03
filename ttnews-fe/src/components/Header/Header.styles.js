@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
         text-decoration: none;
         color: black;
         margin-right: 5px;
+        padding: 10px 20px;
     }
 `
 export const NavBar = styled.div`
@@ -48,6 +49,7 @@ export const NavBar = styled.div`
     }
     .subtopic-item:hover a{
         color: white;
+
     }
     
     .subtopic-list{

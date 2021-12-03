@@ -40,10 +40,19 @@ namespace TTNewsBE.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<News>>> GetAll()
         {
+
             var articles = await _newsService.GetAllAsync();
             
             return Ok(new { articles });
         }
+        /*[HttpGet("Page/{page}/PageSize/{pageSize}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetAllWithPagination(int page, int pageSize)
+        {
+
+            var articles = await _newsService.GetAllWithPaginationAsync(page, pageSize);
+
+            return Ok(new { articles });
+        }*/
 
         // GET: api/News/5
         [HttpGet("GetById/{id}")]
@@ -58,13 +67,47 @@ namespace TTNewsBE.Controllers
 
             return Ok(news);
         }
-
-        [HttpGet("GetByTopic/{id}/Status/{status}")]
-        public async Task<ActionResult<IEnumerable<News>>> GetByTopic(string id, string status)
+        [HttpGet("Newest")]
+        public async Task<ActionResult<News>> GetByNewest()
         {
-            var articles = await _newsService.GetByTopicAsync(id,status);
-           
+            var articles = await _newsService.GetNewestNewsAsync();
+
+            if (articles == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { articles });
+        }
+
+        [HttpGet("GetByTopic/{id}/Status/{status}/page/{page}/pagesize/{pageSize}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetByTopicWithPagination(string id, string status,int page, int pageSize)
+        {
+            var articles = await _newsService.GetByTopicWithPaginationAsync(id,status,page,pageSize);
             
+            
+            if (articles == null)
+            {
+                return NotFound();
+            }
+            return Ok(new { articles });
+        }
+        [HttpGet("GetByTopic/{id}/Status/{status}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetAllByTopic(string id, string status)
+        {
+            var articles = await _newsService.GetAllByTopicAsync(id, status);
+            if (articles == null)
+            {
+                return NotFound();
+            }
+            return Ok(new { articles });
+        }
+        [HttpGet("GetBySubTopic/{id}/Status/{status}/page/{page}/pagesize/{pageSize}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetBySubTopicWithPagination(string id, string status, int page, int pageSize)
+        {
+            var articles = await _newsService.GetBySubTopicWithPaginationAsync(id, status, page, pageSize);
+
+
             if (articles == null)
             {
                 return NotFound();

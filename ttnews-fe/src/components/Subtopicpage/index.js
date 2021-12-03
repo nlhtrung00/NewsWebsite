@@ -8,6 +8,7 @@ import { Header } from "../Header";
 import { useParams } from "react-router";
 import GroupNews from "../GroupNews";
 import { NewsThumb } from "../NewsThumb";
+import { Link } from "react-router-dom";
 const initialSubtopic ={
     subtopic:[]
  }
@@ -26,18 +27,23 @@ export const Subtopicpage=()=>{
     const [news, setNews] = useState(initialNews);
     const [loadingNews, setLoadingNews] = useState(false);
     const [errorNews, setErrorNews] = useState(false);
-
+    const [listPage, setListPage] = useState({});
     const [topic, setTopic] = useState(initialtopic);
     const {Subtopicid} = useParams();
+    const pageSize = 3;
+    var {page} = useParams();
     
-
+    if(page==null || page<1){
+        page = 1;
+    }
+    
     // fetch topic by url
     const fetchSubtopic = async()=>{
         try{
             setErrorSubtopic(false);
             setLoadingSubtopic(true);    
             const SubtopicFetch = await apiSettings.fetchSubTopicsById(Subtopicid);
-            console.log(SubtopicFetch.topic);
+            
             var topicFetch = SubtopicFetch.topic;
             setTopic(()=>({
                 ...topicFetch
@@ -57,9 +63,21 @@ export const Subtopicpage=()=>{
             setErrorNews(false);
             setLoadingNews(true);    
             const newsFetch = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
+
+            const newsFetchByPage = await apiSettings.fetchNewsPaginationApprovedBySubtopic(Subtopicid, page, pageSize);
+            const newsFetchTotal = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
             setNews(() => ({
-                ...newsFetch
+                ...newsFetchByPage
             }));
+            var totalPage = (Math.ceil(newsFetchTotal.articles.length / pageSize));
+            var listofpage = [];
+            for(let i=0;i<totalPage;i++){
+                listofpage[i] = i+1;
+            }
+            
+            setListPage(
+                listofpage
+            );
         }
         catch(error){
             setErrorNews(true);
@@ -69,15 +87,19 @@ export const Subtopicpage=()=>{
     useEffect(()=>{
         setSubtopic(initialSubtopic);
         fetchSubtopic();
-    },[Subtopicid]);
+    },[Subtopicid,page]);
 
     useEffect(()=>{
         setNews(initialNews);
         fetchNewsBySubtopic();
     },[subtopic]);
+
     let iduser;
     iduser = localStorage.getItem('iduser');
     
+
+
+
     if(errorSubtopic){
         return(
             <div>
@@ -113,11 +135,39 @@ export const Subtopicpage=()=>{
                             news.articles.map(news =>(
                                 <NewsThumb
                                 key = {news.id}
-                                news = {news}
+                                newsid = {news.id}
                                 clickable
                                 />   
                         ))}
-                        
+                        <div className="pagination-footer">
+                        {   listPage.length > 0 &&
+                            listPage.map(pageNumber =>{
+                                
+                                if(page!=pageNumber){
+                                    return(
+                                        
+                                        <button key={pageNumber}>
+
+                                            <Link to={`/subtopic/${subtopic.subtopic.id}/page/${pageNumber}/pageSize/3`} key={subtopic.subtopic.id + pageNumber}>
+                                                {pageNumber}
+                                            </Link>
+                                        </button>
+                                    )
+                                    }
+                                else{
+                                    return(
+                                        
+                                        <button className="active-page" key={pageNumber}>
+
+                                            <Link to={`/subtopic/${subtopic.subtopic.id}/page/${pageNumber}/pageSize/3`} key={subtopic.subtopic.id + pageNumber}>
+                                                {pageNumber}
+                                            </Link>
+                                        </button>
+                                    )
+                                }
+                            })
+                        }
+                        </div>
                     </GroupNews>
                     </Content>              
                 </Container>

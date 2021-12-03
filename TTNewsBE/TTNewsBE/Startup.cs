@@ -42,7 +42,7 @@ namespace TTNewsBE
             services.AddScoped<TopicService>();
             services.AddScoped<SubtopicService>();
             services.AddScoped<NewsuserService>();
-
+            services.AddScoped<ViewsService>();
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
