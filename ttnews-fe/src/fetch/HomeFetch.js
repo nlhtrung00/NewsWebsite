@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const initialState ={
    articles:[],
 }
-export const useHomeFetch=()=>{
+export const useHomeFetch=(search)=>{
     const [state, setState] = useState(initialState);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -13,11 +13,19 @@ export const useHomeFetch=()=>{
         try{
             setError(false);
             setLoading(true);
-            const News = await apiSettings.fetchNewsByStatus('approved');
-            console.log(News);
-            
+            let News = await apiSettings.fetchNewsByStatus('approved');
+            let articles = News.articles;
+            if (search.trim()) {
+                articles = articles.filter((news) => {
+                    search = search.toLowerCase();
+                    let title = news.title.toLowerCase();
+                    let descriptions = news.descriptions.toLowerCase();
+                    return (title.search(search) >= 0 || descriptions.search(search) >=0);
+                }
+                )
+            }
             setState(prev => ({
-                articles: [...News.articles]
+                articles: [...articles]
                 
             }));
         }
@@ -29,6 +37,6 @@ export const useHomeFetch=()=>{
     useEffect(()=>{
         setState(initialState);
         fetchNews();
-    },[])
+    },[search])
     return {state, loading, error} ;
 }

@@ -1,25 +1,50 @@
 import styled from "styled-components";
+export const EmptyContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    position: relative;
+    h2{
+        position: absolute;
+        left: 10px;
+        z-index:1;
+    }
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`
 export const Container =styled.div`
     display: grid;
     grid-template-columns: auto auto auto auto;
     grid-row-gap: 30px;
-    justify-content: space-evenly;
+    
     
 `
 export const Wrapper=styled.div`
-    width: 220px;
-    min-height: 300px;
-    background-color: #ffffff;
+    width: 240px;
+    height: 190px;
+    background-color: #aea3f1;
     padding: 5px 0 5px;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
     margin-right: 20px;
+    border-radius: 10px;
     
 `
 
 export const Content=styled.div`
+    .header{
+        height: 130px;
+    }
     .title-subtopic{    
-        font-size: 20px;
+        font-size: 22px;
         text-align:center;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    p{
+        font-size: 18px;
     }
     .topic-type{
         text-align:center;

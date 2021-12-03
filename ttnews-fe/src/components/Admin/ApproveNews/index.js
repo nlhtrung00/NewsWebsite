@@ -1,9 +1,9 @@
-import { Wrapper,Content,Container } from "./ApproveNews.styles";
+import { EmptyContainer,Wrapper,Content,Container } from "./ApproveNews.styles";
 //import TempApproveImg from '../../../image/temp_approve.jpg';
 import apiSettings from "../../../API";
 import { useState,useEffect } from "react/cjs/react.development";
 import { Link } from "react-router-dom";
-
+import NoneofWork from "../../../image/background/Checklist.jpg";
 const initialState ={
     articles:[],
  }
@@ -15,7 +15,7 @@ const ApproveNews=({statusApprove})=>{
         try{
             setError(false);          
             const news = await apiSettings.fetchNewsByStatus(statusApprove);
-            console.log(news);
+            
             setState(() => ({
                 articles: [...news.articles]
             }));
@@ -32,7 +32,7 @@ const ApproveNews=({statusApprove})=>{
 
 
     const Approve =async(e)=>{
-        console.log(e.target.value);
+        
         if(state.articles!=null){
            state.articles.map(async(itemnews)=>{
             if(itemnews.id===e.target.value){
@@ -51,7 +51,7 @@ const ApproveNews=({statusApprove})=>{
                 const author = itemnews.author;
                 const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
                 var datajson = JSON.stringify(dataPost);
-                console.log(datajson);
+                
                 await fetch(`https://localhost:44387/api/News/${id}`,{
                     method:'PUT',
                     headers:{
@@ -60,19 +60,19 @@ const ApproveNews=({statusApprove})=>{
                     },
                     body:datajson
                     }
-                    ).then(
-                        setApprove(true)
-                    )
-                    
-                    .catch(err => console.log(err))
-            }
+                    ).then((data)=>
+                        console.log(data)
+                    ).catch(err => console.log(err))
+
+                    setApprove(true);
+                }
            })        
         }
     } 
     
     
     const Decline =async(e)=>{
-        console.log(e.target.value);
+        
         if(state.articles!=null){
            state.articles.map(async(itemnews)=>{
             if(itemnews.id===e.target.value){
@@ -91,7 +91,7 @@ const ApproveNews=({statusApprove})=>{
                 const author = itemnews.author;
                 const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
                 var datajson = JSON.stringify(dataPost);
-                console.log(datajson);
+                
                 await fetch(`https://localhost:44387/api/News/${id}`,{
                     method:'PUT',
                     headers:{
@@ -100,18 +100,25 @@ const ApproveNews=({statusApprove})=>{
                     },
                     body:datajson
                     }
-                    ).then(
-                        setApprove(true)
-                    )
-                    
-                    .catch(err => console.log(err))
+                    ).then((data) =>
+                        console.log(data)
+                    ).catch(err => console.log(err))
+
+                    setApprove(true)
             }
            })        
         }
     }  
-    if(state.articles==null){
+    
+    if(state.articles.length==0){
         return (
-            <h2>Empty </h2>
+            <>
+                
+                <EmptyContainer>
+                    <h2>Không bảng tin nào cần duyệt</h2>
+                    <img src={NoneofWork} alt="nothing need to approve" />
+                </EmptyContainer>
+            </>
         )
     }
     else if(state.articles!=null)
@@ -127,15 +134,16 @@ const ApproveNews=({statusApprove})=>{
                             <h3>Tiêu đề: {itemnews.title}</h3>
                             <p>Nhóm chủ đề: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
                             <p>Chủ đề: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
-                            <Link to={`/admin/news/viewdetail/${itemnews.id}`}>
-                                <button className="btn-detail">Xem chi tiết</button>
-                            </Link>
                             
-                        </div>                    
+                            
+                        </div> 
+                        <Link to={`/admin/news/viewdetail/${itemnews.id}`}>
+                                <button className="btn-detail">Xem chi tiết</button>
+                        </Link>                   
                         <p>Sửa đổi lần cuối: {itemnews.time_update_news!=null ? itemnews.time_update_news : "N/A"}</p>
-                       
+                        
                     </div>
-                 
+                    
                     <div className="footer-approve row">
                         <button className="no"value={itemnews.id} onClick={Decline}><i className="fas fa-times icon"></i>Hủy</button>
                         <button className="yes"value={itemnews.id} onClick={Approve}><i className="fas fa-check icon"></i>Duyệt</button>    

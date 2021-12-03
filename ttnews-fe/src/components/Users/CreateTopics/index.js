@@ -1,19 +1,27 @@
 import {useState} from "react";
 import {useTopicFetch} from '../../../fetch/TopicFetch'
 import { Header } from "../../Header";
+import { Login } from "../../Login/Login";
 import { Wrapper,Content } from "./CreateTopic.styles";
 import { Redirect } from "react-router-dom";
+import { createBrowserHistory } from 'history';
 const initialState ={
-    
+    topic:[],
  }
 const CreateTopics=()=>{
     const {state, error} = useTopicFetch();
     const [subTopicname, setSubtopicname] = useState('');
     const [topic,setTopic] = useState(initialState);
     const [redirect, setRedirect] = useState(false);
-   
+    
     if(error) return <div>Something wrong happen</div>;
-  
+    let iduser;
+    iduser = localStorage.getItem('iduser');
+    let history = createBrowserHistory()
+    if(iduser==null){
+        history.replace('/login');
+       return <Login/>
+    }
     
     const handleChangeTopic=async(e)=>{
         const topicid = e.target.value; 

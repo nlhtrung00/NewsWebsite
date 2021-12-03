@@ -28,15 +28,15 @@ namespace TTNewsBE.Services
         }
 
         public async Task<List<News>> GetByTopicAsync(string idTopic,string status) {
-            return await _news.Find<News>(n => n.Topic.Id == idTopic && n.Status == status).ToListAsync();
+            return await _news.Find<News>(n => n.Topic.Id == idTopic && n.Status == status).SortByDescending(n => n.Time_update_news).ToListAsync();
         }
         public async Task<List<News>> GetBySubTopicAsync(string idSubTopic, string status)
         {
-            return await _news.Find<News>(n => n.Subtopic.Id == idSubTopic && n.Status == status).ToListAsync();
+            return await _news.Find<News>(n => n.Subtopic.Id == idSubTopic && n.Status == status).SortByDescending(n => n.Time_update_news).ToListAsync();
         }
         public async Task<List<News>> GetByStatusAsync(string status)
         {
-            return await _news.Find<News>(n => n.Status == status).ToListAsync();
+            return await _news.Find<News>(n => n.Status == status).SortByDescending(n => n.Time_update_news).ToListAsync();
         }
         public async Task<News> CreateAsync(News news)
         {

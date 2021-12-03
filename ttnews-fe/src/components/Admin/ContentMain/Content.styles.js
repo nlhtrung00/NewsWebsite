@@ -13,7 +13,7 @@ export const Wrapper=styled.div`
 export const NavTop=styled.div`
     width: 100%;
     height: 50px;
-    background-color: #f9f9f9;
+    background-color: #fda779;
     border-radius: 19px 19px 0 0;
     /* position: relative; */
 
@@ -36,4 +36,9 @@ export const Content=styled.div`
     overflow: scroll;
     padding: 20px;
     
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 `

@@ -43,6 +43,17 @@ namespace TTNewsBE.Controllers
 
             return Ok(newsuser);
         }
+        [HttpGet("role/{role}")]
+        public async Task<ActionResult<Newsuser>> GetByRole(string role)
+        {
+            var newsusers = await _newsuserService.GetByRoleAsync(role);
+            if (newsusers == null)
+            {
+                return NotFound();
+            }
+
+            return Ok( newsusers );
+        }
 
         // PUT: api/Newsusers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

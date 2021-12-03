@@ -1,9 +1,9 @@
-import { Container,Wrapper,Content } from "./ApproveTopics.styles";
+import { EmptyContainer,Container,Wrapper,Content } from "./ApproveTopics.styles";
 import TempApproveImg from '../../../image/temp_approve.jpg';
 // import { useSubTopicFetchByTopic } from "../../../fetch/FetchSubByStatus";
 import apiSettings from "../../../API";
 import { useState,useEffect } from "react/cjs/react.development";
-
+import NoneofWork from "../../../image/background/Checklist.jpg";
 const initialState ={
     subtopics:[],
  }
@@ -12,14 +12,20 @@ const ApproveTopic=({statusApprove})=>{
     const[state,setState] = useState(initialState);
     const[approve,setApprove] = useState(false);
     const [error,setError] = useState(false);
+    const [empty, setEmpty] = useState(false);
     const fetchsubTopics = async()=>{
         try{
-            setError(false);          
+            setError(false);   
+                   
             const subtopics = await apiSettings.fetchSubtopicByStatus(statusApprove);
-            console.log(subtopics);
+            
             setState(() => ({
                 subtopics,
             }));
+            if(subtopics.length === 0){
+                setEmpty(true);
+            }
+            
         }
         catch(error){
             setError(true);
@@ -29,7 +35,7 @@ const ApproveTopic=({statusApprove})=>{
     useEffect(()=>{
         setState(initialState);
         fetchsubTopics();
-    },[approve])
+    },[])
 
     const Approve =async(e)=>{
         console.log(e.target.value);
@@ -45,7 +51,7 @@ const ApproveTopic=({statusApprove})=>{
                 };
                 const dataPost ={id,subtopicname,status,topic};
                 var datajson = JSON.stringify(dataPost);
-                console.log(datajson);
+                console.log("clicked approve");
                 await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
                     method:'PUT',
                     headers:{
@@ -54,11 +60,10 @@ const ApproveTopic=({statusApprove})=>{
                     },
                     body:datajson
                     }
-                    ).then(
-                        setApprove(true)
-                    )
-                    
-                    .catch(err => console.log(err))
+                    ).then((data) =>
+                        console.log(data)
+                    ).catch(err => console.log(err))
+                    setApprove(true)
             }
            })        
         }
@@ -77,7 +82,7 @@ const ApproveTopic=({statusApprove})=>{
                 };
                 const dataPost ={id,subtopicname,status,topic};
                 var datajson = JSON.stringify(dataPost);
-                console.log(datajson);
+                console.log("clicked declined");
                 await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
                     method:'PUT',
                     headers:{
@@ -86,18 +91,28 @@ const ApproveTopic=({statusApprove})=>{
                     },
                     body:datajson
                     }
-                    ).then(
-                        setApprove(true)
-                    )
-                    
-                    .catch(err => console.log(err))
+                    ).then((data) =>
+                        console.log(data)
+                    ).catch(err => console.log(err))
+
+                    setApprove(true)
             }
            })        
         }
     }      
                 
                   
-        
+    if(state.subtopics.length==0 && empty){
+        return (
+            <>
+                
+                <EmptyContainer>
+                    <h2>Không chủ đề nào cần duyệt</h2>
+                    <img src={NoneofWork} alt="nothing need to approve" />
+                </EmptyContainer>
+            </>
+        )
+    }    
     
 
 
@@ -105,7 +120,7 @@ const ApproveTopic=({statusApprove})=>{
         <>
         
         <Container>
-         {state.subtopics!=null&&state.subtopics.map(subtopic =>{
+         {state.subtopics.length != 0&&state.subtopics.map(subtopic =>{
             return(
             <Wrapper key={subtopic.id}>
                 <Content >

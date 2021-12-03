@@ -49,6 +49,71 @@ export const DetailDeclineNews =()=>{
         fetchNews();
     },[]);
 
+    // duyệt
+    const Approve =async(e)=>{
+        console.log(e.target.value);
+
+        if(e.target.value !=null){
+            const itemnews = state.news;
+            if(itemnews.id===e.target.value){
+                const id = itemnews.id;
+                const title = itemnews.title;
+                const descriptions = itemnews.descriptions;
+                const content = itemnews.content;
+                const status = "approved";
+                const topic = itemnews.topic!=null ?{
+                    id:itemnews.topic.id,
+                    topicname:itemnews.topic.topicname
+                } : null;
+                const time_update_news = itemnews.time_update_news;
+                const imageName = itemnews.imageName;
+                const subtopic = itemnews.subtopic;
+                const author = itemnews.author;
+                const dataPost ={id,title, descriptions, content,time_update_news,imageName, topic,subtopic,author, status};
+                var datajson = JSON.stringify(dataPost);
+                console.log(datajson);
+                await fetch(`https://localhost:44387/api/News/${id}`,{
+                    method:'PUT',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'accept': '*/*'  
+                    },
+                    body:datajson
+                    }
+                    ).then(()=>{
+                        alert("duyệt thành công");
+                        setRedirect(true);
+                    }).catch(err => console.log(err))
+            }
+                  
+        }
+    }  
+
+    // xóa
+    
+    const Delete = async(e) =>{
+        console.log(e.target.value);
+        console.log("delete clicked");
+        var id = e.target.value;
+        if(id!=null){
+            await fetch(`https://localhost:44387/api/News/${id}`,{
+                method:'DELETE',
+                headers:{
+                    'Content-Type':'application/json',
+                    'accept': '*/*'  
+                    }
+                }
+                )
+            console.log("done");
+            alert("Xóa thành công");
+            setRedirect(true);  
+            
+        }
+        else{
+            console.log("null id");
+        }
+    }
+    // trở về trang chủ
     const Back=()=>(setRedirect(true));
     if(redirect){
         return <Redirect  to="/admin"/>
@@ -97,8 +162,11 @@ export const DetailDeclineNews =()=>{
                     </div>
                     
                     <div className="footer-decline">
-                        <button className="back" onClick={Back}><i className="fas fa-angle-left icon"></i>Trở về</button>    
+                        <button className="back" onClick={Back}><i className="fas fa-angle-left icon"></i>Trở về</button>  
+                        <button className="no"value={state.news.id} onClick={Delete}>Xóa</button>
+                        <button className="yes"value={state.news.id} onClick={Approve}>Duyệt lại</button>   
                     </div>
+                    
                 </Content>   
             </Wrapper>
                  

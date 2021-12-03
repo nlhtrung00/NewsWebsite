@@ -19,13 +19,12 @@ export const Login=()=>{
         await fetch(`https://localhost:44387/authenticate?username=${data.username}&password=${data.password}`)
         .then(res => res.json()
         ).then(data=>{
-            console.log(data);
-            localStorage.setItem('token',data.token);
-            localStorage.setItem('iduser',data.newsuser.id);
-            localStorage.setItem('user',data.newsuser);
             
+            localStorage.setItem('token',data.token);
+            localStorage.setItem('role',data.newsuser.role);
+            localStorage.setItem('iduser',data.newsuser.id);
+            console.log(localStorage);
             setRole(data.newsuser.role);
-            //setUser(data.newsuser);
             setLoggedIn(true);
         })
         .catch(err =>{
@@ -36,7 +35,7 @@ export const Login=()=>{
         return <Redirect to= {< Home/>} />
         
     }
-    else if(role==='admin' && LoggedIn){
+    else if(role==='admin' || role==='boss' && LoggedIn){
         return <Redirect to ='/admin'/>
     } 
     

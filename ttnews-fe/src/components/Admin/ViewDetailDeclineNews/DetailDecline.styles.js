@@ -37,7 +37,7 @@ export const Content=styled.div`
 
     }
     .back{
-        background-color: #359335;
+        background-color: #373ce7;
         border: none;
         padding: 5px 10px 5px;
         font-size: 25px;
@@ -48,7 +48,7 @@ export const Content=styled.div`
     }
    
     .back:hover{
-        background-color: #08b708;
+        background-color: #373ce9;
     }
     
     .title-news p{
@@ -82,5 +82,31 @@ export const Content=styled.div`
     .content p{
         font-size: 19px;
         line-height: 35px;
+    }
+    .yes{
+        background-color: #359335;
+        border: none;
+        padding: 5px 10px 5px;
+        font-size: 25px;
+        cursor: pointer;
+        color: white;
+        border-radius: 20px;
+        width: 140px;
+    }
+    .no{
+        background-color: #f12b2b;
+        border: none;
+        padding: 5px 10px 5px;
+        font-size: 25px;
+        cursor: pointer;
+        color:white;
+        border-radius: 20px;
+        width: 140px;
+    }
+    .yes:hover{
+        background-color: #08b708;
+    }
+    .no:hover{
+        background-color: #ff0606;
     }
 `;
