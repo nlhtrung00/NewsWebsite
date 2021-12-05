@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useRef } from "react";
 //styles
 import { Container, Content } from "./Subtopicpage.styles";
 // api
@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import GroupNews from "../GroupNews";
 import { NewsThumb } from "../NewsThumb";
 import { Link } from "react-router-dom";
+import searchIcon from "../../image/search-icon.png";
 const initialSubtopic ={
     subtopic:[]
  }
@@ -29,6 +30,10 @@ export const Subtopicpage=()=>{
     const [errorNews, setErrorNews] = useState(false);
     const [listPage, setListPage] = useState({});
     const [topic, setTopic] = useState(initialtopic);
+    const [search, setSearch] = useState('');
+    const [triggerSearch, setTriggerSearch] = useState(false);
+    const [searchTmp, setSearchTmp] = useState('');
+    const initial = useRef(true);
     const {Subtopicid} = useParams();
     const pageSize = 3;
     var {page} = useParams();
@@ -84,6 +89,26 @@ export const Subtopicpage=()=>{
         }
         setLoadingNews(false);
     }
+    const searchNews = async()=>{
+        let News = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
+        if (search.trim()) {
+            News.articles = News.articles.filter((newsfilter) => {
+                var searchtxt = search.toLowerCase();
+                let title = newsfilter.title.toLowerCase();
+               
+                return (title.search(searchtxt) >= 0);
+            }
+            )
+        }
+        setNews({
+            ...News
+        })
+        
+    }
+    const handleSearchTerm = (e) =>{
+        setTriggerSearch(true);
+        setSearchTmp(e.currentTarget.value);
+    }
     useEffect(()=>{
         setSubtopic(initialSubtopic);
         fetchSubtopic();
@@ -94,10 +119,30 @@ export const Subtopicpage=()=>{
         fetchNewsBySubtopic();
     },[subtopic]);
 
+    useEffect(()=>{
+        setNews(initialNews);
+        searchNews();
+    },[search])
+
     let iduser;
     iduser = localStorage.getItem('iduser');
     
-
+    useEffect(() =>{
+        // check điều kiện lần đầu tiên khi chưa nhập gì, hệ thống không search gì cả
+        if(initial.current)
+        {
+            //set false, những lần sau, hệ thống sẽ có thể tìm bth
+            initial.current=false;
+            return;
+        }
+        
+        // thiết lập sau 0.5 giây, sẽ thực hiện lệnh setSearchTerm bằng state
+        //hiện tại, cleartimeout dùng xóa timeout trước khi nó diễn ra
+        const timer = setTimeout( ()=>{
+            setSearch(searchTmp);
+        },500)
+        return () => clearTimeout(timer)
+    }, [setTriggerSearch, searchTmp])
 
 
     if(errorSubtopic){
@@ -109,26 +154,21 @@ export const Subtopicpage=()=>{
             </div>
         )
     }
-    // if(loadingSubtopic) {
-    //     return(
-    //         <>  
-    //             <Header user={iduser}/>
-    //             <Container>
-    //                 <Content>
-    //                     <h2>Loading page</h2>
-    //                 </Content>              
-    //             </Container>
-                    
-               
-    //         </>
-    //     )
-    // }
+   
     if(!errorSubtopic  && subtopic.subtopic !=null && news!=null){
         return(
             <>  
                 <Header user={iduser}/>
                 <Container>
                     <Content>
+                    <div className="wrapper-formsearch">
+                            <div className="form-search">
+                                <input type='text' placeholder='Tìm kiếm tin tức' 
+                                    onChange={handleSearchTerm} 
+                                />
+                                <img src={searchIcon} alt='search-icon' className="search"/>
+                            </div>
+                    </div>
                     <GroupNews header={subtopic.subtopic.subtopicname != null && "Chủ đề: " + subtopic.subtopic.subtopicname}>
                         <h2>Thuộc nhóm: {topic.topicname != null && topic.topicname}</h2>
                         {   news !=null && 

@@ -67,7 +67,7 @@ const CreateTopics=()=>{
     return(
         <>
             
-            <Header/>
+            <Header user={iduser}/>
             <Wrapper>
                 <Content>
                     <h2 className="header-title">Tạo chủ đề bản tin</h2>

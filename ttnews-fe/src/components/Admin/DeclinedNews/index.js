@@ -40,7 +40,7 @@ const DeclinedNews=({statusApprove})=>{
             <>
                 
                 <EmptyContainer>
-                    <h2>Danh sách tin đã xóa trống</h2>
+                    <h2>Danh sách tin bị hủy hiện trống</h2>
                     <img src={NoneofWork} alt="nothing need to approve" />
                 </EmptyContainer>
             </>

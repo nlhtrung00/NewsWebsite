@@ -12,9 +12,9 @@ import searchIcon from "../../../image/search-icon.png";
 
 
 const Home = () => {
-    const [search, setSearch] = useState('');
+    
     // console.log(search);
-    const {state, error} = useHomeFetch(search);
+    const {state, error} = useHomeFetch();
     let iduser;
     iduser = localStorage.getItem('iduser');
     
@@ -26,15 +26,8 @@ const Home = () => {
         <Header user={iduser} /> 
         <Container>
             <Content>
-                
                 <GroupNews header='Tin mới nhất'>
-                    <div className="form-search">
-                        <input type='text' placeholder='Tìm kiếm tin tức' 
-                            onChange={e => setSearch(e.currentTarget.value)} 
-                        />
-                        <img src={searchIcon} alt='search-icon' className="search"/>
-                    </div>
-                
+                   
                     {   state.Newest.articles!=null &&
                         state.Newest.articles.map(news =>(
                             <NewsThumb

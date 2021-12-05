@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useRef } from "react";
 //styles
 import { Container, Content } from "./Topicpage.styles";
 // api
@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import GroupNews from "../GroupNews";
 import { NewsThumb } from "../NewsThumb";
 import { Link } from "react-router-dom";
+import searchIcon from "../../image/search-icon.png";
 const initialTopic ={
     topic:[]
  }
@@ -25,6 +26,10 @@ export const Topicpage=()=>{
     const [loadingNews, setLoadingNews] = useState(false);
     const [errorNews, setErrorNews] = useState(false);
     const [listPage, setListPage] = useState({});
+    const [search, setSearch] = useState('');
+    const [triggerSearch, setTriggerSearch] = useState(false);
+    const [searchTmp, setSearchTmp] = useState('');
+    const initial = useRef(true);
     const {Topicid} = useParams();
     const pageSize = 3;
     
@@ -74,6 +79,27 @@ export const Topicpage=()=>{
         }
         setLoadingNews(false);
     }
+    const searchNews = async()=>{
+            let News = await apiSettings.fetchNewsApprovedByTopic(Topicid);
+            if (search.trim()) {
+                News.articles = News.articles.filter((newsfilter) => {
+                    var searchtxt = search.toLowerCase();
+                    let title = newsfilter.title.toLowerCase();
+                   
+                    return (title.search(searchtxt) >= 0);
+                }
+                )
+            }
+            setNews({
+                ...News
+            })
+            
+    }
+    const handleSearchTerm = (e) =>{
+        setTriggerSearch(true);
+        setSearchTmp(e.currentTarget.value);
+    }
+    
     useEffect(()=>{
         setTopic(initialTopic);
         fetchTopic();
@@ -83,10 +109,28 @@ export const Topicpage=()=>{
         setNews(initialNews);
         fetchNewsByTopic();
     },[topic]);
-
+    useEffect(()=>{
+        setNews(initialNews);
+        searchNews();
+    },[search])
     let iduser;
     iduser = localStorage.getItem('iduser');
-
+    useEffect(() =>{
+        // check điều kiện lần đầu tiên khi chưa nhập gì, hệ thống không search gì cả
+        if(initial.current)
+        {
+            //set false, những lần sau, hệ thống sẽ có thể tìm bth
+            initial.current=false;
+            return;
+        }
+        
+        // thiết lập sau 0.5 giây, sẽ thực hiện lệnh setSearchTerm bằng state
+        //hiện tại, cleartimeout dùng xóa timeout trước khi nó diễn ra
+        const timer = setTimeout( ()=>{
+            setSearch(searchTmp);
+        },500)
+        return () => clearTimeout(timer)
+    }, [setTriggerSearch, searchTmp])
     
 
     if(errorTopic){
@@ -105,6 +149,14 @@ export const Topicpage=()=>{
                 <Header user={iduser}/>
                 <Container>
                     <Content>
+                        <div className="wrapper-formsearch">
+                            <div className="form-search">
+                                <input type='text' placeholder='Tìm kiếm tin tức' 
+                                    onChange={handleSearchTerm} 
+                                />
+                                <img src={searchIcon} alt='search-icon' className="search"/>
+                            </div>
+                        </div>
                     <GroupNews header={topic.topic.topicname != null && "Nhóm chủ đề: " +topic.topic.topicname}>
                         {   news != null && 
                             news.articles.map(news =>(
@@ -117,7 +169,7 @@ export const Topicpage=()=>{
                         <div className="pagination-footer">
                         {   listPage.length > 0 &&
                             listPage.map(pageNumber =>{
-                                console.log(page==pageNumber);
+                                
                                 if(page!=pageNumber){
                                     return(
                                         

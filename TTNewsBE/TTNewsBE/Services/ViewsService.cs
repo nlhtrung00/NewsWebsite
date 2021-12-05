@@ -31,7 +31,7 @@ namespace TTNewsBE.Services
         }
         public async Task<List<Views>> GetByHottestAsync()
         {
-            return await _views.Find(s => true).SortByDescending(s => s.TotalView).Limit(8).ToListAsync();
+            return await _views.Find(s => true).SortByDescending(s => s.TotalView).Limit(5).ToListAsync();
         }
         public async Task<Views> CreateViewsAsync(Views views)
         {

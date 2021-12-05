@@ -1,4 +1,4 @@
-import {useState,useRef} from "react";
+import {useState,useRef, useEffect} from "react";
 import JoditEditor from "jodit-react";
 import { Wrapper,Content } from "./CreateNews.styles";
 import {Link} from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Redirect } from "react-router-dom";
 const CreateNews=()=>{
     
 
-    // const [ispeding, setIsPending] = useState(false)
+    const [ispeding, setIsPending] = useState(false)
     const {state} = useTopicFetch();
     const [subTopics, setSubtopics] = useState();
     const [subtopic, setSubtopic] =useState();
@@ -22,9 +22,10 @@ const CreateNews=()=>{
         descriptions:'',
         content:'',
         time_update_news: ""
-    })  
-
+    });
     
+    let iduser;
+    iduser = localStorage.getItem('iduser'); 
     const {user} = useUserFetch(localStorage.getItem('iduser'));  
     
     const editor = useRef(null);
@@ -78,7 +79,7 @@ const CreateNews=()=>{
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        //setIsPending(true);   
+        setIsPending(true);   
         let dataArray = new FormData();
         dataArray.append('title',formnews.title);
         dataArray.append('descriptions',formnews.descriptions);
@@ -107,9 +108,10 @@ const CreateNews=()=>{
         }).catch(err=>{
             console.log(err);
         })
-        //setIsPending(false);
+        setIsPending(false);
    
     }
+
     
     if(user == null){
         return <Redirect to="/" />
@@ -117,7 +119,7 @@ const CreateNews=()=>{
     else{
         return(
             <>
-                <Header/>
+                <Header user={iduser}/>
                 <Wrapper>
                     <Content>
                         <h2 className="header-title">Tạo bài viết</h2>
@@ -182,8 +184,8 @@ const CreateNews=()=>{
                                 <Link to="/profile"><button className="btn btn-cancel">Trở về</button></Link>        
                                 
                                 
-                                {<button className="btn btn-register" onClick={handleSubmit}>Tạo tin</button>}     
-                                {<button className="btn btn-register" disabled>Đang tạo...</button>}
+                                {!ispeding && <button className="btn btn-register" onClick={handleSubmit}>Tạo tin</button>}     
+                                {ispeding && <button className="btn btn-register" disabled>Đang tạo...</button>}
                                 
                                 
                             </div>
