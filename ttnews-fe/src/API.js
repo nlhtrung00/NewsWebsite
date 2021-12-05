@@ -82,7 +82,16 @@ const apiSettings = {
     fetchHottest : async() =>{
         const endpoint = `https://localhost:44387/api/Views/Hottest`;
         return await (await fetch(endpoint)).json();
-    }
+    },
+    fetchNewsApprovedByAuthor :async(authorid)=>{
+        const endpoint = `https://localhost:44387/api/News/GetByStatus/approved/author/${authorid}`;
+        return await ( await fetch(endpoint)).json();
+    },
+    fetchNewsDeclinedByAuthor :async(authorid)=>{
+        const endpoint = `https://localhost:44387/api/News/GetByStatus/declined/author/${authorid}`;
+        return await ( await fetch(endpoint)).json();
+    },
+   
 
     
 };

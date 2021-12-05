@@ -91,28 +91,28 @@ export const DetailDeclineNews =()=>{
 
     // xóa
     
-    const Delete = async(e) =>{
-        console.log(e.target.value);
-        console.log("delete clicked");
-        var id = e.target.value;
-        if(id!=null){
-            await fetch(`https://localhost:44387/api/News/${id}`,{
-                method:'DELETE',
-                headers:{
-                    'Content-Type':'application/json',
-                    'accept': '*/*'  
-                    }
-                }
-                )
-            console.log("done");
-            alert("Xóa thành công");
-            setRedirect(true);  
+    // const Delete = async(e) =>{
+    //     console.log(e.target.value);
+    //     console.log("delete clicked");
+    //     var id = e.target.value;
+    //     if(id!=null){
+    //         await fetch(`https://localhost:44387/api/News/${id}`,{
+    //             method:'DELETE',
+    //             headers:{
+    //                 'Content-Type':'application/json',
+    //                 'accept': '*/*'  
+    //                 }
+    //             }
+    //             )
+    //         console.log("done");
+    //         alert("Xóa thành công");
+    //         setRedirect(true);  
             
-        }
-        else{
-            console.log("null id");
-        }
-    }
+    //     }
+    //     else{
+    //         console.log("null id");
+    //     }
+    // }
     // trở về trang chủ
     const Back=()=>(setRedirect(true));
     if(redirect){
@@ -163,7 +163,7 @@ export const DetailDeclineNews =()=>{
                     
                     <div className="footer-decline">
                         <button className="back" onClick={Back}><i className="fas fa-angle-left icon"></i>Trở về</button>  
-                        <button className="no"value={state.news.id} onClick={Delete}>Xóa</button>
+                        {/* <button className="no"value={state.news.id} onClick={Delete}>Xóa</button> */}
                         <button className="yes"value={state.news.id} onClick={Approve}>Duyệt lại</button>   
                     </div>
                     

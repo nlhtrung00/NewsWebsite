@@ -6,13 +6,14 @@ import { useState,useEffect } from "react";
 const initialState ={
     news:[],
  }
-export const ReadingNews =({Newsid})=>{
+export const ReadingNews =({Newsid,view})=>{
     const [error, setError] = useState(false);
     const [News, setNews] = useState(initialState);
     const [author, setAuthor] = useState({});
     const [topic,setTopic] = useState({});
     const [subtopic,setSubtopic] = useState({});
     let iduser;
+    console.log(view);
     const fetchNews = async()=>{
         try{
             setError(false);          
@@ -59,6 +60,9 @@ export const ReadingNews =({Newsid})=>{
                         <div className="info-author">
                             <p className="name-author">Được viết bởi: {author.fullname}</p>
                             <i>Thời gian viết tin: {News.news.time_update_news}</i>
+                            <br />
+                            {view!=null && <i>Lượt xem: {view.totalView}</i>}
+                            {view==null && <i>Lượt xem:</i>}
                         </div>
                         
                         <div className="description-news">

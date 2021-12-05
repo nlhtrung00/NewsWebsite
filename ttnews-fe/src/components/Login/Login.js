@@ -66,11 +66,18 @@ export const Login=()=>{
                 <div className="signup-option">
                     <p>Chưa có tài khoản ?</p>
                     <button className="sign-up" name="signup">
+                    
                         <Link to="/signup">
                             Đăng ký
                         </Link>
                     </button>
                 </div>
+                <button className="accessguest" name="">
+                    
+                        <Link to="/">
+                            Truy cập trang chủ - khách
+                        </Link>
+                </button>
                 
             </form>
         </Wrapper>

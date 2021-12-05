@@ -63,7 +63,22 @@ const ApproveNews=({statusApprove})=>{
                     ).then((data)=>
                         console.log(data)
                     ).catch(err => console.log(err))
-
+                    let totalView = 0;
+                    let idNews = id;
+                    let dataview = {totalView, idNews};
+                    console.log(dataview);
+                    await fetch('https://localhost:44387/api/Views',{
+                            method: 'POST',
+                            headers:{
+                                'Content-Type':'application/json',
+                                'accept': 'text/plain'    
+                            },
+                            body:JSON.stringify(dataview)
+                        }).then((data)=>{
+                            console.log(data);
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
                     setApprove(true);
                 }
            })        
@@ -103,8 +118,9 @@ const ApproveNews=({statusApprove})=>{
                     ).then((data) =>
                         console.log(data)
                     ).catch(err => console.log(err))
-
-                    setApprove(true)
+                
+                  
+                setApprove(true)
             }
            })        
         }

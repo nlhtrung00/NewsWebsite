@@ -30,7 +30,7 @@ const CreateNews=()=>{
     
     const editor = useRef(null);
     var date = new Date();
-    var today = date.getFullYear() +"-"+(date.getMonth()+1)+"-"+date.getDate();
+    
     if(redirect){
         return <Redirect to="/profile" />
     }
@@ -79,7 +79,8 @@ const CreateNews=()=>{
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        setIsPending(true);   
+        setIsPending(true); 
+        let today = date.toISOString();
         let dataArray = new FormData();
         dataArray.append('title',formnews.title);
         dataArray.append('descriptions',formnews.descriptions);
@@ -90,7 +91,7 @@ const CreateNews=()=>{
         dataArray.append('subtopic.id',subtopic.id);
         dataArray.append('subtopic.subtopicname',subtopic.subtopicname);
         dataArray.append('subtopic.topic.id',subtopic.topic.id);
-        dataArray.append('subtopic.topic.name',subtopic.topic.topicname);
+        dataArray.append('subtopic.topic.topicname',topic.topicname);
         dataArray.append('subtopic.status',subtopic.status);
         dataArray.append('author.id',author.id);
         dataArray.append('author.fullname',author.fullname);
@@ -126,12 +127,12 @@ const CreateNews=()=>{
                         <form className="form-create-news row-display-column">
                             <div className="row-item-input">
                                 <label htmlFor="title" className="col-1">Tiêu đề bài viết</label>
-                                <input name="title" id="titlenews" onChange={onHandleChange}   placeholder="Nhập tiêu đề" className="col-2"/>
+                                <input name="title" id="titlenews" onChange={onHandleChange}   placeholder="Nhập tiêu đề" className="col-2" required/>
                             </div>
         
                             <div className="row-item-input">
                                 <label htmlFor="topic"className="col-1">Thuộc nhóm chủ đề</label>
-                                <select name="topic" className="col-2" onChange={handleChangeTopic} >
+                                <select name="topic" className="col-2" onChange={handleChangeTopic} required>
                                             <option value="">Chọn chủ đề...</option>
                                             {state.topics.map(topic => {
                                                 
@@ -149,7 +150,7 @@ const CreateNews=()=>{
         
                             <div className="row-item-input">
                                 <label htmlFor="subtopic"className="col-1">Chủ đề chính</label>
-                                <select name="subtopic"className="col-2" onChange={handleChangeSubtopic}>
+                                <select name="subtopic"className="col-2" onChange={handleChangeSubtopic} required>
                                     <option value="">Chọn chủ đề...</option>
                                         {subTopics!=null && subTopics.map(subtopic => {
                                             return (
