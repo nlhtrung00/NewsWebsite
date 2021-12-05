@@ -35,6 +35,10 @@ export const Wrapper=styled.div`
        margin: 5px 0;
        border-bottom: 2px solid white;
     }
+    .list-tasks li a{
+        color: black;
+        text-decoration: none;
+    }
     .list-tasks li:hover{
         border-bottom: 2px solid black;
         transition: ease-in-out 0.2s;

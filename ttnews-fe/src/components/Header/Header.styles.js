@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
         text-decoration: none;
         color: black;
         margin-right: 5px;
-        padding: 10px 20px;
+        
     }
 `
 export const NavBar = styled.div`
@@ -39,6 +39,9 @@ export const NavBar = styled.div`
         cursor: pointer;
         position: relative;
         
+    }
+    .topic-item > a{
+        padding: 20px;
     }
     .topic-item:hover{
         background-color: #48b8a9;

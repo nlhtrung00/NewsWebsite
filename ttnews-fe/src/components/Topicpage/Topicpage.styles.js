@@ -49,4 +49,27 @@ export const Content = styled.div`
         color: black;
         padding: 10px;
     }
+    .wrapper-formsearch{
+        position: relative;
+        padding: 10px 0 20px;
+    }
+    .form-search {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-45%);
+    }
+    .search {
+        width: 34px;
+        line-height: 32px;
+        font-size: 20px;
+        vertical-align: top;
+    }
+
+    input {
+        margin-right: 5px;
+        background: transparent;
+        height: 32px;
+        font-size: 20px;
+        width: 300px;
+    }
 `

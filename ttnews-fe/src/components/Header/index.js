@@ -43,6 +43,8 @@ export const Header =(props)=>{
         )
     }
     let button;
+    let role = localStorage.getItem('role');
+   
     const handleLogout=()=>{
         localStorage.clear();
         window.location.reload();
@@ -53,12 +55,17 @@ export const Header =(props)=>{
     if(props.user==null)
         button = (<Link to="/login"><button>Login</button></Link>)
     else{
-        button = (<>
-        <Link to="/"><button onClick={handleLogout}>Logout</button></Link><div>
+        button = (
+        <>
+            <Link to="/"><button onClick={handleLogout}>Logout</button></Link>
+            {role=="boss"||role=="admin" ? <button><Link to="/admin">Management</Link></button> : ""}
+        <div>
+        
             <Link to='/profile'>
                 <User src={UserIcon} />
             </Link>
-        </div></>
+        </div>
+        </>
         )    
     }
     if(state!=null)
@@ -106,7 +113,7 @@ export const Header =(props)=>{
             </NavBar>
             <div className="user-option">
                 {button}
-                
+    
                 
             </div>
             

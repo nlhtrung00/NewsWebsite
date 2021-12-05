@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     position: absolute;
     z-index:-1;
     top: 0;
-    .title-loginpage{
+    .title-signuppage{
         color: white;
         position: absolute;
         top: 10%;
@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
         margin: 0;
         padding: 0;
     }
-    .title-loginpage p{
+    .title-signuppage p{
         font-size: 30px;
         margin: 0;
     }
@@ -31,12 +31,12 @@ export const Wrapper = styled.div`
         padding: 10px;
         background-color: rgba(255,255,255,0.4);
         width: 400px;
-        height: 500px;
+        height: 600px;
         margin: 0 auto;
         border-radius: 10px;
         box-shadow:2px 5px 3px rgba(0,0,0,0.3);
         position: absolute;
-        top: 50%;
+        top: 55%;
         left: 90%;
         transform: translate(-100%,-50%);
         
@@ -46,7 +46,7 @@ export const Wrapper = styled.div`
         width: 100%;
     };
     h1{
-        padding: 20px 0 40px;
+        padding: 10px 0 10px;
         text-align: center;
         
     }
@@ -58,19 +58,19 @@ export const Wrapper = styled.div`
         
     }
     .form-group label{
-        font-size: 20px;
+        font-size: 18px;
         margin-bottom: 10px 0 10px;
     }
     .form-group input{
-        font-size: 17px;
-        margin: 10px 0 10px;
+        font-size: 16px;
+        margin: 5px 0 5px;
         padding: 8px;
     }
     .login{
         text-align: center;
         margin:10px 0 10px
     }
-    .submit-login{
+    .submit-signup{
         padding: 10px;
         font-size: 20px;
         background-color: #232224;
@@ -80,31 +80,9 @@ export const Wrapper = styled.div`
         font-weight: 600;
         cursor: pointer;
     }
-    .signup-option{
-        padding: 20px 0 0 0;
-        text-align: center;
+    .required{
+        color: red;
     }
-    .signup-option p{
-        font-size: 20px;
-        margin-bottom: 10px;
-        
-    }
-    .sign-up{
-        padding: 8px;
-        font-size:20px;
-        background-color: #8a8a8a;
-        border: none;
-        color:white;
-        font-weight: 600;
-        cursor: pointer;
-    }
-    .sign-up > a{
-        color: white;
-        text-decoration: none;
-    }
-    .sign-up:hover{
-        background-color: #262626;
-        transition: ease-in-out 0.2s;
-    }
-
+    
+    
 `

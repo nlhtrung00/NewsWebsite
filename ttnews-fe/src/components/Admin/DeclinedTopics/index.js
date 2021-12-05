@@ -91,7 +91,7 @@ const DeclinedTopic=({statusApprove})=>{
             <>
                 
                 <EmptyContainer>
-                    <h2>Danh sách chủ đề đã hủy hiện đang rỗng</h2>
+                    <h2>Danh sách chủ đề bị hủy hiện trống</h2>
                     <img src={NoneofWork} alt="nothing need to approve" />
                 </EmptyContainer>
             </>

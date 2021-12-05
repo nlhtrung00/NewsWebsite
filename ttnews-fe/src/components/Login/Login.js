@@ -1,9 +1,9 @@
 import {useState} from "react";
 import { Wrapper } from "./Login.styles";
 //import { createBrowserHistory } from 'history';
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Home from '../Homepage/Home'
-import { Header } from "../Header";
+
 
 export const Login=()=>{
 
@@ -42,7 +42,7 @@ export const Login=()=>{
        
     return(
         <>
-        <Header />
+        
         <Wrapper>
             <div className="title-loginpage">
                 <h1 className="tt-news_title">TTNews</h1>
@@ -52,11 +52,11 @@ export const Login=()=>{
                 <h1>Đăng nhập</h1>
                 <div className="form-group">
                     <label htmlFor="username">Tài khoản</label>
-                    <input type="text" className="username" name="username" onChange={(e)=>setUsername(e.target.value)} placeholder="Enter your username" autoComplete="off"/>
+                    <input type="text" className="username" name="username" onChange={(e)=>setUsername(e.target.value)} placeholder="Nhập tài khoản" autoComplete="off"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Mật khẩu</label>
-                    <input type="password" className="password" name="password" onChange={(e)=>setPassword(e.target.value)} placeholder="Enter your password" autoComplete="off"/>
+                    <input type="password" className="password" name="password" onChange={(e)=>setPassword(e.target.value)} placeholder="Nhập mật khẩu" autoComplete="off"/>
                 </div>
                 <div className="login">
                     <input type="submit" className="submit-login" name="login" value="Đăng nhập" onClick={handleLogin}/>
@@ -65,7 +65,11 @@ export const Login=()=>{
                 
                 <div className="signup-option">
                     <p>Chưa có tài khoản ?</p>
-                    <button className="sign-up" name="signup">Đăng ký</button>
+                    <button className="sign-up" name="signup">
+                        <Link to="/signup">
+                            Đăng ký
+                        </Link>
+                    </button>
                 </div>
                 
             </form>

@@ -13,6 +13,7 @@ import { DetailNews } from './components/Admin/ViewDetailNews';
 import { DetailDeclineNews } from './components/Admin/ViewDetailDeclineNews';
 import { Topicpage } from './components/Topicpage';
 import {Subtopicpage} from './components/Subtopicpage';
+import { Signup } from './components/Signup';
 
 const App =() => {
  
@@ -23,6 +24,7 @@ const App =() => {
       <Switch>
         <Route exact path='/' component={()=><Home/>} />  
         <Route path='/login' component={()=><Login/>} />
+        <Route path='/signup' component={()=><Signup/>} />
         <Route path='/News/:NewsId' component={News} />
         <Route path='/profile' exact component={Profile} />
         <Route path="/profile/Thembaiviet" component={CreateNews}/>
