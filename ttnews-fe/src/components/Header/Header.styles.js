@@ -34,14 +34,14 @@ export const NavBar = styled.div`
         min-width: 130px;
         text-align: center;
         float: left;
-        padding: 20px;
+        padding: 20px 10px;
         font-size: var(--fontMed);
         cursor: pointer;
         position: relative;
         
     }
     .topic-item > a{
-        padding: 20px;
+        padding: 20px 30px;
     }
     .topic-item:hover{
         background-color: #48b8a9;

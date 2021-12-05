@@ -35,10 +35,10 @@ export const Header =(props)=>{
     },[])
 
 
-    if(error){
+    if(error || errorFetch){
         return(
             <>
-                something wrong with Topic fetch
+                something wrong happened, sorry, try check your connection
             </>
         )
     }
@@ -58,7 +58,7 @@ export const Header =(props)=>{
         button = (
         <>
             <Link to="/"><button onClick={handleLogout}>Logout</button></Link>
-            {role=="boss"||role=="admin" ? <button><Link to="/admin">Management</Link></button> : ""}
+            {role==="boss"||role==="admin" ? <button><Link to="/admin">Management</Link></button> : ""}
         <div>
         
             <Link to='/profile'>

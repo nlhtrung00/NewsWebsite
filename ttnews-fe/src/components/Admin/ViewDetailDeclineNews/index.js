@@ -80,10 +80,27 @@ export const DetailDeclineNews =()=>{
                     },
                     body:datajson
                     }
-                    ).then(()=>{
-                        alert("duyệt thành công");
-                        setRedirect(true);
+                    ).then((data)=>{
+                        console.log(data)
                     }).catch(err => console.log(err))
+                    let totalView = 0;
+                    let idNews = id;
+                    let dataview = {totalView, idNews};
+                    console.log(dataview);
+                    await fetch('https://localhost:44387/api/Views',{
+                            method: 'POST',
+                            headers:{
+                                'Content-Type':'application/json',
+                                'accept': 'text/plain'    
+                            },
+                            body:JSON.stringify(dataview)
+                        }).then((data)=>{
+                            console.log(data);
+                            alert("duyệt thành công");
+                            setRedirect(true);
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
             }
                   
         }
@@ -154,7 +171,7 @@ export const DetailDeclineNews =()=>{
                         <p>{state.news.descriptions}</p>
                     </div>
                     <div className="img-news">
-                       <img src={state.news.imageName}/> 
+                       <img src={state.news.imageName} alt="news image"/> 
                     </div>
                     <div className="content">
                         <p dangerouslySetInnerHTML={{__html:state.news.content}}></p>

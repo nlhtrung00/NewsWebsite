@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^31.0.0",
+    "@ckeditor/ckeditor5-easy-image": "^31.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.3",
+    "@ckeditor/ckeditor5-upload": "^31.0.0",
     "@react-navigation/native": "^6.0.6",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -19,6 +23,8 @@
     "react-script": "^2.0.5",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.1",
+    "suneditor": "^2.41.3",
+    "suneditor-react": "^3.3.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

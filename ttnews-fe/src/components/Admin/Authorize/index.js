@@ -1,8 +1,6 @@
-import { EmptyContainer, Container, Users,Admin,Data } from "../Authorize/Authorize.styles";
+import { Container, Users,Admin,Data } from "../Authorize/Authorize.styles";
 import apiSettings from "../../../API";
 import { useState,useEffect } from "react/cjs/react.development";
-import { Link } from "react-router-dom";
-import NoneofWork from "../../../image/background/Checklist.jpg";
 import AvatarAdmin from "../../../image/temp_avt_admin.png";
 import AvatarUser from "../../../image/temp_avt_user.png";
 const initialState ={
@@ -37,7 +35,7 @@ const Authorize = () =>{
     const ChangeRoleAdmin=async(e) =>{
         var id = e.target.value;
         state.admins.map(async(admin) => {
-            if(admin.id == id)
+            if(admin.id === id)
             {
                 var username = admin.username;
                 var userpassword = admin.userpassword;
@@ -65,7 +63,7 @@ const Authorize = () =>{
     const ChangeRoleUser=async(e) =>{
         var id = e.target.value;
         state.users.map(async(user) => {
-            if(user.id == id)
+            if(user.id === id)
             {
                 var username = user.username;
                 var userpassword = user.userpassword;

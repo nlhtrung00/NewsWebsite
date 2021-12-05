@@ -8,9 +8,9 @@ import Home from '../Homepage/Home'
 export const Login=()=>{
 
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [role, setRole] = useState();
     const [LoggedIn, setLoggedIn] = useState(false);
 
     const handleLogin=async(e)=>{
@@ -35,7 +35,7 @@ export const Login=()=>{
         return <Redirect to= {< Home/>} />
         
     }
-    else if(role==='admin' || role==='boss' && LoggedIn){
+    else if((role==='admin' || role==='boss') && LoggedIn){
         return <Redirect to ='/admin'/>
     } 
     
