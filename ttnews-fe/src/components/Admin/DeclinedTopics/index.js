@@ -1,5 +1,5 @@
 import { EmptyContainer, Container,Wrapper,Content } from "./DeclinedTopics.styles";
-import TempApproveImg from '../../../image/temp_approve.jpg';
+
 // import { useSubTopicFetchByTopic } from "../../../fetch/FetchSubByStatus";
 import apiSettings from "../../../API";
 import { useState,useEffect } from "react/cjs/react.development";
@@ -20,7 +20,7 @@ const DeclinedTopic=({statusApprove})=>{
             setState(() => ({
                 subtopics,
             }));
-            if(subtopics.length == 0){
+            if(subtopics.length === 0){
                 setEmpty(true);
             }
         }
@@ -86,7 +86,7 @@ const DeclinedTopic=({statusApprove})=>{
         }
         
     }
-    if(state.subtopics.length==0 && empty){
+    if(state.subtopics.length===0 && empty){
         return (
             <>
                 
@@ -102,7 +102,7 @@ const DeclinedTopic=({statusApprove})=>{
         <>
         
         <Container>
-         {state.subtopics.length !=0 &&state.subtopics.map(subtopic =>{
+         {state.subtopics.length !==0 &&state.subtopics.map(subtopic =>{
             return(
             <Wrapper key={subtopic.id}>
                 <Content >

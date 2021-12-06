@@ -55,6 +55,9 @@ export const Content=styled.div`
         
 
     }
+    .wrapper-info{
+        height: 70px;
+    }
     .cut-text { 
         text-overflow: ellipsis;
         overflow: hidden;

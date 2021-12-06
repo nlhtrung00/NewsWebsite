@@ -1,6 +1,25 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+    background-color: var(--lightGrey);
+    max-width: 100%;
+    height: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+`
+export const Content = styled.div`
+    max-width: 1080px;
+    background-color:white ;  
+    min-height: 110vh;
+    margin: 0 auto;
+    position: relative;
+
+    h2{
+        text-align: center;
+        padding: 10px;
+    }
+`
+export const News = styled.div`
     display: flex;  
     margin: 30px auto 30px ;
     background-color: #f2f5f0;
@@ -13,7 +32,7 @@ export const Wrapper = styled.div`
         width: 320px;
         overflow: hidden;
     }
-`;
+`
 
 export const Image = styled.img`
     width: 100%;
@@ -23,7 +42,7 @@ export const Image = styled.img`
     object-fit: cover;
 `;
 
-export const Content = styled.div`
+export const ContentNews = styled.div`
     margin-left: 10px;
     p{
         font-size: 18px;
@@ -43,5 +62,12 @@ export const Content = styled.div`
         text-decoration: none;
         color: black;
         font-size: 20px;
+    }
+    .deleteNews{
+        color: white;
+        background: red;
+        cursor: pointer;
+        font-size: 17px;
+        padding: 5px;
     }
 `;

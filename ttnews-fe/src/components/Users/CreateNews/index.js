@@ -1,5 +1,7 @@
 import {useState,useRef, useEffect} from "react";
-import JoditEditor from "jodit-react";
+import SunEditor from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
+// import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 import { Wrapper,Content } from "./CreateNews.styles";
 import {Link} from 'react-router-dom';
 import {useTopicFetch} from '../../../fetch/TopicFetch'
@@ -17,6 +19,7 @@ const CreateNews=()=>{
     const [author, setAuthor] = useState(); 
     const [uploadFile, setUploadFile] = useState();
     const [redirect, setRedirect] = useState(false);
+    const [content, setContent] = useState('');
     const [formnews, setFormNews] = useState({
         title:'',
         descriptions:'',
@@ -30,22 +33,16 @@ const CreateNews=()=>{
     
     const editor = useRef(null);
     var date = new Date();
-    var today = date.getFullYear() +"-"+(date.getMonth()+1)+"-"+date.getDate();
+    
     if(redirect){
         return <Redirect to="/profile" />
     }
     
+    const handleChangeContent=(content)=>{
+        //console.log(content); //Get Content Inside Editor
+        setContent(content);
+    }
     
-    const config ={
-        readonly: false
-    }
-    const handleBlur=()=>{
-        setFormNews(prev=>({
-            ...prev,
-            content:editor.current.value
-        }))
-        
-    }
     const onHandleChange=(e)=>{
         const {name, value} = e.currentTarget
         setFormNews(prev =>({
@@ -79,39 +76,43 @@ const CreateNews=()=>{
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        setIsPending(true);   
+        setIsPending(true); 
+        let today = date.toISOString();
         let dataArray = new FormData();
         dataArray.append('title',formnews.title);
         dataArray.append('descriptions',formnews.descriptions);
-        dataArray.append('content',formnews.content);
+        dataArray.append('content',content);
         dataArray.append('time_update_news',today);
         dataArray.append('topic.id',topic.id);
         dataArray.append('topic.topicname',topic.topicname);
         dataArray.append('subtopic.id',subtopic.id);
         dataArray.append('subtopic.subtopicname',subtopic.subtopicname);
         dataArray.append('subtopic.topic.id',subtopic.topic.id);
-        dataArray.append('subtopic.topic.name',subtopic.topic.topicname);
+        dataArray.append('subtopic.topic.topicname',topic.topicname);
         dataArray.append('subtopic.status',subtopic.status);
         dataArray.append('author.id',author.id);
         dataArray.append('author.fullname',author.fullname);
         dataArray.append('author.dateofbirth',author.dateofbirth);
         dataArray.append('author.role',author.role);
+        dataArray.append('author.username',author.username);
+        dataArray.append('author.userpassword',author.userpassword);
         dataArray.append('image',uploadFile);
 
         const response = await fetch('https://localhost:44387/api/News',{
             method:'POST',
             body:dataArray
         }).then((res)=>{
+            setIsPending(false);
             console.log(res.json());
             setRedirect(true);
             alert('Tạo tin thành công!')
         }).catch(err=>{
             console.log(err);
         })
-        setIsPending(false);
+        
    
     }
-
+    
     
     if(user == null){
         return <Redirect to="/" />
@@ -126,12 +127,12 @@ const CreateNews=()=>{
                         <form className="form-create-news row-display-column">
                             <div className="row-item-input">
                                 <label htmlFor="title" className="col-1">Tiêu đề bài viết</label>
-                                <input name="title" id="titlenews" onChange={onHandleChange}   placeholder="Nhập tiêu đề" className="col-2"/>
+                                <input name="title" id="titlenews" onChange={onHandleChange}   placeholder="Nhập tiêu đề" className="col-2" required/>
                             </div>
         
                             <div className="row-item-input">
                                 <label htmlFor="topic"className="col-1">Thuộc nhóm chủ đề</label>
-                                <select name="topic" className="col-2" onChange={handleChangeTopic} >
+                                <select name="topic" className="col-2" onChange={handleChangeTopic} required>
                                             <option value="">Chọn chủ đề...</option>
                                             {state.topics.map(topic => {
                                                 
@@ -149,7 +150,7 @@ const CreateNews=()=>{
         
                             <div className="row-item-input">
                                 <label htmlFor="subtopic"className="col-1">Chủ đề chính</label>
-                                <select name="subtopic"className="col-2" onChange={handleChangeSubtopic}>
+                                <select name="subtopic"className="col-2" onChange={handleChangeSubtopic} required>
                                     <option value="">Chọn chủ đề...</option>
                                         {subTopics!=null && subTopics.map(subtopic => {
                                             return (
@@ -171,14 +172,9 @@ const CreateNews=()=>{
                             <div className="row-item-input">
                                 <label htmlFor="content"className="col-1">Nội dung bài viết</label>
                                 <div className="col-2">
-                                    <JoditEditor
-                                        ref={editor}
-                                        name="content"
-                                        config={config}
-                                        onBlur={handleBlur}
-                                        onChange={newContent => {}}
-                                    />
+                                    <SunEditor onChange={handleChangeContent}/>
                                 </div>
+                                
                             </div>
                             <div className="row confirm-form">  
                                 <Link to="/profile"><button className="btn btn-cancel">Trở về</button></Link>        

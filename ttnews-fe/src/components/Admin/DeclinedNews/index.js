@@ -57,8 +57,11 @@ const DeclinedNews=({statusApprove})=>{
                     <div className="header-approve">
                         
                             <h3 className="title-news cut-text">Tiêu đề: {itemnews.title}</h3>
-                            <p>Nhóm chủ đề: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
-                            <p>Chủ đề: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
+                            <div className="wrapper-info">
+                                <p>Nhóm chủ đề: {itemnews.topic!=null ? itemnews.topic.topicname :"N/A"}</p>
+                                <p>Chủ đề: {itemnews.subtopic!=null ? itemnews.subtopic.subtopicname: "N/A"}</p>
+                            </div>
+                            
                             <Link to={`/admin/news/viewdetaildecline/${itemnews.id}`}>
                                 <button className="btn-detail">Xem chi tiết</button>
                             </Link>

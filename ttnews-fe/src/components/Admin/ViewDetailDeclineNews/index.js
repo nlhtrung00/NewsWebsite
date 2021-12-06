@@ -80,10 +80,27 @@ export const DetailDeclineNews =()=>{
                     },
                     body:datajson
                     }
-                    ).then(()=>{
-                        alert("duyệt thành công");
-                        setRedirect(true);
+                    ).then((data)=>{
+                        console.log(data)
                     }).catch(err => console.log(err))
+                    let totalView = 0;
+                    let idNews = id;
+                    let dataview = {totalView, idNews};
+                    console.log(dataview);
+                    await fetch('https://localhost:44387/api/Views',{
+                            method: 'POST',
+                            headers:{
+                                'Content-Type':'application/json',
+                                'accept': 'text/plain'    
+                            },
+                            body:JSON.stringify(dataview)
+                        }).then((data)=>{
+                            console.log(data);
+                            alert("duyệt thành công");
+                            setRedirect(true);
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
             }
                   
         }
@@ -91,28 +108,28 @@ export const DetailDeclineNews =()=>{
 
     // xóa
     
-    const Delete = async(e) =>{
-        console.log(e.target.value);
-        console.log("delete clicked");
-        var id = e.target.value;
-        if(id!=null){
-            await fetch(`https://localhost:44387/api/News/${id}`,{
-                method:'DELETE',
-                headers:{
-                    'Content-Type':'application/json',
-                    'accept': '*/*'  
-                    }
-                }
-                )
-            console.log("done");
-            alert("Xóa thành công");
-            setRedirect(true);  
+    // const Delete = async(e) =>{
+    //     console.log(e.target.value);
+    //     console.log("delete clicked");
+    //     var id = e.target.value;
+    //     if(id!=null){
+    //         await fetch(`https://localhost:44387/api/News/${id}`,{
+    //             method:'DELETE',
+    //             headers:{
+    //                 'Content-Type':'application/json',
+    //                 'accept': '*/*'  
+    //                 }
+    //             }
+    //             )
+    //         console.log("done");
+    //         alert("Xóa thành công");
+    //         setRedirect(true);  
             
-        }
-        else{
-            console.log("null id");
-        }
-    }
+    //     }
+    //     else{
+    //         console.log("null id");
+    //     }
+    // }
     // trở về trang chủ
     const Back=()=>(setRedirect(true));
     if(redirect){
@@ -154,7 +171,7 @@ export const DetailDeclineNews =()=>{
                         <p>{state.news.descriptions}</p>
                     </div>
                     <div className="img-news">
-                       <img src={state.news.imageName}/> 
+                       <img src={state.news.imageName} alt="news image"/> 
                     </div>
                     <div className="content">
                         <p dangerouslySetInnerHTML={{__html:state.news.content}}></p>
@@ -163,7 +180,7 @@ export const DetailDeclineNews =()=>{
                     
                     <div className="footer-decline">
                         <button className="back" onClick={Back}><i className="fas fa-angle-left icon"></i>Trở về</button>  
-                        <button className="no"value={state.news.id} onClick={Delete}>Xóa</button>
+                        {/* <button className="no"value={state.news.id} onClick={Delete}>Xóa</button> */}
                         <button className="yes"value={state.news.id} onClick={Approve}>Duyệt lại</button>   
                     </div>
                     

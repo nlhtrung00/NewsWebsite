@@ -72,6 +72,10 @@ namespace TTNewsBE.Services
         {
             return await _news.Find<News>(n => n.Status == status).SortByDescending(n => n.Time_update_news).ToListAsync();
         }
+        public async Task<List<News>> GetByStatusWithByAuthorAsync(string status,string idauthor)
+        {
+            return await _news.Find<News>(n => n.Status == status && n.Author.Id == idauthor).SortByDescending(n => n.Time_update_news).ToListAsync();
+        }
 
         public async Task<News> CreateAsync(News news)
         {

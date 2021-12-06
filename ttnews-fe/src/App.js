@@ -14,7 +14,8 @@ import { DetailDeclineNews } from './components/Admin/ViewDetailDeclineNews';
 import { Topicpage } from './components/Topicpage';
 import {Subtopicpage} from './components/Subtopicpage';
 import { Signup } from './components/Signup';
-
+import { ApprovedNews } from './components/Users/ApprovedNews';
+import { DeclinedNews } from './components/Users/DeclinedNews';
 const App =() => {
  
   return(
@@ -29,6 +30,8 @@ const App =() => {
         <Route path='/profile' exact component={Profile} />
         <Route path="/profile/Thembaiviet" component={CreateNews}/>
         <Route path="/profile/Themchude" component={CreateTopics} />
+        <Route path="/profile/approved" component={ApprovedNews} />
+        <Route path="/profile/declined" component={DeclinedNews} />
         <Route exact path='/admin' component={HomeAdmin} />
         <Route path='/admin/news/viewdetail/:Newsid' component={DetailNews} />
         <Route path='/admin/news/viewdetaildecline/:Newsid' component={DetailDeclineNews} />

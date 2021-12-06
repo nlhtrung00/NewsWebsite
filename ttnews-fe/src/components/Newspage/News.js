@@ -8,12 +8,14 @@ export const News=()=>{
     const {NewsId} = useParams(); 
     const [error, setError] = useState(false);
     const [view, setView] = useState();
+    
     //console.log(NewsId);
     // update views of news
     const fetchView=async()=>{
         try{
             setError(false);
             const View =await apiSettings.fetchViewByIdNews(NewsId);
+            
             setView({
                 ...View
             })
@@ -21,6 +23,7 @@ export const News=()=>{
             setError(true);
         }
     }
+    
     const updateView=async()=>{
         try{
             setError(false);
@@ -58,7 +61,8 @@ export const News=()=>{
    
     return(
         <>
-        <ReadingNews Newsid={NewsId} />
+        {view!=null && <ReadingNews Newsid={NewsId} view={view} />}
+        {view==null && <ReadingNews Newsid={NewsId}  />}
         </>
     )
 }

@@ -56,6 +56,7 @@ export const Content = styled.div`
         position: relative;
         transition: ease-in-out 0.2s;
         border-radius: 10px;
+        margin-bottom: 10px;
     }
     #img--add__topic{
         opacity: 0.8;

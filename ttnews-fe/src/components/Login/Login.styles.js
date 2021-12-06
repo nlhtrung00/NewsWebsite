@@ -106,5 +106,19 @@ export const Wrapper = styled.div`
         background-color: #262626;
         transition: ease-in-out 0.2s;
     }
+    .accessguest{
+        background-color: #ffffff;
+        padding: 5px;
+        border: none;
+        border-radius: 3px;
+        text-align: center;
+        margin:10px auto 10px;
+        display: block;
+    }
+    .accessguest a{
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+    }
 
 `

@@ -35,7 +35,7 @@ const ApproveTopic=({statusApprove})=>{
     useEffect(()=>{
         setState(initialState);
         fetchsubTopics();
-    },[])
+    },[approve])
 
     const Approve =async(e)=>{
         console.log(e.target.value);

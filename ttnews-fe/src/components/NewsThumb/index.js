@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Wrapper, Content, Image } from "./News.styles";
 import { Link } from "react-router-dom";
-import Tempimg from '../../image/tempImg.jpg'
+import NoImg from '../../image/noImage.jpg'
 import apiSettings from "../../API";
 
 export const NewsThumb =({newsid,clickable})=>{
@@ -29,12 +29,16 @@ export const NewsThumb =({newsid,clickable})=>{
     const author = news!=null ? news.author: "";
     const subtopic = news!=null ? news.subtopic: "";
     
-    if (news!=null && news.imageName == null) news.imageName = Tempimg
+    
     return(
         
         <Wrapper>
             
-            {news!=null && <Image src={news.imageName} alt="temp"/> }
+            <div className="wrapper-img">
+                {news!=null && news.imageName!=null && <Image src={news.imageName} alt="temp"/> }
+                {news==null || news.imageName==null && <Image src={NoImg} alt="temp"/> }
+            </div>
+            
             {news!=null &&
             <Content>
                 {clickable ?<Link to={`/News/${news.id}`}>

@@ -1,8 +1,10 @@
 
 import { Wrapper, Content } from "./Profile.styles";
 import avatar from '../../../image/cat.jpg';
-import addTopicImg from '../../../image/topic.jpg';
-import writeNewsImg from '../../../image/postnews.jpg'
+import addTopicImg from '../../../image/background/topic.jpg';
+import writeNewsImg from '../../../image/background/postnews.jpg'
+import ApprovedImg from '../../../image/background/approved.jpg'
+import DeclinedImg from '../../../image/background/declined.jpg'
 import {Link} from "react-router-dom";
 import { createBrowserHistory } from 'history';
 import { Header } from "../../Header";
@@ -51,6 +53,22 @@ const Profile =() =>{
                         
                             <img src={writeNewsImg} id="img--add__news" alt="alt"/>
                             <h4 className="title">Viết bài</h4>
+                         </Link>
+                         
+                    </div>
+                    <div className="img--add">
+                        <Link to="/profile/declined">
+                        
+                            <img src={DeclinedImg} id="img--add__news" alt="alt"/>
+                            <h4 className="title">Tin đã bị hủy</h4>
+                         </Link>
+                         
+                    </div>
+                    <div className="img--add">
+                        <Link to="/profile/approved">
+                        
+                            <img src={ApprovedImg} id="img--add__news" alt="alt"/>
+                            <h4 className="title">Tin đã được duyệt</h4>
                          </Link>
                          
                     </div>

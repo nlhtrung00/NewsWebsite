@@ -132,6 +132,12 @@ namespace TTNewsBE.Controllers
             var articles = await _newsService.GetByStatusAsync(status);
             return Ok(new { articles });
         }
+        [HttpGet("GetByStatus/{status}/author/{idauthor}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetByStatusWithByAuthor(string status,string idauthor)
+        {
+            var articles = await _newsService.GetByStatusWithByAuthorAsync(status,idauthor);
+            return Ok(new { articles });
+        }
 
 
         // PUT: api/News/5
