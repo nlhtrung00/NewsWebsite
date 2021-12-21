@@ -7,20 +7,16 @@ import NoneofWork from "../../../image/background/Checklist.jpg";
 const initialState ={
     subtopics:[],
  }
-const ApproveTopic=({statusApprove})=>{
-    //const {state, errorFetchSubtopic} = useSubTopicFetchByTopic(status)
-    const[state,setState] = useState(initialState);
-    const[approve,setApprove] = useState(false);
+const ApproveTopic=()=>{
+    const [state,setState] = useState(initialState);
     const [error,setError] = useState(false);
     const [empty, setEmpty] = useState(false);
-    const fetchsubTopics = async()=>{
+    const fetchsubTopics = async(statusApprove)=>{
         try{
-            setError(false);   
-                   
             const subtopics = await apiSettings.fetchSubtopicByStatus(statusApprove);
             
             setState(() => ({
-                subtopics,
+                subtopics
             }));
             if(subtopics.length === 0){
                 setEmpty(true);
@@ -30,18 +26,16 @@ const ApproveTopic=({statusApprove})=>{
         catch(error){
             setError(true);
         }
-        setApprove(false);
     }
     useEffect(()=>{
-        setState(initialState);
-        fetchsubTopics();
-    },[approve])
+        fetchsubTopics('disapprove');
+    },[])
 
-    const Approve =async(e)=>{
-        console.log(e.target.value);
+    const Approve = async(e)=>{
+        const subTopicId = e.target.value ? e.target.value : e.target.parentNode.value;
         if(state.subtopics!=null){
-           state.subtopics.map(async(subtopic)=>{
-            if(subtopic.id===e.target.value){
+            state.subtopics.map(async(subtopic)=>{
+            if(subtopic.id===subTopicId){
                 const id = subtopic.id;
                 const subtopicname = subtopic.subtopicname;
                 const status = "approved";
@@ -51,7 +45,6 @@ const ApproveTopic=({statusApprove})=>{
                 };
                 const dataPost ={id,subtopicname,status,topic};
                 var datajson = JSON.stringify(dataPost);
-                console.log("clicked approve");
                 await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
                     method:'PUT',
                     headers:{
@@ -60,67 +53,69 @@ const ApproveTopic=({statusApprove})=>{
                     },
                     body:datajson
                     }
-                    ).then((data) =>
-                        console.log(data)
-                    ).catch(err => console.log(err))
-                    setApprove(true)
+                    ).catch(() => alert('Lỗi duyệt chủ đề! Vui lòng thử lại!'))
             }
-           })        
+            })
+            const subtopics = state.subtopics.filter(subtopic => subtopic.id !== subTopicId);
+            setState(() => ({
+                subtopics
+            })); 
+            if(subtopics.length === 0){
+                setEmpty(true);
+            }       
         }
     }  
-    const Decline =async(e)=>{
-        console.log(e.target.value);
+    const Decline = async(e)=>{
+        const subTopicId = e.target.value ? e.target.value : e.target.parentNode.value;
         if(state.subtopics!=null){
-           state.subtopics.map(async(subtopic)=>{
-            if(subtopic.id===e.target.value){
-                const id = subtopic.id;
-                const subtopicname = subtopic.subtopicname;
-                const status = "declined";
-                const topic ={
-                    id:subtopic.topic.id,
-                    topicname:subtopic.topic.topicname
-                };
-                const dataPost ={id,subtopicname,status,topic};
-                var datajson = JSON.stringify(dataPost);
-                console.log("clicked declined");
-                await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
-                    method:'PUT',
-                    headers:{
-                        'Content-Type':'application/json',
-                        'accept': '*/*'  
-                    },
-                    body:datajson
-                    }
-                    ).then((data) =>
-                        console.log(data)
-                    ).catch(err => console.log(err))
-
-                    setApprove(true)
-            }
-           })        
+            state.subtopics.map(async(subtopic)=>{
+                if(subtopic.id===subTopicId){
+                    const id = subtopic.id;
+                    const subtopicname = subtopic.subtopicname;
+                    const status = "declined";
+                    const topic ={
+                        id:subtopic.topic.id,
+                        topicname:subtopic.topic.topicname
+                    };
+                    const dataPost ={id,subtopicname,status,topic};
+                    var datajson = JSON.stringify(dataPost);
+                    await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
+                        method:'PUT',
+                        headers:{
+                            'Content-Type':'application/json',
+                            'accept': '*/*'  
+                        },
+                        body:datajson
+                        }
+                        ).catch(() => alert('Lỗi hủy chủ đề! Vui lòng thử lại!'))
+                }
+            })  
+            const subtopics = state.subtopics.filter(subtopic => subtopic.id !== subTopicId);
+            setState(() => ({
+                subtopics
+            }));  
+            if(subtopics.length === 0){
+                setEmpty(true);
+            }     
         }
     }      
                 
                   
-    if(state.subtopics.length==0 && empty){
+    
+    if(error) return <div>Something wrong happen</div>;
+    else
+    if(state.subtopics.length===0 && empty){
         return (
-            <>
-                
-                <EmptyContainer>
-                    <h2>Không chủ đề nào cần duyệt</h2>
-                    <img src={NoneofWork} alt="nothing need to approve" />
-                </EmptyContainer>
-            </>
+            <EmptyContainer>
+                <h2>Không chủ đề nào cần duyệt</h2>
+                <img src={NoneofWork} alt="nothing need to approve" />
+            </EmptyContainer>
         )
     }    
-    
-
-
+    else
     return(
-        <>
-        
         <Container>
-         {state.subtopics.length != 0&&state.subtopics.map(subtopic =>{
+         {state.subtopics.length !== 0&&state.subtopics.map(subtopic =>{
             return(
             <Wrapper key={subtopic.id}>
                 <Content >
@@ -139,14 +134,13 @@ const ApproveTopic=({statusApprove})=>{
                     <hr/>
                     
                     <div className="footer-approve row">
-                    <button className="no" value={subtopic.id} onClick={Decline} ><i className="fas fa-times icon"></i>Hủy</button>
-                    <button className="yes" value={subtopic.id} onClick={Approve}><i className="fas fa-check icon"></i>Duyệt</button>    
+                        <button className="no" value={subtopic.id} onClick={Decline}><i className="fas fa-times icon"></i>Hủy</button>
+                        <button className="yes" value={subtopic.id} onClick={Approve}><i className="fas fa-check icon"></i>Duyệt</button>    
                     </div>    
                 </Content>
             </Wrapper>
            ) })}
            </Container>
-        </>
     )
 };
 export default ApproveTopic;

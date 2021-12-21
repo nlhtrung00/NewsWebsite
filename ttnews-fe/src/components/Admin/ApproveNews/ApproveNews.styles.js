@@ -37,11 +37,9 @@ export const Content=styled.div`
     border-radius: 20px;
     
     .header-approve{
-        max-height: 250px;
         min-height: 250px;
         text-align:center;
         line-height: 20px;
-        
     }
     h3,h4{
         margin: 0;

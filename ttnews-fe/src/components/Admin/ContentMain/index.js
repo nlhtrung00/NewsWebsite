@@ -13,7 +13,7 @@ export const ContentMain=({option})=>{
     const role = localStorage.getItem('role');
     const {user} = useUserFetch(idadmin);
     
-    if(role!=="boss"&&role!="admin" || idadmin==null){
+    if((role!== "boss" && role!== "admin") || idadmin==null){
         return(
             <Redirect to='/' />
         )

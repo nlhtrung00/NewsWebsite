@@ -1,5 +1,4 @@
 import Home from './components/Homepage/Home';
-// import { Header } from './components/Header';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { GlobalStyles } from './GlobalStyles';
@@ -16,14 +15,14 @@ import {Subtopicpage} from './components/Subtopicpage';
 import { Signup } from './components/Signup';
 import { ApprovedNews } from './components/Users/ApprovedNews';
 import { DeclinedNews } from './components/Users/DeclinedNews';
+import { DetailDeclineNewsUser } from './components/Users/ViewDeclineNews';
 const App =() => {
  
   return(
   <>
-    
     <Router>
       <Switch>
-        <Route exact path='/' component={()=><Home/>} />  
+        <Route exact path='/' component={Home} />  
         <Route path='/login' component={()=><Login/>} />
         <Route path='/signup' component={()=><Signup/>} />
         <Route path='/News/:NewsId' component={News} />
@@ -31,13 +30,13 @@ const App =() => {
         <Route path="/profile/Thembaiviet" component={CreateNews}/>
         <Route path="/profile/Themchude" component={CreateTopics} />
         <Route path="/profile/approved" component={ApprovedNews} />
+        <Route path='/profile/declined/viewdetail/:Newsid' component={DetailDeclineNewsUser} />
         <Route path="/profile/declined" component={DeclinedNews} />
         <Route exact path='/admin' component={HomeAdmin} />
         <Route path='/admin/news/viewdetail/:Newsid' component={DetailNews} />
         <Route path='/admin/news/viewdetaildecline/:Newsid' component={DetailDeclineNews} />
-
-        <Route path='/topic/:Topicid/page/:page/pageSize/:pageSize' component={Topicpage} key={window.location.pathname} />
-        <Route path='/subtopic/:Subtopicid/page/:page/pageSize/:pageSize' component={Subtopicpage} key={window.location.pathname}/>
+        <Route path='/topic/:Topicid/page/:page/pageSize/:pageSize' component={Topicpage} />
+        <Route path='/subtopic/:Subtopicid/page/:page/pageSize/:pageSize' component={Subtopicpage} />
       </Switch> 
       <GlobalStyles />
     </Router>

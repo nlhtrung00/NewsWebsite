@@ -1,19 +1,16 @@
 import { EmptyContainer, Container,Wrapper,Content } from "./DeclinedTopics.styles";
-
-// import { useSubTopicFetchByTopic } from "../../../fetch/FetchSubByStatus";
 import apiSettings from "../../../API";
 import { useState,useEffect } from "react/cjs/react.development";
 import NoneofWork from "../../../image/background/Checklist.jpg";
 const initialState ={
     subtopics:[],
  }
-const DeclinedTopic=({statusApprove})=>{
+const DeclinedTopic=()=>{
     
     const[state,setState] = useState(initialState);
-    const[approve,setApprove] = useState(false);
     const [error,setError] = useState(false);
     const [empty, setEmpty] = useState(false);
-    const fetchsubTopics = async()=>{
+    const fetchsubTopics = async(statusApprove)=>{
         try{
             setError(false);          
             const subtopics = await apiSettings.fetchSubtopicByStatus(statusApprove);
@@ -27,19 +24,17 @@ const DeclinedTopic=({statusApprove})=>{
         catch(error){
             setError(true);
         }
-        setApprove(false);
     }
     useEffect(()=>{
-        setState(initialState);
-        fetchsubTopics();
-    },[approve])
+        fetchsubTopics('declined');
+    },[])
 
     // Approve topic again
     const Approve =async(e)=>{
-        console.log(e.target.value);
+        const subTopicId = e.target.value ? e.target.value : e.target.parentNode.value;
         if(state.subtopics!=null){
            state.subtopics.map(async(subtopic)=>{
-            if(subtopic.id===e.target.value){
+            if(subtopic.id===subTopicId){
                 const id = subtopic.id;
                 const subtopicname = subtopic.subtopicname;
                 const status = "approved";
@@ -49,7 +44,6 @@ const DeclinedTopic=({statusApprove})=>{
                 };
                 const dataPost ={id,subtopicname,status,topic};
                 var datajson = JSON.stringify(dataPost);
-                console.log("approve clicked");
                 await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
                     method:'PUT',
                     headers:{
@@ -59,48 +53,49 @@ const DeclinedTopic=({statusApprove})=>{
                     body:datajson
                     }
                     )
-                setApprove(true)
             }
-           })        
+           }) 
+           const subtopics = state.subtopics.filter(subtopic => subtopic.id !== subTopicId);
+           setState(() => ({
+               subtopics
+           }));    
+           if(subtopics.length === 0){
+            setEmpty(true);
+        }        
         }
     } 
     // delete topic declined
     const Delete = async(e) => {
-        console.log(e.target.value);
-        console.log("delete clicked");
-        var id = e.target.value;
-        if(id!=null){
-            await fetch(`https://localhost:44387/api/Subtopics/${id}`,{
+        const subTopicId = e.target.value ? e.target.value : e.target.parentNode.value;
+        if(subTopicId!==null){
+            await fetch(`https://localhost:44387/api/Subtopics/${subTopicId}`,{
                 method:'DELETE',
                 headers:{
                     'Content-Type':'application/json',
                     'accept': '*/*'  
                     }
                 }
-                )
-            setApprove(true)  ;   
-            console.log("done");
+            )
+            const subtopics = state.subtopics.filter(subtopic => subtopic.id !== subTopicId);
+            setState(() => ({
+                subtopics
+            }));     
+            if(subtopics.length === 0){
+                setEmpty(true);
+            }
         }
-        else{
-            console.log("null id");
-        }
-        
     }
     if(state.subtopics.length===0 && empty){
         return (
-            <>
-                
-                <EmptyContainer>
-                    <h2>Danh sách chủ đề bị hủy hiện trống</h2>
-                    <img src={NoneofWork} alt="nothing need to approve" />
-                </EmptyContainer>
-            </>
+            <EmptyContainer>
+                <h2>Danh sách chủ đề bị hủy hiện trống</h2>
+                <img src={NoneofWork} alt="nothing need to approve" />
+            </EmptyContainer>
         )
     }  
-
+    if(error) return <div>Something wrong happen</div>;
+    else
     return(
-        <>
-        
         <Container>
          {state.subtopics.length !==0 &&state.subtopics.map(subtopic =>{
             return(
@@ -126,7 +121,6 @@ const DeclinedTopic=({statusApprove})=>{
             </Wrapper>
            ) })}
            </Container>
-        </>
     )
 };
 export default DeclinedTopic;

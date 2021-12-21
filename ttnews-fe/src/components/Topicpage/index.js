@@ -19,30 +19,34 @@ const initialTopic ={
 export const Topicpage=()=>{
     // state topic
     const [topic, setTopic] = useState(initialTopic);
-    const [loadingTopic, setLoadingTopic] = useState(false);
     const [errorTopic, setErrorTopic] = useState(false);
     // state news by topic
     const [news, setNews] = useState(initialNews);
-    const [loadingNews, setLoadingNews] = useState(false);
     const [errorNews, setErrorNews] = useState(false);
     const [listPage, setListPage] = useState({});
     const [search, setSearch] = useState('');
-    const [triggerSearch, setTriggerSearch] = useState(false);
     const [searchTmp, setSearchTmp] = useState('');
+
     const initial = useRef(true);
     const {Topicid} = useParams();
     const pageSize = 3;
-    
-    var {page} = useParams();
-    
+    let {page} = useParams();
     if(page==null || page<1){
         page = 1;
     }
-    // fetch topic by url
-    const fetchTopic = async()=>{
+    
+    // fetch news by topic
+    
+    
+
+    const handleSearchTerm = (e) =>{
+        setSearchTmp(e.currentTarget.value);
+    }
+    
+    useEffect(()=>{
+        // fetch topic by url
+        const fetchTopic = async()=>{
         try{
-            setErrorTopic(false);
-            setLoadingTopic(true);    
             const topicFetch = await apiSettings.fetchTopicById(Topicid);
             setTopic(() => ({
                 topic: topicFetch
@@ -51,41 +55,42 @@ export const Topicpage=()=>{
         catch(error){
             setErrorTopic(true);
         }
-        setLoadingTopic(false);
     }
-    // fetch news by topic
-    const fetchNewsByTopic= async()=>{
-        try{
-            setErrorNews(false);
-            setLoadingNews(true);    
-            const newsFetchByPage = await apiSettings.fetchNewsPaginationApprovedByTopic(Topicid, page, pageSize);
-            const newsFetchTotal = await apiSettings.fetchNewsApprovedByTopic(Topicid);
-            setNews(() => ({
-                ...newsFetchByPage
-            }));
-            var totalPage = (Math.ceil(newsFetchTotal.articles.length / pageSize));
-            var listofpage = [];
-            for(let i=0;i<totalPage;i++){
-                listofpage[i] = i+1;
+        fetchTopic();
+    }, [Topicid]);
+
+    useEffect(()=>{
+        const fetchNewsByTopic= async()=>{
+            try{
+                const newsFetchByPage = await apiSettings.fetchNewsPaginationApprovedByTopic(Topicid, page, pageSize);
+                const newsFetchTotal = await apiSettings.fetchNewsApprovedByTopic(Topicid);
+                setNews(() => ({
+                    ...newsFetchByPage
+                }));
+                var totalPage = (Math.ceil(newsFetchTotal.articles.length / pageSize));
+                var listofpage = [];
+                for(let i=0;i<totalPage;i++){
+                    listofpage[i] = i+1;
+                }
+                setListPage(
+                    listofpage
+                );
+                
             }
-            
-            setListPage(
-                listofpage
-            );
-            
+            catch(error){
+                setErrorNews(true);
+            }
         }
-        catch(error){
-            setErrorNews(true);
-        }
-        setLoadingNews(false);
-    }
-    const searchNews = async()=>{
+        fetchNewsByTopic(Topicid, page);
+    },[Topicid, page]);
+
+    useEffect(()=>{
+        const searchNews = async()=>{
             let News = await apiSettings.fetchNewsApprovedByTopic(Topicid);
             if (search.trim()) {
                 News.articles = News.articles.filter((newsfilter) => {
                     var searchtxt = search.toLowerCase();
                     let title = newsfilter.title.toLowerCase();
-                   
                     return (title.search(searchtxt) >= 0);
                 }
                 )
@@ -94,27 +99,12 @@ export const Topicpage=()=>{
                 ...News
             })
             
-    }
-    const handleSearchTerm = (e) =>{
-        setTriggerSearch(true);
-        setSearchTmp(e.currentTarget.value);
-    }
-    
-    useEffect(()=>{
-        setTopic(initialTopic);
-        fetchTopic();
-    },[Topicid,page]);
-
-    useEffect(()=>{
-        setNews(initialNews);
-        fetchNewsByTopic();
-    },[topic]);
-    useEffect(()=>{
-        setNews(initialNews);
+        }
         searchNews();
-    },[search])
-    let iduser;
-    iduser = localStorage.getItem('iduser');
+
+    },[search, Topicid])
+
+    const iduser = localStorage.getItem('iduser');
     useEffect(() =>{
         // check điều kiện lần đầu tiên khi chưa nhập gì, hệ thống không search gì cả
         if(initial.current)
@@ -128,10 +118,9 @@ export const Topicpage=()=>{
         //hiện tại, cleartimeout dùng xóa timeout trước khi nó diễn ra
         const timer = setTimeout( ()=>{
             setSearch(searchTmp);
-        },500)
+        },1000);
         return () => clearTimeout(timer)
-    }, [setTriggerSearch, searchTmp])
-    
+    }, [searchTmp, setSearch])
 
     if(errorTopic){
         return(
@@ -142,8 +131,18 @@ export const Topicpage=()=>{
             </div>
         )
     }
-    
-    if(!errorTopic  && topic !=null && news!=null){
+    else
+    if(errorNews){
+        return(
+            <div>
+                <h2>
+                    Something wrong while fetch News
+                </h2>
+            </div>
+        )
+    }
+    else
+    if(news!==null){
         return(
             <>  
                 <Header user={iduser}/>
@@ -157,49 +156,43 @@ export const Topicpage=()=>{
                                 <img src={searchIcon} alt='search-icon' className="search"/>
                             </div>
                         </div>
-                    <GroupNews header={topic.topic.topicname != null && "Nhóm chủ đề: " +topic.topic.topicname}>
-                        {   news != null && 
-                            news.articles.map(news =>(
-                                <NewsThumb
-                                key = {news.id}
-                                newsid = {news.id}
-                                clickable
-                                />   
-                        ))}
-                        <div className="pagination-footer">
-                        {   listPage.length > 0 &&
-                            listPage.map(pageNumber =>{
-                                
-                                if(page!=pageNumber){
-                                    return(
-                                        
-                                        <button key={pageNumber}>
-
-                                            <Link to={`/topic/${topic.topic.id}/page/${pageNumber}/pageSize/3`} key={topic.topic.id + pageNumber}>
-                                                {pageNumber}
-                                            </Link>
-                                        </button>
-                                    )
+                        <GroupNews header={"Nhóm chủ đề: " +topic.topic.topicname}>
+                            {   news !== {} && 
+                                news.articles.map(news =>(
+                                    <NewsThumb 
+                                        key={news.id}
+                                        newsid = {news.id}
+                                        clickable
+                                    />   
+                            ))}
+                            <div className="pagination-footer">
+                            {   listPage.length > 0 &&
+                                listPage.map(pageNumber =>{
+                                    pageNumber=pageNumber.toString();
+                                    if(page!==pageNumber){
+                                        return(
+                                            <button key={pageNumber}>
+                                                <Link to={`/topic/${Topicid}/page/${pageNumber}/pageSize/3`} key={Topicid + pageNumber}>
+                                                    {pageNumber}
+                                                </Link>
+                                            </button>
+                                        )
                                     }
-                                else{
+
                                     return(
-                                        
                                         <button className="active-page" key={pageNumber}>
 
-                                            <Link to={`/topic/${topic.topic.id}/page/${pageNumber}/pageSize/3`} key={topic.topic.id + pageNumber}>
+                                            <Link  to={`/topic/${Topicid}/page/${pageNumber}/pageSize/3`} key={Topicid + pageNumber}>
                                                 {pageNumber}
                                             </Link>
                                         </button>
                                     )
+                                    })
                                 }
-                            })
-                        }
-                        </div>
-                    </GroupNews>
+                            </div>
+                        </GroupNews>
                     </Content>              
                 </Container>
-                    
-               
             </>
         )
     }

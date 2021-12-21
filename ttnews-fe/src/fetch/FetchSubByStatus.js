@@ -14,7 +14,6 @@ export const useSubTopicFetchByTopic=(status)=>{
             setErrorFetchSubtopic(false);
             setLoading(true);
             const subtopics = await apiSettings.fetchSubtopicByStatus(status);
-            console.log(subtopics);
             setState(() => ({
                 subtopics,
             }));

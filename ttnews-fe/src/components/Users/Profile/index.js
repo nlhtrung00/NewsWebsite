@@ -25,7 +25,6 @@ const Profile =() =>{
         userfullname = user.fullname;
         userdateofbirth = user.dateofbirth;
     }
-    console.log(user);
     return(
         <>
         <Header user={iduser} /> 
@@ -73,9 +72,6 @@ const Profile =() =>{
                          
                     </div>
                 </div>
-                
-                
-
             </Content>
         </Wrapper>
         </>

@@ -8,30 +8,23 @@ const initialState ={
 }
 export const useHomeFetch=()=>{
     const [state, setState] = useState(initialState);
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const fetchNews = async()=>{
+    const fetchNews = async () =>{
         try{
-            setError(false);
-            setLoading(true);
-            
+            setError(false)
             const New = await apiSettings.fetchNewstNews();
-            console.log(New);
             const Hot = await apiSettings.fetchHottest();
-            console.log(Hot);
             setState({
                 Newest: New,
                 Hottest: Hot
             });
         }
-        catch(error){
+        catch{
             setError(true);
         }
-        setLoading(false);
     }
     useEffect(()=>{
-        setState(initialState);
         fetchNews();
     },[])
-    return {state, loading, error} ;
+    return {state, error};
 }

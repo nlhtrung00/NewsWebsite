@@ -10,24 +10,22 @@ export const useSubTopicFetchByTopic=(idtopic)=>{
     const [subtopics, setSubTopics] = useState(initialState);
     const [loading, setLoading] = useState(false);
     const [errorFetchSubtopic, setErrorFetchSubtopic] = useState(false);
-    const fetchsubTopics = async()=>{
-        try{
-            setErrorFetchSubtopic(false);
-            setLoading(true);
-            const subtopics = await apiSettings.fetchSubTopicsByTopic(idtopic);
-            console.log(subtopics);
-            setSubTopics(() => ({
-                subtopics: subtopics,
-            }));
-        }
-        catch(error){
-            setErrorFetchSubtopic(true);
-        }
-        setLoading(false);
-    }
     useEffect(()=>{
-        setSubTopics(initialState);
+        const fetchsubTopics = async()=>{
+            try{
+                setErrorFetchSubtopic(false);
+                setLoading(true);
+                const subtopics = await apiSettings.fetchSubTopicsByTopic(idtopic);
+                setSubTopics(() => ({
+                    subtopics: subtopics,
+                }));
+            }
+            catch(error){
+                setErrorFetchSubtopic(true);
+            }
+            setLoading(false);
+        }
         fetchsubTopics();
-    },[])
+    },[idtopic])
     return {subtopics, loading, errorFetchSubtopic} ;
 }

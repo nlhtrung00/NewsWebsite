@@ -30,7 +30,6 @@ export const Header =(props)=>{
     }
 
     useEffect(()=>{
-        setSubtopics(initialState);
         fetchsubTopics();
     },[])
 
@@ -47,28 +46,23 @@ export const Header =(props)=>{
    
     const handleLogout=()=>{
         localStorage.clear();
-        window.location.reload();
-        button = (<Link to="/login"><button>Login</button></Link>);
     }
-    //console.log(props.user);
-    // button = (<Link to="/login"><button>Login</button></Link>);
-    if(props.user==null)
+
+    if(props.user===null)
         button = (<Link to="/login"><button>Login</button></Link>)
     else{
         button = (
         <>
             <Link to="/"><button onClick={handleLogout}>Logout</button></Link>
             {role==="boss"||role==="admin" ? <button><Link to="/admin">Management</Link></button> : ""}
-        <div>
         
             <Link to='/profile'>
                 <User src={UserIcon} />
             </Link>
-        </div>
         </>
         )    
     }
-    if(state!=null)
+    if(state!==null)
     return(
         <>
         
@@ -82,30 +76,22 @@ export const Header =(props)=>{
                 <ul className="topic-list">
                     {state.topics.map(topic=>{
                         return(
-                            
                             <li  className="topic-item" key={topic.id}>
-                                <Link to={`/topic/${topic.id}/page/1/pageSize/3`} key={topic.id}>
+                                <Link to={`/topic/${topic.id}/page/1/pageSize/3`}>
                                     {topic.topicname}
                                 </Link>
-                                
                                 <ul className="subtopic-list">
-                                    {subtopics.list!=null&&subtopics.list.map(subtopic=>{
-                                        
-                                        if(subtopic.topic.id===topic.id)
-                                        return(
-                                            
+                                    {subtopics.list!=null && subtopics.list.filter(subtopic => subtopic.topic.id===topic.id).map(
+                                        subtopic => (
                                             <li className="subtopic-item" key={subtopic.id}>
                                                 <Link to={`/subtopic/${subtopic.id}/page/1/pageSize/3`}>
-                                                {subtopic.subtopicname}
+                                                    {subtopic.subtopicname}
                                                 </Link>
-                                            </li>
-                                         
+                                            </li> 
                                         )
-                                    })}           
+                                    )}           
                                 </ul>
-                                
                             </li>
-                            
                         )
                     })}
             
@@ -113,8 +99,6 @@ export const Header =(props)=>{
             </NavBar>
             <div className="user-option">
                 {button}
-    
-                
             </div>
             
                 

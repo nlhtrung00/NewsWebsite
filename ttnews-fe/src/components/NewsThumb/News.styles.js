@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     width: 95%;
     .wrapper-img{
         height: 240px;
-        width: 320px;
+        width: 300px;
         overflow: hidden;
     }
 `;
@@ -18,13 +18,14 @@ export const Wrapper = styled.div`
 export const Image = styled.img`
     width: 100%;
     height: 100%;
-    max-width: 320px;
-    margin-right: 20px;
+    /* max-width: 320px; */
     object-fit: cover;
 `;
 
 export const Content = styled.div`
-    margin-left: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 70%;
     p{
         font-size: 18px;
     }

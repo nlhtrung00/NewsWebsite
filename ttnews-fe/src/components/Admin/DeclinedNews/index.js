@@ -6,12 +6,11 @@ import NoneofWork from "../../../image/background/Checklist.jpg";
 const initialState ={
     articles:[],
  }
-const DeclinedNews=({statusApprove})=>{
+const DeclinedNews=()=>{
     const[state,setState] = useState(initialState);
-    const[approve,setApprove] = useState(false);
     const [error,setError] = useState(false);
     const [empty, setEmpty] = useState(false);
-    const fetchNews = async()=>{
+    const fetchNews = async(statusApprove)=>{
         try{
             setError(false);          
             const news = await apiSettings.fetchNewsByStatus(statusApprove);
@@ -19,22 +18,21 @@ const DeclinedNews=({statusApprove})=>{
             setState(() => ({
                 articles: [...news.articles]
             }));
-            console.log(news.articles.length==0)
-            if(news.articles.length==0){
+            if(news.articles.length===0){
                 setEmpty(true);
             }
         }
         catch(error){
             setError(true);
         }
-        setApprove(false);
     }
     useEffect(()=>{
-        setState(initialState);
-        fetchNews();
-    },[approve])
+        fetchNews('declined');
+    },[])
 
 
+    if(error) return <div>Something wrong happen</div>;
+    else
     if(empty){
         return (
             <>
@@ -65,10 +63,6 @@ const DeclinedNews=({statusApprove})=>{
                             <Link to={`/admin/news/viewdetaildecline/${itemnews.id}`}>
                                 <button className="btn-detail">Xem chi tiết</button>
                             </Link>
-                            
-                                            
-                       
-                       
                     </div>
                 </Content>
                 </Wrapper>

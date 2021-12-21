@@ -16,7 +16,6 @@ export const GetTopicById=(TopicId)=>{
             
             const topicFetch = await apiSettings.fetchTopicById(TopicId);
             
-            console.log(topicFetch);
             setTopic(() => ({
                 topic: topicFetch
             }));

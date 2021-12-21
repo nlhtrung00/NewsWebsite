@@ -22,16 +22,13 @@ const initialSubtopic ={
 export const Subtopicpage=()=>{
     // state Subtopic
     const [subtopic, setSubtopic] = useState(initialSubtopic);
-    const [loadingSubtopic, setLoadingSubtopic] = useState(false);
     const [errorSubtopic, setErrorSubtopic] = useState(false);
     // state news by Subtopic
     const [news, setNews] = useState(initialNews);
-    const [loadingNews, setLoadingNews] = useState(false);
     const [errorNews, setErrorNews] = useState(false);
     const [listPage, setListPage] = useState({});
     const [topic, setTopic] = useState(initialtopic);
     const [search, setSearch] = useState('');
-    const [triggerSearch, setTriggerSearch] = useState(false);
     const [searchTmp, setSearchTmp] = useState('');
     const initial = useRef(true);
     const {Subtopicid} = useParams();
@@ -41,91 +38,82 @@ export const Subtopicpage=()=>{
     if(page==null || page<1){
         page = 1;
     }
-    
-    // fetch topic by url
-    const fetchSubtopic = async()=>{
-        try{
-            setErrorSubtopic(false);
-            setLoadingSubtopic(true);    
-            const SubtopicFetch = await apiSettings.fetchSubTopicsById(Subtopicid);
-            
-            var topicFetch = SubtopicFetch.topic;
-            setTopic(()=>({
-                ...topicFetch
-            }));
-            setSubtopic(() => ({
-                subtopic: SubtopicFetch
-            }));
-        }
-        catch(error){
-            setErrorSubtopic(true);
-        }
-        setLoadingSubtopic(false);
-    }
-    // fetch news by topic
-    const fetchNewsBySubtopic= async()=>{
-        try{
-            setErrorNews(false);
-            setLoadingNews(true);    
-            const newsFetch = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
 
-            const newsFetchByPage = await apiSettings.fetchNewsPaginationApprovedBySubtopic(Subtopicid, page, pageSize);
-            const newsFetchTotal = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
-            setNews(() => ({
-                ...newsFetchByPage
-            }));
-            var totalPage = (Math.ceil(newsFetchTotal.articles.length / pageSize));
-            var listofpage = [];
-            for(let i=0;i<totalPage;i++){
-                listofpage[i] = i+1;
-            }
-            
-            setListPage(
-                listofpage
-            );
-        }
-        catch(error){
-            setErrorNews(true);
-        }
-        setLoadingNews(false);
-    }
-    const searchNews = async()=>{
-        let News = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
-        if (search.trim()) {
-            News.articles = News.articles.filter((newsfilter) => {
-                var searchtxt = search.toLowerCase();
-                let title = newsfilter.title.toLowerCase();
-               
-                return (title.search(searchtxt) >= 0);
-            }
-            )
-        }
-        setNews({
-            ...News
-        })
-        
-    }
     const handleSearchTerm = (e) =>{
-        setTriggerSearch(true);
         setSearchTmp(e.currentTarget.value);
     }
+
     useEffect(()=>{
-        setSubtopic(initialSubtopic);
+        // fetch topic by url
+        const fetchSubtopic = async()=>{
+            try{
+                setErrorSubtopic(false);
+                const SubtopicFetch = await apiSettings.fetchSubTopicsById(Subtopicid);
+                
+                var topicFetch = SubtopicFetch.topic;
+                setTopic(()=>({
+                    ...topicFetch
+                }));
+                setSubtopic(() => ({
+                    subtopic: SubtopicFetch
+                }));
+            }
+            catch(error){
+                setErrorSubtopic(true);
+            }
+        }
         fetchSubtopic();
-    },[Subtopicid,page]);
+    },[Subtopicid]);
 
     useEffect(()=>{
-        setNews(initialNews);
-        fetchNewsBySubtopic();
-    },[subtopic]);
+        // fetch news by topic
+        const fetchNewsBySubtopic= async(Subtopicid, page)=>{
+            try{
+                setErrorNews(false);
+                // const newsFetch = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
+                const newsFetchByPage = await apiSettings.fetchNewsPaginationApprovedBySubtopic(Subtopicid, page, pageSize);
+                const newsFetchTotal = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
+                setNews(() => ({
+                    ...newsFetchByPage
+                }));
+                var totalPage = (Math.ceil(newsFetchTotal.articles.length / pageSize));
+                var listofpage = [];
+                for(let i=0;i<totalPage;i++){
+                    listofpage[i] = i+1;
+                }
+                
+                setListPage(
+                    listofpage
+                );
+            }
+            catch(error){
+                setErrorNews(true);
+            }
+        }
+        fetchNewsBySubtopic(Subtopicid, page);
+    },[Subtopicid, page]);
 
     useEffect(()=>{
-        setNews(initialNews);
+        const searchNews = async()=>{
+            let News = await apiSettings.fetchNewsApprovedBySubtopic(Subtopicid);
+            if (search.trim()) {
+                News.articles = News.articles.filter((newsfilter) => {
+                    var searchtxt = search.toLowerCase();
+                    let title = newsfilter.title.toLowerCase();
+                
+                    return (title.search(searchtxt) >= 0);
+                }
+                )
+            }
+            setNews({
+                ...News
+            })
+            
+        }
         searchNews();
-    },[search])
+    },[search, Subtopicid])
 
-    let iduser;
-    iduser = localStorage.getItem('iduser');
+    const iduser = localStorage.getItem('iduser');
     
     useEffect(() =>{
         // check điều kiện lần đầu tiên khi chưa nhập gì, hệ thống không search gì cả
@@ -142,8 +130,7 @@ export const Subtopicpage=()=>{
             setSearch(searchTmp);
         },500)
         return () => clearTimeout(timer)
-    }, [setTriggerSearch, searchTmp])
-
+    }, [searchTmp])
 
     if(errorSubtopic){
         return(
@@ -154,8 +141,18 @@ export const Subtopicpage=()=>{
             </div>
         )
     }
-   
-    if(!errorSubtopic  && subtopic.subtopic !=null && news!=null){
+    else
+    if(errorNews){
+        return(
+            <div>
+                <h2>
+                    Something wrong while fetch News
+                </h2>
+            </div>
+        )
+    }
+    else
+    if(!errorSubtopic && subtopic.subtopic !=null && news!=null){
         return(
             <>  
                 <Header user={iduser}/>
@@ -182,8 +179,8 @@ export const Subtopicpage=()=>{
                         <div className="pagination-footer">
                         {   listPage.length > 0 &&
                             listPage.map(pageNumber =>{
-                                
-                                if(page!=pageNumber){
+                                pageNumber=pageNumber.toString();
+                                if(page!==pageNumber){
                                     return(
                                         
                                         <button key={pageNumber}>

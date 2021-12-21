@@ -73,6 +73,8 @@ export const Content = styled.div`
         padding: 10px;
         font-weight: 600;
         cursor: pointer;
+        color: #000;
+        text-align: center;
     }
     .row{
         display: flex;
@@ -84,6 +86,7 @@ export const Content = styled.div`
         font-size: 18px;
         outline: none;
         border: none;
+        text-decoration: none;
     }
     .btn-register{
         background-color: #2CD03C;

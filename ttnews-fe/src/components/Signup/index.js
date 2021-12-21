@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import { Wrapper } from "./Signup.styles";
-//import { createBrowserHistory } from 'history';
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import apiSettings from "../../API";
 
@@ -21,10 +20,7 @@ export const Signup=()=>{
         try{
             setError(false);
             const users = await apiSettings.fetchAllUsers();
-            setListUser({
-                users:[...users]
-            })
-            
+            setListUser(users)
         }
         catch{
             setError(true);
@@ -33,42 +29,37 @@ export const Signup=()=>{
     useEffect(()=>{
         fetchUsers();
     },[])
-    console.log(listUser);
+
     const submitSignup=(e)=>{
         e.preventDefault();
         if(apassword!==repassword){
             alert("Mật khẩu không trùng khớp");        
             return false;
         }
-        else if(afullname.trim()==""||ausername.trim()==""||apassword.trim()==""){
+        else if(afullname.trim()===""||ausername.trim()===""||apassword.trim()===""){
             alert("Vui lòng nhập đủ các thông tin yêu cầu");
             return false;
         }
         else{
-            listUser.users.map(user=>{
-                if(ausername == user.username){
-                    alert("Trùng tên đăng nhập");
-                    
-                    return false;
-                    
-                }
-            })
+            const checkUserName = listUser.filter(user => ausername === user.username);
+            if(checkUserName.length !== 0){
+                alert("Trùng tên tài khoản");
+                return false;
+                
+            }
         }
         return true;
-        
     }
+
     const handleSignup =async(e)=>{
-        console.log("submit");
         const validate = submitSignup(e);
         if(validate){
-            console.log("validate true")
             var fullname = afullname;
             var username = ausername;
             var userpassword = apassword;
             var dateofbirth = new Date(adateofbirth);
-            console.log(dateofbirth);
             const data = {fullname, username, userpassword, dateofbirth}
-            const postUser  = fetch(`https://localhost:44387/api/Newsusers`,{
+            fetch(`https://localhost:44387/api/Newsusers`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
@@ -77,22 +68,22 @@ export const Signup=()=>{
                 },
                 body:JSON.stringify(data)
             }).then((data)=>{
-                console.log(data.json());
                 setRedirect(true);
                 alert('Đăng ký thành công, xin mời đăng nhập');
     
             }).catch((err)=>{
-                console.log(err);
+                setError(true)
             })
         }
        
         
-        //console.log(postUser);
     }
     if(redirect){
 
         return <Redirect to= '/login' />
     }
+    if(error) return <div>Something wrong happened</div>
+    else
     return(
         <>
         

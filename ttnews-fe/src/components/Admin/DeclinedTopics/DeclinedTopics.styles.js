@@ -16,25 +16,23 @@ export const EmptyContainer = styled.div`
 `
 export const Container =styled.div`
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     grid-row-gap: 30px;
-    
     
 `
 export const Wrapper=styled.div`
     width: 240px;
-    height: 190px;
+    height: 160px;
     background-color: #aea3f1;
     padding: 5px 0 5px;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-    margin-right: 20px;
     border-radius: 10px;
-    
+    margin: 0 auto;
 `
 
 export const Content=styled.div`
     .header{
-        height: 130px;
+        height: 110px;
     }
     .title-subtopic{    
         font-size: 22px;
@@ -78,6 +76,7 @@ export const Content=styled.div`
         font-size: 17px;
         cursor: pointer;
         color:white;
+        width: 104px;
     }
     .yes:hover{
         background-color: #08b708;

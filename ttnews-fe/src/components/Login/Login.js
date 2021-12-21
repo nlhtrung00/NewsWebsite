@@ -1,13 +1,10 @@
 import {useState} from "react";
 import { Wrapper } from "./Login.styles";
-//import { createBrowserHistory } from 'history';
 import { Link, Redirect } from "react-router-dom";
 import Home from '../Homepage/Home'
 
 
 export const Login=()=>{
-
-
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [role, setRole] = useState();
@@ -17,20 +14,21 @@ export const Login=()=>{
         e.preventDefault();
         const data ={username:username,password:password};
         await fetch(`https://localhost:44387/authenticate?username=${data.username}&password=${data.password}`)
-        .then(res => res.json()
-        ).then(data=>{
-            
+        .then(res => res.json())
+        .then(data=>{
             localStorage.setItem('token',data.token);
             localStorage.setItem('role',data.newsuser.role);
             localStorage.setItem('iduser',data.newsuser.id);
-            console.log(localStorage);
             setRole(data.newsuser.role);
             setLoggedIn(true);
         })
-        .catch(err =>{
-            console.log(err);
+        .catch(() =>{
+            alert('Sai thông tin đăng nhập!');
         });
+
+       
     }
+
     if(role==='user' && LoggedIn){
         return <Redirect to= {< Home/>} />
         
@@ -39,7 +37,6 @@ export const Login=()=>{
         return <Redirect to ='/admin'/>
     } 
     
-       
     return(
         <>
         

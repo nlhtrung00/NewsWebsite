@@ -1,39 +1,36 @@
 import apiSettings from "../../../API";
 import { Container, Content } from "./ReadingNews.styles";
 import { Header } from "../../Header";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const initialState ={
-    news:[],
+    news:[]
  }
-export const ReadingNews =({Newsid,view})=>{
+export const ReadingNews =({NewsId,view})=>{
     const [error, setError] = useState(false);
     const [News, setNews] = useState(initialState);
     const [author, setAuthor] = useState({});
     const [topic,setTopic] = useState({});
     const [subtopic,setSubtopic] = useState({});
-    let iduser;
-    console.log(view);
-    const fetchNews = async()=>{
+    let iduser = localStorage.getItem('iduser');
+    const fetchNews = async(Newsid)=>{
         try{
-            setError(false);          
             const news = await apiSettings.fetchNewsById(Newsid);
-            console.log(news);
             const authorfetch = news.author;
             const topicfetch = news.topic;
             const subtopicfetch = news.subtopic;
             
             setAuthor(()=>({
-                ...authorfetch,
+                ...authorfetch
             }));
             setTopic(()=>({
-                ...topicfetch,
+                ...topicfetch
             }));
             setSubtopic(()=>({
-                ...subtopicfetch,
+                ...subtopicfetch
             }));
             setNews(() => ({
-                news,
+                news
             }));
         }
         catch(error){
@@ -41,11 +38,11 @@ export const ReadingNews =({Newsid,view})=>{
         }
     };
     useEffect(()=>{
-        setNews(initialState);
-        fetchNews();
-    },[]);
-    
-    iduser = localStorage.getItem('iduser');
+        fetchNews(NewsId);
+    },[NewsId]);
+
+    if(error) return <div>Something wrong happened</div>
+    else
     return(
         <>
             <Header user={iduser} /> 
@@ -69,7 +66,7 @@ export const ReadingNews =({Newsid,view})=>{
                             <p>{News.news.descriptions}</p>
                         </div>
                         <div className="img-news">
-                           <img src={News.news.imageName} /> 
+                           {News.news.imageName !== null && <img src={News.news.imageName} alt="news"/>}
                         </div>
                         <div className="content">
                             <p dangerouslySetInnerHTML={{__html:News.news.content}}></p>

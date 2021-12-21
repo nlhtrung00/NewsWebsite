@@ -3,33 +3,35 @@ import { Header } from "../../Header";
 import { useEffect, useState } from "react";
 import apiSettings from "../../../API";
 import { Link, Redirect } from "react-router-dom";
+import NoImg from '../../../image/noImage.jpg';
+
 export const ApprovedNews = () =>{
     const [news, setNews] = useState();
     const [error, setError] = useState(false);
-    let iduser;
-    iduser = localStorage.getItem('iduser');
-    const fetchNewsApprovedByAuthor = async() =>{
-        try{
-            setError(false);
-            const newsfetch = await apiSettings.fetchNewsApprovedByAuthor(iduser)
-            setNews({
-                ...newsfetch
-            })
-        }
-        catch{
-            setError(true);
-        }
-    }
+    let iduser = localStorage.getItem('iduser');
     useEffect(()=>{
-        setNews();
+        const fetchNewsApprovedByAuthor = async() =>{
+            try{
+                setError(false);
+                const newsfetch = await apiSettings.fetchNewsApprovedByAuthor(iduser)
+                setNews({
+                    ...newsfetch
+                })
+            }
+            catch{
+                setError(true);
+            }
+        }
         fetchNewsApprovedByAuthor();
-    },[]) 
+    },[iduser])
+
     if(iduser==null){
         return (
             <Redirect to="/"/>
         )
     }
-    console.log(news);
+    if(error) return <div>Something wrong happen</div>;
+    else
     return(
         <>
             <Header user={iduser} />
@@ -40,7 +42,8 @@ export const ApprovedNews = () =>{
                         return(
                             <News key={newsitem.id}>
                                 <div className="wrapper-img">
-                                    {<Image src={newsitem.imageName} alt="temp"/> }
+                                    {newsitem.imageName!==null && <Image src={newsitem.imageName} alt="temp"/> }
+                                    {newsitem.imageName===null && <Image src={NoImg} alt="temp"/> }
                                 </div>
                                 <ContentNews>
                                     

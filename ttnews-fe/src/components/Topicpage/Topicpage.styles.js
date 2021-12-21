@@ -27,19 +27,19 @@ export const Content = styled.div`
         display: flex;
         justify-content: right;
         margin-right: 30px;
-        
-        
     }
-    .active-page{
-        background-color:#ff441f; 
-        border: none;
+
+    .active-page {
+        background-color: #ef9207; 
     }
     .active-page a{
         color: white;   
     } 
+
     button:hover{
         background-color:#2d2d2d
     } 
+
     button:hover a{
         color: white;
     }
@@ -47,8 +47,9 @@ export const Content = styled.div`
         font-size: 16px;
         text-decoration: none;
         color: black;
-        padding: 10px;
+        padding: 0 10px;
     }
+
     .wrapper-formsearch{
         position: relative;
         padding: 10px 0 20px;

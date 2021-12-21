@@ -3,15 +3,13 @@
 import apiSettings from "../API";
 import { useEffect, useState } from "react";
 
-export const useUserFetch=(userid)=>{
+export const useUserFetch=()=>{
 
     const [user, setUser] = useState('');
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const fetchUser = async()=>{
+    const fetchUser = async(userid)=>{
         try{
             setError(false);
-            setLoading(true);
             
             const User = await apiSettings.fetchUserById(userid);
             
@@ -22,13 +20,10 @@ export const useUserFetch=(userid)=>{
         }
         catch(error){
             setError(true);
-            
         }
-        setLoading(false);
     }
     useEffect(()=>{
-        setUser('');
-        fetchUser();
+        fetchUser(localStorage.getItem('iduser'));
     },[])
-    return {user, loading, error} ;
+    return {user, error} ;
 }

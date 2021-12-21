@@ -3,7 +3,7 @@ import {useTopicFetch} from '../../../fetch/TopicFetch'
 import { Header } from "../../Header";
 import { Login } from "../../Login/Login";
 import { Wrapper,Content } from "./CreateTopic.styles";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 const initialState ={
     topic:[],
@@ -14,7 +14,6 @@ const CreateTopics=()=>{
     const [topic,setTopic] = useState(initialState);
     const [redirect, setRedirect] = useState(false);
     
-    if(error) return <div>Something wrong happen</div>;
     let iduser;
     iduser = localStorage.getItem('iduser');
     let history = createBrowserHistory()
@@ -25,9 +24,7 @@ const CreateTopics=()=>{
     
     const handleChangeTopic=async(e)=>{
         const topicid = e.target.value; 
-        console.log(topicid);
         const topicFetch = await (await fetch(`https://localhost:44387/api/Topics/${topicid}`)).json();
-        console.log(topicFetch);
         setTopic(()=>({
             ...topicFetch
         }))
@@ -37,7 +34,6 @@ const CreateTopics=()=>{
         e.preventDefault();
         
         const dataPost ={subTopicname,topic};
-        console.log(JSON.stringify(dataPost));
         await fetch('https://localhost:44387/api/Subtopics',{
             method:'POST',
             headers:{
@@ -48,19 +44,14 @@ const CreateTopics=()=>{
             body:JSON.stringify(dataPost)
         }
         ).then((res)=>{
-            console.log(res.json());
             setRedirect(true);
             alert('Đăng ký chủ đề thành công!')
 
-        }).catch(err => console.log(err))
-    
-        
-        
-        
+        }).catch(err => alert(err))
     }
-    const handleExit=()=>(
-        setRedirect(true)
-    );
+
+    if(error) return <div>Something wrong happen</div>;
+    else
     if(redirect){
         return <Redirect to="/profile" />
     }
@@ -86,23 +77,18 @@ const CreateTopics=()=>{
                             <select name="topic" className="col-2" onChange={handleChangeTopic} >
                             <option value="">Chọn chủ đề...</option>
                                 {state.topics.map(topic => {
-                                    
                                     return(
                                         <option value={topic.id} key={topic.id}>
                                         {topic.topicname}
                                         </option>
                                     )
-                                   
-                                  
                                 })}
                             </select>
-                            
-                            
                         </div>
                         
                         <div className="row confirm-form">
                             
-                            <button className="btn btn-cancel" onClick={handleExit}>Trở về</button> 
+                            <Link  to="/profile" className="btn btn-cancel" >Trở về</Link> 
                             <button className="btn btn-register" onClick={handleSubmit}>Đăng ký chủ đề</button>  
                         </div>
                         

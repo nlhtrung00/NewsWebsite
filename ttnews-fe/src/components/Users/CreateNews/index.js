@@ -1,7 +1,6 @@
-import {useState,useRef, useEffect} from "react";
+import { useState } from "react";
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
-// import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 import { Wrapper,Content } from "./CreateNews.styles";
 import {Link} from 'react-router-dom';
 import {useTopicFetch} from '../../../fetch/TopicFetch'
@@ -9,8 +8,6 @@ import { useUserFetch } from "../../../fetch/UserFetch";
 import { Header } from "../../Header";
 import { Redirect } from "react-router-dom";
 const CreateNews=()=>{
-    
-
     const [ispeding, setIsPending] = useState(false)
     const {state} = useTopicFetch();
     const [subTopics, setSubtopics] = useState();
@@ -31,7 +28,6 @@ const CreateNews=()=>{
     iduser = localStorage.getItem('iduser'); 
     const {user} = useUserFetch(localStorage.getItem('iduser'));  
     
-    const editor = useRef(null);
     var date = new Date();
     
     if(redirect){
@@ -39,7 +35,7 @@ const CreateNews=()=>{
     }
     
     const handleChangeContent=(content)=>{
-        //console.log(content); //Get Content Inside Editor
+        //Get Content Inside Editor
         setContent(content);
     }
     
@@ -98,16 +94,15 @@ const CreateNews=()=>{
         dataArray.append('author.userpassword',author.userpassword);
         dataArray.append('image',uploadFile);
 
-        const response = await fetch('https://localhost:44387/api/News',{
+        await fetch('https://localhost:44387/api/News',{
             method:'POST',
             body:dataArray
         }).then((res)=>{
             setIsPending(false);
-            console.log(res.json());
             setRedirect(true);
-            alert('Tạo tin thành công!')
-        }).catch(err=>{
-            console.log(err);
+            alert('Tạo tin thành công!');
+        }).catch(()=>{
+            alert('Lỗi tạo tin. Vui lòng thử lại!');
         })
         
    
@@ -133,19 +128,15 @@ const CreateNews=()=>{
                             <div className="row-item-input">
                                 <label htmlFor="topic"className="col-1">Thuộc nhóm chủ đề</label>
                                 <select name="topic" className="col-2" onChange={handleChangeTopic} required>
-                                            <option value="">Chọn chủ đề...</option>
-                                            {state.topics.map(topic => {
-                                                
-                                                return(
-                                                    
-                                                    <option value={topic.id} key={topic.id}>
-                                                    {topic.topicname}
-                                                    </option>
-                                                )
-                                            
-                                            
-                                            })}
-                                    </select>
+                                    <option value="">Chọn chủ đề...</option>
+                                    {state.topics.map(topic => {
+                                        return(
+                                            <option value={topic.id} key={topic.id}>
+                                            {topic.topicname}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
                             </div>
         
                             <div className="row-item-input">
@@ -178,18 +169,9 @@ const CreateNews=()=>{
                             </div>
                             <div className="row confirm-form">  
                                 <Link to="/profile"><button className="btn btn-cancel">Trở về</button></Link>        
-                                
-                                
                                 {!ispeding && <button className="btn btn-register" onClick={handleSubmit}>Tạo tin</button>}     
                                 {ispeding && <button className="btn btn-register" disabled>Đang tạo...</button>}
-                                
-                                
                             </div>
-        
-                            
-        
-                            
-                            
                         </form>
                     </Content>
                 </Wrapper>
