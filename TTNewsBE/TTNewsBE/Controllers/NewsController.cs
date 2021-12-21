@@ -166,18 +166,18 @@ namespace TTNewsBE.Controllers
                 {
                     try
                     {
-                        if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\Images\\"))
-                        {
-                            Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\Images\\");
-                        }
+                        //if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\Images\\"))
+                        //{
+                        //    Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\Images\\");
+                        //}
                         
-                        using (FileStream fileStream = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\Images\\" + news.Image.FileName))
-                        {
-                            news.Image.CopyTo(fileStream);
+                        //using (FileStream fileStream = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\Images\\" + news.Image.FileName))
+                        //{
+                        //    news.Image.CopyTo(fileStream);
                         
-                            fileStream.Flush();
+                        //    fileStream.Flush();
                             
-                        }
+                        //}
                         
                         using (Stream s = news.Image.OpenReadStream())
                         {
